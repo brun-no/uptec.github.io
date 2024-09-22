@@ -1,0 +1,1183 @@
+<html><head><base href="https://www.exemplo.com/calculadora-etiquetas/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title contenteditable="true">Calculadora de Registro de Etiquetas</title>
+  <style>
+  :root {
+    --bg-color: #e0e5ec;
+    --shadow-light: #ffffff;
+    --shadow-dark: #a3b1c6;
+    --primary: #6d5dfc;
+    --success: #4CAF50;
+    --danger: #ff6b6b;
+    --greyLight: #bec8e4;
+    --greyDark: #9baacf;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 20px;
+    color: #444;
+  }
+  
+  #loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--bg-color);
+  }
+
+  #loginForm input {
+    margin: 10px;
+    padding: 12px;
+    width: 250px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-color);
+    box-shadow: 
+      inset 2px 2px 5px var(--shadow-dark), 
+      inset -2px -2px 5px var(--shadow-light);
+    color: #333;
+    font-size: 16px;
+  }
+
+  #loginForm button {
+    margin: 20px;
+    padding: 12px 25px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  #loginForm button:hover {
+    background-color: #5b4ceb;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  h1 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 30px;
+    cursor: text;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+  }
+  
+  h1:hover {
+    opacity: 1;
+  }
+  
+  .form-container {
+    background: var(--bg-color);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 
+      8px 8px 16px var(--shadow-dark), 
+      -8px -8px 16px var(--shadow-light);
+  }
+  
+  .input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .input-field {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-color);
+    box-shadow: 
+      inset 2px 2px 5px var(--shadow-dark), 
+      inset -2px -2px 5px var(--shadow-light);
+    color: #333;
+    font-size: 16px;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus {
+    outline: none;
+    box-shadow: 
+      inset 4px 4px 8px var(--shadow-dark), 
+      inset -4px -4px 8px var(--shadow-light);
+  }
+  
+  button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+      4px 4px 8px var(--shadow-dark), 
+      -4px -4px 8px var(--shadow-light);
+  }
+  
+  button:active {
+    box-shadow: 
+      inset 4px 4px 8px var(--shadow-dark), 
+      inset -4px -4px 8px var(--shadow-light);
+  }
+  
+  #calcular {
+    background-color: var(--success);
+  }
+  
+  #calcular:hover {
+    background-color: #45a049;
+  }
+  
+  #salvarPDF {
+    background-color: var(--primary);
+  }
+  
+  #salvarPDF:hover {
+    background-color: #5b4ceb;
+  }
+  
+  #salvarEdicao {
+    background-color: var(--primary);
+  }
+  
+  #salvarEdicaoF:hover {
+    background-color: #5b4ceb;
+  }
+  
+  #acoes {
+    background-color: var(--danger);
+  }
+  
+  #acoes:hover {
+    background-color: #ff5252;
+  }
+  
+  #sairAcoes {
+    background-color: #575151;
+  }
+  
+  #sairAcoes:hover {
+    background-color: #000000;
+  }
+  
+  #apagarTodos {
+    background-color: var(--danger);
+  }
+  
+  #apagarTodos:hover {
+    background-color: #ff5252;
+  }
+  
+  
+  #confirmarApagar {
+    background-color: #000000;
+  }
+  
+  #confirmarApagar:hover {
+      background-color: #575151;
+  }
+  
+  #senhaAdmin {
+    width: 100%; /* Preencher a largura disponível */
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-color); /* Cor de fundo */
+    box-shadow: 
+      inset 2px 2px 5px var(--shadow-dark), 
+      inset -2px -2px 5px var(--shadow-light);
+    color: #333; /* Cor do texto */
+    font-size: 16px;
+    margin-bottom: 15px; /* Espaço abaixo da caixa */
+  }
+  
+  #senhaAdmin:focus {
+    outline: none;
+    box-shadow: 
+      inset 4px 4px 8px var(--shadow-dark), 
+      inset -4px -4px 8px var(--shadow-light);
+  }
+  
+  #resultado {
+    margin-left: 20px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+
+  #confirmarExclusaoBtn {
+    background-color: var(--danger);
+  }
+  
+  #confirmarExclusaoBtn:hover {
+    background-color: #ff5252;
+  }
+  
+  #cancelarExclusaoBtn {
+    background-color: #575151;
+  }
+  
+  #cancelarExclusaoBtn:hover {
+    background-color: #000000;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--greyLight);
+    transition: .4s;
+    border-radius: 34px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  
+  input:checked + .slider {
+    background-color: var(--primary);
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background: var(--bg-color);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 
+      8px 8px 16px var(--shadow-dark), 
+      -8px -8px 16px var(--shadow-light);
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid var(--greyLight);
+  }
+  
+  th {
+    background-color: var(--primary);
+    color: white;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
+  }
+  
+  tr:nth-child(even) {
+    background-color: rgba(189, 195, 199, 0.1);
+  }
+  
+  .used-all {
+    background-color: var(--danger) !important;
+    color: white;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .search-bar {
+    flex: 1;
+    margin-right: 20px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: var(--bg-color);
+    box-shadow: 
+      inset 2px 2px 5px var(--shadow-dark), 
+      inset -2px -2px 5px var(--shadow-light);
+    font-size: 16px;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    margin: 0 5px;
+    padding: 8px 12px;
+    background-color: var(--greyLight);
+    color: var(--greyDark);
+  }
+  
+  .pagination button.active {
+    background-color: var(--danger);
+    color: white;
+  }
+  
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+  }
+  
+  .modal-content {
+    background-color: var(--bg-color);
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 
+      8px 8px 16px var(--shadow-dark), 
+      -8px -8px 16px var(--shadow-light);
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .close {
+    color: #000000;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .edit-btn, .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    padding: 5px;
+  }
+  
+  .edit-btn:hover, .delete-btn:hover {
+    opacity: 0.7;
+  }
+  
+  #calculosDetalhados {
+    display: none;
+    margin-top: 20px;
+  }
+  
+  #calculosConteudo {
+    margin: 0;
+  }
+
+  .autocomplete-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  border: 1px solid #ddd;
+  background-color: white;
+  z-index: 1;
+}
+
+.autocomplete-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.autocomplete-list li:hover {
+  background-color: #f1f1f1;
+}
+
+.remove-word {
+  float: right;
+  color: #aaa;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.remove-word:hover {
+  color: #000;
+}
+
+.reused-word {
+  background-color: #e8ffe6;
+}
+  </style>
+  </head>
+  <body>
+    <div id="loginForm">
+      <h2>Login</h2>
+      <input type="text" id="loginUsername" placeholder="Username">
+      <input type="password" id="loginPassword" placeholder="Password">
+      <button onclick="login()">Login</button>
+    </div>
+    <div class="container" id="appContainer" style="display:none;">
+      <h1 contenteditable="true">Registro de Etiquetas</h1>
+    
+    <div class="form-container">
+      <div class="input-group">
+        <div class="input-field">
+          <input type="text" id="codigoPeca" placeholder="Código da Peça" autocomplete="on">
+          <datalist id="codigoPecaList"></datalist>
+        </div>
+        <div class="input-field">
+          <input type="text" id="numeroLote" placeholder="Número do Lote" autocomplete="on">
+          <datalist id="numeroLoteList"></datalist>
+        </div>
+        <div class="input-field">
+          <input type="number" id="totalPecas" placeholder="Total de Peças" required autocomplete="on">
+        </div>
+        <div class="input-field">
+          <input type="number" id="pecasPorCaixa" placeholder="Peças por Caixa" required autocomplete="on">
+        </div>
+        <div class="input-field">
+          <input type="text" id="observacoes" placeholder="Observações" autocomplete="on">
+          <datalist id="observacoesList"></datalist>
+        </div>
+      </div>
+      <button id="calcular">Registrar</button>
+      <span id="resultado"></span>
+      <div>
+        <label class="switch">
+          <input type="checkbox" id="mostrarCalculos">
+          <span class="slider"></span>
+        </label>
+        <span>Mostrar cálculos detalhados</span>
+      </div>
+      <div id="calculosDetalhados">
+        <h3>Cálculos Detalhados:</h3>
+        <p id="calculosConteudo"></p>
+      </div>
+    </div>
+  
+    <div class="actions">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar registros...">
+      </div>
+      <button id="salvarPDF">Salvar PDF</button>
+      <button id="acoes">Ações</button>
+    </div>
+  
+    <div class="pagination" id="pagination"></div>
+  
+    <table id="registrosTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Data do Registro</th>
+          <th>Código da Peça</th>
+          <th>Número do Lote</th>
+          <th>Total de Peças</th>
+          <th>Peças por Caixa</th>
+          <th>Peças Extras</th>
+          <th>Etiquetas Necessárias</th>
+          <th>Etiquetas Usadas</th>
+          <th>Observação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  
+  <div id="calculosModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Cálculos Detalhados</h2>
+      <div id="calculosDetalhados"></div>
+    </div>
+  </div>
+  
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Editar Registro</h2>
+      <input type="hidden" id="editIndex">
+      <label for="editCodigoPeca">Código da Peça:</label>
+      <input type="text" id="editCodigoPeca" placeholder="Código da Peça">
+      <label for="editNumeroLote">Número do Lote:</label>
+      <input type="text" id="editNumeroLote" placeholder="Número do Lote">
+      <label for="editEtiquetasNecessarias">Etiquetas Necessárias:</label>
+      <input type="number" id="editEtiquetasNecessarias" placeholder="Etiquetas Necessárias" required min="0">
+      <label for="editPecasExtras">Peças Extras:</label>
+      <input type="number" id="editPecasExtras" placeholder="Peças Extras" required min="0">
+      <label for="editObservacoes">Observações:</label>
+      <input type="text" id="editObservacoes" placeholder="Observações">
+      <p id="editTotalPecas">Total de Peças: 0</p>
+      <p id="editEtiquetasNecessariasCalc"></p>
+      <button id="salvarEdicao">Salvar</button>
+    </div>
+  </div>
+  
+  <div id="acoesModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Ações</h2>      
+      <button id="apagarTodos">Apagar todos os registros</button>
+      <button id="sairAcoes">Sair</button>
+    </div>
+  </div>
+  
+  <div id="confirmarApagarModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirmar exclusão</h2>
+      <p>Tem certeza que deseja excluir todos os registros? Esta ação não pode ser desfeita.</p>
+      <input type="password" id="senhaAdmin" placeholder="Senha de administrador">
+      <button id="confirmarApagar">Confirmar</button>
+    </div>
+  </div>
+  
+  <div id="confirmarExclusaoModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirmar exclusão</h2>
+      <p>Tem certeza que deseja excluir este registro?</p>
+      <button id="confirmarExclusaoBtn">Apagar Registro</button>
+      <button id="cancelarExclusaoBtn">Sair</button>
+            
+    </div>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+      authDomain: "etiquetasuptec.firebaseapp.com",
+      projectId: "etiquetasuptec",
+      storageBucket: "etiquetasuptec.appspot.com",
+      messagingSenderId: "1020897973081",
+      appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+      measurementId: "G-6TS0PYEMRV"
+    };
+  
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    carregarRegistrosFirebase();
+    const auth = firebase.auth();
+
+    function login() {
+      const username = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+      
+      if (username === 'Medeiros' && password === 'Medeiros') {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+        carregarRegistrosFirebase();
+      } else {
+        alert('Usuário ou senha incorretos.');
+      }
+    }
+
+    window.onload = function() {
+      document.getElementById('loginForm').style.display = 'flex';
+      document.getElementById('appContainer').style.display = 'none';
+    }
+  
+    let registros = [];
+    let nextId = 1;
+    let paginaAtual = 1;
+    const itensPorPagina = 100;
+    let registroParaExcluir = null;
+    let wordCache = {};
+  const inputFields = ['codigoPeca', 'numeroLote', 'observacoes'];
+  
+
+  function loadWordsFromFirebase() {
+    inputFields.forEach(field => {
+      db.collection('words').doc(field).get().then(doc => {
+        if (doc.exists) {
+          wordCache[field] = doc.data().words;
+        } else {
+          wordCache[field] = [];
+        }
+      });
+    });
+  }
+
+  function saveWord(field, word) {
+    if (!wordCache[field].includes(word)) {
+      wordCache[field].push(word);
+      db.collection('words').doc(field).set({
+        words: firebase.firestore.FieldValue.arrayUnion(word)
+      }, { merge: true });
+    }
+  }
+
+  function removeWord(field, word) {
+    const index = wordCache[field].indexOf(word);
+    if (index > -1) {
+      wordCache[field].splice(index, 1);
+      db.collection('words').doc(field).update({
+        words: firebase.firestore.FieldValue.arrayRemove(word)
+      });
+    }
+  }
+
+  function getAutocompleteSuggestions(field, prefix) {
+    return wordCache[field].filter(word => word.toLowerCase().startsWith(prefix.toLowerCase()));
+  }
+
+  function updateAutocompleteList(input, suggestions) {
+    let list = input.nextElementSibling;
+    if (!list || !list.classList.contains('autocomplete-list')) {
+      list = document.createElement('ul');
+      list.className = 'autocomplete-list';
+      input.parentNode.insertBefore(list, input.nextSibling);
+    }
+    list.innerHTML = '';
+    suggestions.forEach(word => {
+      const item = document.createElement('li');
+      item.textContent = word;
+      item.addEventListener('click', () => {
+        input.value = word;
+        list.innerHTML = '';
+      });
+      const removeBtn = document.createElement('span');
+      removeBtn.textContent = '✕';
+      removeBtn.className = 'remove-word';
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removeWord(input.id, word);
+        list.removeChild(item);
+      });
+      item.appendChild(removeBtn);
+      list.appendChild(item);
+    });
+  }
+
+  function highlightReusedWord(input) {
+    if (wordCache[input.id].includes(input.value)) {
+      input.classList.add('reused-word');
+    } else {
+      input.classList.remove('reused-word');
+    }
+  }
+
+  function setupAutocomplete() {
+    inputFields.forEach(fieldId => {
+      const input = document.getElementById(fieldId);
+      input.addEventListener('input', () => {
+        const suggestions = getAutocompleteSuggestions(fieldId, input.value);
+        updateAutocompleteList(input, suggestions);
+        highlightReusedWord(input);
+      });
+      input.addEventListener('blur', () => {
+        if (input.value.trim() !== '') {
+          saveWord(fieldId, input.value.trim());
+        }
+      });
+    });
+  }
+
+    document.getElementById('calcular').addEventListener('click', calcularEtiquetas);
+    document.getElementById('searchInput').addEventListener('input', filtrarRegistros);
+    document.getElementById('salvarPDF').addEventListener('click', salvarPDF);
+    document.getElementById('acoes').addEventListener('click', mostrarAcoes);
+    document.getElementById('sairAcoes').addEventListener('click', fecharModal);
+    document.getElementById('apagarTodos').addEventListener('click', confirmarApagarTodos);
+    document.getElementById('confirmarApagar').addEventListener('click', apagarTodosRegistros);
+    
+    document.getElementById('mostrarCalculos').addEventListener('change', function() {
+      document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
+    });
+  
+    function calcularEtiquetas() {
+      const codigoPeca = document.getElementById('codigoPeca').value;
+      const numeroLote = document.getElementById('numeroLote').value;
+      const totalPecas = parseInt(document.getElementById('totalPecas').value);
+      const pecasPorCaixa = parseInt(document.getElementById('pecasPorCaixa').value);
+      const observacoes = document.getElementById('observacoes').value;
+  
+      if (!totalPecas || !pecasPorCaixa) {
+        alert('Por favor, preencha os campos obrigatórios.');
+        return;
+      }
+  
+      const etiquetasNecessarias = Math.ceil(totalPecas / pecasPorCaixa);
+      const etiquetasCompletas = Math.floor(totalPecas / pecasPorCaixa);
+      const pecasExtras = totalPecas % pecasPorCaixa;
+  
+      const resultado = `Total de etiquetas: ${etiquetasNecessarias} ${pecasExtras > 0 ? `(${etiquetasCompletas} completas + 1 extra com ${pecasExtras} peças)` : ''}`;
+      document.getElementById('resultado').textContent = resultado;
+  
+      const novoRegistro = {
+        id: nextId++,
+        data: new Date().toLocaleString(),
+        codigoPeca,
+        numeroLote,
+        totalPecas,
+        pecasPorCaixa,
+        etiquetasNecessarias,
+        pecasExtras,
+        etiquetasUsadas: 0,
+        observacoes
+      };
+  
+      registros.unshift(novoRegistro);
+      salvarRegistroFirebase(novoRegistro);
+      atualizarTabela();
+  
+      const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
+      if (mostrarCalculos) {
+        const calculosDetalhados = `
+          <p>Total de Peças: ${totalPecas}</p>
+          <p>Peças por Caixa: ${pecasPorCaixa}</p>
+          <p>Matemática:</p>
+          <p>${totalPecas} / ${pecasPorCaixa} = ${totalPecas / pecasPorCaixa}</p>
+          <p>${etiquetasCompletas} * ${pecasPorCaixa} = ${etiquetasCompletas * pecasPorCaixa}</p>
+          <p>${totalPecas} - ${etiquetasCompletas * pecasPorCaixa} = ${pecasExtras}</p>
+        `;
+        document.getElementById('calculosConteudo').innerHTML = calculosDetalhados;
+        document.getElementById('calculosDetalhados').style.display = 'block';
+      } else {
+        document.getElementById('calculosDetalhados').style.display = 'none';
+      }
+  
+      salvarLocalStorage();
+    }
+  
+    function salvarRegistroFirebase(registro) {
+    db.collection("registros").doc(String(registro.id)).set(registro)
+      .then(() => {
+        console.log("Registro salvo com ID: ", registro.id);
+      })
+      .catch((error) => {
+        console.error("Erro ao salvar registro: ", error);
+      });
+  }
+  
+    function atualizarRegistroFirebase(registro) {
+      db.collection("registros").where("id", "==", registro.id).get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.update(registro);
+          });
+        });
+    }
+  
+    function excluirRegistroFirebase(id) {
+      db.collection("registros").where("id", "==", id).get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+    }
+  
+    function carregarRegistrosFirebase() {
+    db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
+      registros = []; // Limpa os registros antes de carregar os novos
+      querySnapshot.forEach((doc) => {
+        const registro = doc.data();
+        registros.push(registro);
+      });
+  
+      nextId = registros.length > 0 ? Math.max(...registros.map(r => r.id)) + 1 : 1; // Define o próximo ID
+      atualizarTabela();
+    }, (error) => {
+      console.error("Erro ao carregar registros: ", error);
+    });
+  }
+  
+  
+    function atualizarTabela() {
+      const tbody = document.querySelector('#registrosTable tbody');
+      tbody.innerHTML = '';
+  
+      const inicio = (paginaAtual - 1) * itensPorPagina;
+      const fim = inicio + itensPorPagina;
+      const registrosPagina = registros.slice(inicio, fim);
+  
+      registrosPagina.forEach((registro, index) => {
+        const tr = document.createElement('tr');
+        if (registro.etiquetasUsadas === registro.etiquetasNecessarias) {
+          tr.classList.add('used-all');
+        }
+        const etiquetasCompletas = registro.etiquetasNecessarias - (registro.pecasExtras > 0 ? 1 : 0);
+        tr.innerHTML = `
+          <td>${registro.id}</td>
+          <td>${registro.data}</td>
+          <td>${registro.codigoPeca}</td>
+          <td>${registro.numeroLote}</td>
+          <td>${registro.totalPecas}</td>
+          <td>${registro.pecasPorCaixa}</td>
+          <td>${registro.pecasExtras}</td>
+          <td>${registro.etiquetasNecessarias}${registro.pecasExtras > 0 ? ` (${etiquetasCompletas} completas + 1 extra)` : ''}</td>
+          <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${index + inicio}, this)">${registro.etiquetasUsadas}</td>
+          <td>${registro.observacoes}</td>
+          <td>
+            <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
+           <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+  
+      atualizarPaginacao();
+    }
+  
+    function atualizarPaginacao() {
+      const totalPaginas = Math.ceil(registros.length / itensPorPagina);
+      const paginationContainer = document.getElementById('pagination');
+      paginationContainer.innerHTML = '';
+  
+      for (let i = 1; i <= totalPaginas; i++) {
+        const button = document.createElement('button');
+        button.textContent = i;
+        button.classList.toggle('active', i === paginaAtual);
+        button.addEventListener('click', () => {
+          paginaAtual = i;
+          atualizarTabela();
+        });
+        paginationContainer.appendChild(button);
+      }
+    }
+  
+    function filtrarRegistros() {
+      const termo = document.getElementById('searchInput').value.toLowerCase();
+      const registrosFiltrados = registros.filter(registro => 
+        Object.values(registro).some(valor => 
+          valor.toString().toLowerCase().includes(termo)
+        )
+      );
+      
+      const tbody = document.querySelector('#registrosTable tbody');
+      tbody.innerHTML = '';
+      
+      registrosFiltrados.forEach((registro, index) => {
+        const tr = document.createElement('tr');
+        if (registro.etiquetasUsadas === registro.etiquetasNecessarias) {
+          tr.classList.add('used-all');
+        }
+        const etiquetasCompletas = registro.etiquetasNecessarias - (registro.pecasExtras > 0 ? 1 : 0);
+        tr.innerHTML = `
+          <td>${registro.id}</td>
+          <td>${registro.data}</td>
+          <td>${registro.codigoPeca}</td>
+          <td>${registro.numeroLote}</td>
+          <td>${registro.totalPecas}</td>
+          <td>${registro.pecasPorCaixa}</td>
+          <td>${registro.pecasExtras}</td>
+          <td>${registro.etiquetasNecessarias}${registro.pecasExtras > 0 ? ` (${etiquetasCompletas} completas + 1 extra)` : ''}</td>
+          <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${registros.indexOf(registro)}, this)">${registro.etiquetasUsadas}</td>
+          <td>${registro.observacoes}</td>
+          <td>
+            <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
+             <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  
+    function salvarPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+  
+      doc.text("Relatório de Registros de Etiquetas", 14, 15);
+  
+      const columns = [
+        "ID", "Data", "Código", "Lote", "Total", "Por Caixa", 
+        "Peças Extras", "Etiquetas Necessárias", "Etiquetas Usadas", "Observações"
+      ];
+  
+      const data = registros.map(r => [
+        r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
+        r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
+      ]);
+  
+      doc.autoTable({
+        head: [columns],
+        body: data,
+        startY: 20,
+        theme: 'grid',
+        styles: { fontSize: 8, cellPadding: 1 },
+        columnStyles: { 8: { cellWidth: 30 } }
+      });
+  
+      doc.save("relatorio_etiquetas.pdf");
+    }
+  
+    function mostrarAcoes() {
+      document.getElementById('acoesModal').style.display = 'block';
+    }
+  
+    function confirmarApagarTodos() {
+      document.getElementById('acoesModal').style.display = 'none';
+      document.getElementById('confirmarApagarModal').style.display = 'block';
+    }
+  
+    function confirmarApagarTodos() {
+    document.getElementById('acoesModal').style.display = 'none';
+    document.getElementById('confirmarApagarModal').style.display = 'block';
+  }
+
+    function apagarTodosRegistros() {
+      const senha = document.getElementById('senhaAdmin').value;
+      if (senha === "Medeiros") {
+        registros = [];
+        nextId = 1;
+        atualizarTabela();
+        salvarLocalStorage();
+        db.collection("registros").get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
+        fecharModal();
+      } else {
+        alert("Senha incorreta.");
+      }
+    }
+
+    function confirmarExclusaoRegistro(id) {
+    registroParaExcluir = id;
+    document.getElementById('confirmarExclusaoModal').style.display = 'block';
+  }
+
+  function excluirRegistroConfirmado() {
+    if (registroParaExcluir !== null) {
+      const index = registros.findIndex(r => r.id === registroParaExcluir);
+      if (index !== -1) {
+        registros.splice(index, 1);
+        atualizarTabela();
+        salvarLocalStorage();
+        excluirRegistroFirebase(registroParaExcluir);
+      }
+      fecharModal();
+      registroParaExcluir = null;
+    }
+  }
+  
+    function fecharModal() {
+      document.getElementById('acoesModal').style.display = 'none';
+      document.getElementById('confirmarApagarModal').style.display = 'none';
+      document.getElementById('editModal').style.display = 'none';
+      document.getElementById('calculosModal').style.display = 'none';
+      document.getElementById('confirmarExclusaoModal').style.display = 'none';
+    }
+  
+    document.querySelectorAll('.close').forEach(closeBtn => {
+      closeBtn.addEventListener('click', fecharModal);
+    });
+  
+    document.getElementById('cancelarExclusaoBtn').addEventListener('click', fecharModal);
+    document.getElementById('confirmarExclusaoBtn').addEventListener('click', excluirRegistroConfirmado);
+    
+
+    document.getElementById('salvarEdicao').addEventListener('click', () => {
+      const index = document.getElementById('editIndex').value;
+      const etiquetasNecessarias = parseInt(document.getElementById('editEtiquetasNecessarias').value);
+      const pecasExtras = parseInt(document.getElementById('editPecasExtras').value);
+      const pecasPorCaixa = registros[index].pecasPorCaixa;
+      
+      if (isNaN(pecasExtras) || pecasExtras >= pecasPorCaixa) {
+        alert('Valor inválido para Peças Extras. Deve ser menor que Peças por Caixa.');
+        return;
+      }
+      
+      const totalPecas = etiquetasNecessarias * pecasPorCaixa + pecasExtras;
+      const etiquetasReais = etiquetasNecessarias + (pecasExtras > 0 ? 1 : 0);
+  
+      registros[index] = {
+        ...registros[index],
+        codigoPeca: document.getElementById('editCodigoPeca').value,
+        numeroLote: document.getElementById('editNumeroLote').value,
+        totalPecas: totalPecas,
+        etiquetasNecessarias: etiquetasReais,
+        pecasExtras: pecasExtras,
+        etiquetasUsadas: etiquetasReais,
+        observacoes: document.getElementById('editObservacoes').value
+      };
+      atualizarTabela();
+      salvarLocalStorage();
+      atualizarRegistroFirebase(registros[index]);
+      fecharModal();
+    });
+  
+    function salvarLocalStorage() {
+      localStorage.setItem('registrosEtiquetas', JSON.stringify(registros));
+    }
+  
+    function carregarLocalStorage() {
+      const savedRegistros = localStorage.getItem('registrosEtiquetas');
+      if (savedRegistros) {
+        registros = JSON.parse(savedRegistros);
+        nextId = Math.max(...registros.map(r => r.id)) + 1;
+      }
+    }
+  
+    function editarRegistro(id) {
+      const index = registros.findIndex(r => r.id === id);
+      if (index !== -1) {
+        const registro = registros[index];
+        document.getElementById('editIndex').value = index;
+        document.getElementById('editCodigoPeca').value = registro.codigoPeca;
+        document.getElementById('editNumeroLote').value = registro.numeroLote;
+        document.getElementById('editEtiquetasNecessarias').value = registro.etiquetasNecessarias;
+        document.getElementById('editPecasExtras').value = registro.pecasExtras;
+        document.getElementById('editObservacoes').value = registro.observacoes;
+        document.getElementById('editModal').style.display = 'block';
+        atualizarCalculosEdicao();
+      } else {
+        alert("ID de registro inválido.");
+      }
+    }
+  
+    function atualizarCalculosEdicao() {
+      const index = document.getElementById('editIndex').value;
+      const etiquetasNecessarias = parseInt(document.getElementById('editEtiquetasNecessarias').value) || 0;
+      const pecasExtras = parseInt(document.getElementById('editPecasExtras').value) || 0;
+      const pecasPorCaixa = registros[index].pecasPorCaixa;
+      
+      if (pecasExtras >= pecasPorCaixa) {
+        document.getElementById('editPecasExtras').value = pecasPorCaixa - 1;
+        return atualizarCalculosEdicao();
+      }
+      
+      const totalPecas = etiquetasNecessarias * pecasPorCaixa + pecasExtras;
+      const etiquetasReais = etiquetasNecessarias + (pecasExtras > 0 ? 1 : 0);
+      
+      document.getElementById('editTotalPecas').textContent = `Total de Peças: ${totalPecas}`;
+      document.getElementById('editEtiquetasNecessariasCalc').textContent = `Etiquetas Necessárias: ${etiquetasReais}${pecasExtras > 0 ? ` (${etiquetasNecessarias} completas + 1 extra)` : ''}`;
+    }
+  
+    document.getElementById('editEtiquetasNecessarias').addEventListener('input', atualizarCalculosEdicao);
+    document.getElementById('editPecasExtras').addEventListener('input', atualizarCalculosEdicao);
+  
+    function excluirRegistro(id) {
+      const index = registros.findIndex(r => r.id === id);
+      if (index !== -1) {
+        if (confirm(`Tem certeza que deseja excluir o registro ${id}?`)) {
+          registros.splice(index, 1);
+          atualizarTabela();
+          salvarLocalStorage();
+          excluirRegistroFirebase(id);
+        }
+      } else {
+        alert("ID de registro inválido.");
+      }
+    }
+  
+    function atualizarEtiquetasUsadas(index, element) {
+      let valor = parseInt(element.textContent);
+      const registro = registros[index];
+      
+      if (isNaN(valor) || valor < 0) {
+        valor = 0;
+      } else if (valor > registro.etiquetasNecessarias) {
+        valor = registro.etiquetasNecessarias;
+      }
+      
+      registro.etiquetasUsadas = valor;
+      element.textContent = valor;
+      
+      if (valor === registro.etiquetasNecessarias) {
+        element.closest('tr').classList.add('used-all');
+      } else {
+        element.closest('tr').classList.remove('used-all');
+      }
+      
+      salvarLocalStorage();
+      atualizarRegistroFirebase(registro);
+    }
+  
+    carregarLocalStorage();
+    carregarRegistrosFirebase();
+    atualizarTabela();
+  
+    document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
+      input.setAttribute('autocomplete', 'on');
+    });
+  
+    function setupAutocomplete() {
+      const inputs = ['codigoPeca', 'numeroLote', 'observacoes'];
+      inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        const datalist = document.createElement('datalist');
+        datalist.id = `${inputId}List`;
+        input.setAttribute('list', datalist.id);
+        document.body.appendChild(datalist);
+  
+        input.addEventListener('input', () => {
+          updateAutocompleteOptions(inputId, input.value);
+        });
+      });
+    }
+  
+    function updateAutocompleteOptions(inputId, value) {
+      const datalist = document.getElementById(`${inputId}List`);
+      datalist.innerHTML = '';
+      const options = new Set(registros.map(r => r[inputId]).filter(v => v && v.toLowerCase().includes(value.toLowerCase())));
+      options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        datalist.appendChild(optionElement);
+      });
+    }
+  
+    setupAutocomplete();
+  </script>
+  </body></html>
