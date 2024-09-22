@@ -936,29 +936,75 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
   
-      doc.text("Relatório de Registros de Etiquetas", 14, 15);
+// Título - Fundo azul escuro e texto branco
+doc.setFillColor(0, 51, 153); // Azul escuro
+  doc.rect(10, 10, 190, 10, 'F'); // Fundo do título
+  doc.setTextColor(255, 255, 255); // Texto branco
+  doc.setFontSize(14);
   
-      const columns = [
-        "ID", "Data", "Código", "Lote", "Total", "Por Caixa", 
-        "Peças Extras", "Etiquetas Necessárias", "Etiquetas Usadas", "Observações"
-      ];
-  
-      const data = registros.map(r => [
-        r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
-        r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
-      ]);
-  
-      doc.autoTable({
-        head: [columns],
-        body: data,
-        startY: 20,
-        theme: 'grid',
-        styles: { fontSize: 8, cellPadding: 1 },
-        columnStyles: { 8: { cellWidth: 30 } }
-      });
-  
-      doc.save("relatorio_etiquetas.pdf");
+  // Texto do título
+  doc.text("Relatório de registros de etiquetas", 14, 17);
+
+  // Adiciona a data do documento no canto superior direito
+  const dataAtual = new Date().toLocaleDateString();
+  doc.text(`criado em: ${dataAtual}`, 130, 17); // Alinha à direita com o texto "Relatório criado em:"
+
+  // Resetando cores para a tabela
+  doc.setTextColor(0, 0, 0); // Texto preto para o conteúdo da tabela
+
+  const columns = [
+    "ID", "Data", "Código", "Lote", "Total de\nPeças", "Peças por\nCaixa",
+    "Peças\nExtras", "Etiquetas\nNecessárias", "Etiquetas\nUsadas", "Observações"
+  ];
+
+  const data = registros.map(r => [
+    r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
+    r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
+  ]);
+
+  // Configurações da tabela
+  doc.autoTable({
+    head: [columns],
+    body: data,
+    startY: 30, // Abaixo do título
+    theme: 'grid',
+    styles: {
+      fontSize: 7, // Diminuindo o tamanho da fonte
+      cellPadding: 2, // Reduzindo o espaçamento entre as células
+      minCellHeight: 8, // Altura mínima das células
+      textColor: [0, 0, 0], // Texto preto
+      valign: 'middle', // Alinhamento vertical no meio
+      halign: 'center' // Alinhamento à esquerda
+    },
+    headStyles: {
+      fillColor: [0, 0, 128], // Azul escuro no cabeçalho
+      textColor: [255, 255, 255], // Texto branco no cabeçalho
+      fontSize: 9, // Tamanho da fonte do cabeçalho
+      halign: 'center' // Texto centralizado nos títulos das colunas
+    },
+    alternateRowStyles: {
+          fillColor: [224, 247, 250]
+        },
+    columnStyles: {
+      0: { cellWidth: 'auto' }, 
+      1: { cellWidth: 'auto' },
+      4: { cellWidth: 'auto' }, // "Total de Peças"
+      5: { cellWidth: 'auto' }, // "Peças por Caixa"
+      6: { cellWidth: 'auto' }, // "Peças Extras"
+      7: { cellWidth: 'auto' }, // "Etiquetas Necessárias"
+      8: { cellWidth: 'auto' }  // "Etiquetas Usadas"
+    },
+    bodyStyles: function (data, rowIndex) {
+      // Alternar fundo das linhas
+      return {
+        fillColor: rowIndex % 2 === 0 ? [240, 240, 240] : [173, 216, 230] // Alternância de fundo
+      };
     }
+  });
+
+  // Salvando o documento
+  doc.save("relatorio_etiquetas.pdf");
+}
   
     function mostrarAcoes() {
       document.getElementById('acoesModal').style.display = 'block';
