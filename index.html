@@ -778,6 +778,12 @@
       registros.unshift(novoRegistro);
       salvarRegistroFirebase(novoRegistro);
       atualizarTabela();
+
+      newRegistrosCount++;
+    if (newRegistrosCount === 100) {
+      alert("Você criou 100 novos registros. Por favor, salve-os em PDF.");
+      newRegistrosCount = 0;
+    }
   
       const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
       if (mostrarCalculos) {
