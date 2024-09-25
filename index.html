@@ -641,6 +641,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
@@ -784,8 +785,6 @@
       document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
     });
   
-
-  
         // Exemplo de funcionalidade de contagem de usuários (adapte com Firebase)
         const connectedUsersRef = firebase.database().ref('connectedUsers');
         const connectedRef = firebase.database().ref('.info/connected');
@@ -803,8 +802,6 @@
             document.getElementById('connectedUsersCount').textContent = connectedUsers;
         });
     
-
-
     function calcularEtiquetas() {
       const codigoPeca = document.getElementById('codigoPeca').value;
       const numeroLote = document.getElementById('numeroLote').value;
