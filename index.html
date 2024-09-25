@@ -467,21 +467,37 @@
 .reused-word {
   background-color: #e8ffe6;
 }
+
+
+.counter {
+    background-color: #5b4ceb; /* Cor do botão */
+    color: white; /* Cor do texto */
+    padding: 2px 5px; /* Reduzido ainda mais */
+    border-radius: 10px; /* Bordas suaves */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2), 
+                -2px -2px 4px rgba(255, 255, 255, 0.5);
+    font-size: 10px; /* Tamanho da fonte reduzido */
+    text-align: center;
+    transition: box-shadow 0.3s ease; /* Transição suave ao passar o mouse */
+    display: inline-block; /* Permite que o contador se ajuste ao texto */
+}
+
+.counter:hover {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3), 
+                -2px -2px 4px rgba(255, 255, 255, 0.7);
+    cursor: pointer; /* Altera o cursor para indicar que é interativo */
+}
+
   </style>
   </head>
   <!-- Controle de pessoas online -->
-<!-- Contador de Visitantes -->
-<!-- Controle de Pessoas Online -->
-<center>
-  <script type="text/javascript" src="https://www.supercounters.com/ssl/online_i.js"></script>
-  <script type="text/javascript">sc_online_i(1699770, "ffffff", "5b4ceb");</script>
-  <br>
-  <noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
-</center>
-<!-- FIM: Controle de Pessoas Online -->
 
-<!-- FIM: Contador de Visitantes -->
 
+  <div class="counter-container">
+    <span class="counter"><span id="connectedUsersCount">0</span> ONLINE</span>
+</div>
+
+  
 <!-- END: Controle de pessoas online -->
   <body>
     <div id="loginForm">
@@ -768,6 +784,27 @@
       document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
     });
   
+
+  
+        // Exemplo de funcionalidade de contagem de usuários (adapte com Firebase)
+        const connectedUsersRef = firebase.database().ref('connectedUsers');
+        const connectedRef = firebase.database().ref('.info/connected');
+
+        connectedRef.on('value', (snap) => {
+            if (snap.val() === true) {
+                const con = connectedUsersRef.push();
+                con.onDisconnect().remove();
+                con.set(true);
+            }
+        });
+
+        connectedUsersRef.on('value', (snap) => {
+            const connectedUsers = snap.numChildren();
+            document.getElementById('connectedUsersCount').textContent = connectedUsers;
+        });
+    
+
+
     function calcularEtiquetas() {
       const codigoPeca = document.getElementById('codigoPeca').value;
       const numeroLote = document.getElementById('numeroLote').value;
