@@ -157,6 +157,14 @@
   #salvarPDF:hover {
     background-color: #5b4ceb;
   }
+
+  #salvarXLSX {
+  background-color: var(--primary);
+}
+
+#salvarXLSX:hover {
+  background-color: #5b4ceb;
+}
   
   #salvarEdicao {
     background-color: var(--primary);
@@ -461,9 +469,13 @@
 }
   </style>
   </head>
+  <!-- Controle de pessoas online -->
+<center><script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script><script type="text/javascript">sc_online_i(1699770,"ffffff","5b4ceb");</script><br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+</center>
+<!-- END: Controle de pessoas online -->
   <body>
     <div id="loginForm">
-      <h2>Login</h2>
+      <h2></h2>
       <input type="text" id="loginUsername" placeholder="Username">
       <input type="password" id="loginPassword" placeholder="Password">
       <button onclick="login()">Login</button>
@@ -512,6 +524,7 @@
         <input type="text" id="searchInput" placeholder="Buscar registros...">
       </div>
       <button id="salvarPDF">Salvar PDF</button>
+      <button id="salvarXLSX">Salvar XLSX</button>
       <button id="acoes">Ações</button>
     </div>
   
@@ -598,6 +611,7 @@
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -734,6 +748,7 @@
     document.getElementById('calcular').addEventListener('click', calcularEtiquetas);
     document.getElementById('searchInput').addEventListener('input', filtrarRegistros);
     document.getElementById('salvarPDF').addEventListener('click', salvarPDF);
+    document.getElementById('salvarXLSX').addEventListener('click', salvarXLSX);
     document.getElementById('acoes').addEventListener('click', mostrarAcoes);
     document.getElementById('sairAcoes').addEventListener('click', fecharModal);
     document.getElementById('apagarTodos').addEventListener('click', confirmarApagarTodos);
@@ -781,7 +796,7 @@
 
       newRegistrosCount++;
     if (newRegistrosCount === 100) {
-      alert("Você criou 100 novos registros. Por favor, salve-os em PDF.");
+      alert("Você criou 100 novos registros. Por favor, é recomendado salvar e limpar o App.");
       newRegistrosCount = 0;
     }
   
@@ -1012,6 +1027,74 @@ doc.setFillColor(0, 51, 153); // Azul escuro
   doc.save("relatorio_etiquetas.pdf");
 }
   
+
+function salvarXLSX() {
+    // Cria uma nova pasta de trabalho (workbook) e planilha (worksheet)
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet([]);
+
+    // Define o título do relatório e a data
+    const title = "Relatório de registros de etiquetas";
+    const date = new Date().toLocaleDateString('pt-BR');
+    XLSX.utils.sheet_add_aoa(ws, [[`${title} criado em: ${date}`]], { origin: 'A1' });
+
+    // Cabeçalhos da planilha
+    const headers = [
+      "ID", "Data", "Código", "Lote", "Total de Peças", "Peças por Caixa",
+      "Peças Extras", "Etiquetas Necessárias", "Etiquetas Usadas", "Observações"
+    ];
+    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+
+    // Adiciona os dados dos registros
+    const data = registros.map(r => [
+      r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
+      r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
+    ]);
+    XLSX.utils.sheet_add_aoa(ws, data, { origin: 'A3' });
+
+    // Definir a largura das colunas
+    const colWidths = [10, 20, 15, 15, 15, 15, 15, 20, 15, 30];
+    ws['!cols'] = colWidths.map(w => ({ wch: w }));
+
+    // Estilo do cabeçalho
+    const headerStyle = {
+      fill: { fgColor: { rgb: "000080" } }, // Cor de fundo azul escuro
+      font: { color: { rgb: "FFFFFF" }, bold: true }, // Texto branco e negrito
+      alignment: { horizontal: "center", vertical: "center" } // Alinhamento centralizado
+    };
+
+    // Estilo para as linhas pares e ímpares
+    const evenRowStyle = { fill: { fgColor: { rgb: "E6E6E6" } }, alignment: { horizontal: "center" } }; // Cinza claro para linhas pares
+    const oddRowStyle = { fill: { fgColor: { rgb: "FFFFFF" } }, alignment: { horizontal: "center" } }; // Branco para linhas ímpares
+
+    // Centralizar o título
+    const titleCell = XLSX.utils.encode_cell({ r: 0, c: 0 });
+    if (!ws[titleCell]) ws[titleCell] = {};
+    ws[titleCell].s = { alignment: { horizontal: "center" } };
+
+    // Aplicar estilo ao cabeçalho
+    for (let i = 0; i < headers.length; i++) {
+      const cell = XLSX.utils.encode_cell({ r: 1, c: i });
+      if (!ws[cell]) ws[cell] = {};
+      ws[cell].s = headerStyle;
+    }
+
+    // Aplicar estilo às linhas de dados (alternando cores e centralizando)
+    for (let i = 0; i < data.length; i++) {
+      const rowStyle = i % 2 === 0 ? evenRowStyle : oddRowStyle; // Alterna a cor das linhas
+      for (let j = 0; j < headers.length; j++) {
+        const cell = XLSX.utils.encode_cell({ r: i + 2, c: j });
+        if (!ws[cell]) ws[cell] = {};
+        ws[cell].s = rowStyle;
+      }
+    }
+
+    // Adicionar a planilha ao livro e salvar o arquivo
+    XLSX.utils.book_append_sheet(wb, ws, "Registros");
+    XLSX.writeFile(wb, "relatorio_etiquetas.xlsx");
+}
+
+
     function mostrarAcoes() {
       document.getElementById('acoesModal').style.display = 'block';
     }
