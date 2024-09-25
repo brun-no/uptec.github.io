@@ -470,8 +470,25 @@
   </style>
   </head>
   <!-- Controle de pessoas online -->
-<center><script type="text/javascript" src="//widget.supercounters.com/ssl/online_i.js"></script><script type="text/javascript">sc_online_i(1699770,"ffffff","5b4ceb");</script><br><noscript><a href="https://www.supercounters.com/">free online counter</a></noscript>
+<!-- Contador de Visitantes -->
+<center>
+  <div id="visitor-count" style="font-size: 24px; color: #5b4ceb;">Visitantes: 0</div>
+  <script>
+    // Função para atualizar o contador de visitantes
+    (function() {
+      let visitorCount = localStorage.getItem('visitorCount');
+      if (!visitorCount) {
+        visitorCount = 1; // Se for a primeira visita
+      } else {
+        visitorCount = parseInt(visitorCount) + 1; // Incrementa a contagem
+      }
+      localStorage.setItem('visitorCount', visitorCount); // Salva no localStorage
+      document.getElementById('visitor-count').textContent = 'Visitantes: ' + visitorCount; // Atualiza o texto
+    })();
+  </script>
 </center>
+<!-- FIM: Contador de Visitantes -->
+
 <!-- END: Controle de pessoas online -->
   <body>
     <div id="loginForm">
