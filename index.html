@@ -1,6 +1,7 @@
 <html><head><base href="https://www.exemplo.com/calculadora-etiquetas/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <title contenteditable="true">Calculadora de Registro de Etiquetas</title>
   <style>
   :root {
@@ -488,6 +489,49 @@
     cursor: pointer; /* Altera o cursor para indicar que é interativo */
 }
 
+#scrollToTopBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px; /* Ajuste conforme necessário */
+  height: 50px; /* Ajuste conforme necessário */
+  border-radius: 50%;
+  background: var(--bg-color);
+  border: none;
+  box-shadow: 
+    5px 5px 10px var(--shadow-dark), 
+    -5px -5px 10px var(--shadow-light);
+  color: var(--primary);
+  font-size: 24px; /* Tamanho do ícone */
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+
+  /* Estilos para centralizar o conteúdo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#scrollToTopBtn:hover {
+  background: linear-gradient(145deg, var(--shadow-light), var(--shadow-dark));
+  color: var(--danger);
+}
+
+#scrollToTopBtn:active {
+  box-shadow: 
+    inset 5px 5px 10px var(--shadow-dark), 
+    inset -5px -5px 10px var(--shadow-light);
+}
+
+#scrollToTopBtn.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
   </style>
   </head>
 <!-- Controle de pessoas online -->
@@ -633,7 +677,9 @@
             
     </div>
   </div>
-  
+
+  <button id="scrollToTopBtn" title="SUBIR"><i class="fas fa-arrow-alt-circle-up"></i></button>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -801,6 +847,24 @@
             document.getElementById('connectedUsersCount').textContent = connectedUsers;
         });
     
+
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.classList.add("visible");
+    } else {
+      scrollToTopBtn.classList.remove("visible");
+    }
+  });
+
+  scrollToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
+  
     function calcularEtiquetas() {
       const codigoPeca = document.getElementById('codigoPeca').value;
       const numeroLote = document.getElementById('numeroLote').value;
