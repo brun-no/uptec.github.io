@@ -798,14 +798,14 @@
     <!-- Titulo editavel do inicio da pagina -->
     <h1 contenteditable="true">Registro de Etiquetas</h1>
     <!-- Tela de login -->
-   
+    <!--< 
     <div id="loginForm">
       <h2></h2>
       <input type="text" id="loginUsername" placeholder="Username">
       <input type="password" id="loginPassword" placeholder="Password">
       <button onclick="login()">Login</button>
     </div>
-    
+      -->
     <!-- Tela de login -->
       
     <div class="form-container">
@@ -2366,7 +2366,20 @@ document.getElementById('confirmarExclusaoBtn').addEventListener('click', () => 
     }
   }
 
-  function atualizarRegistroToupuFirebase(registro) {
+  function carregarRegistrosToupu() {
+  const registrosToupu = db.collection("registrosToupu").orderBy("data", "desc").limit(100);
+  registrosToupu.get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      const registro = doc.data();
+      // Adicione o registro à tabela
+    });
+  });
+}
+
+let registroParaAtualizar = null;
+
+function atualizarRegistroToupuFirebase(registro) {
+    registroParaAtualizar = registro;
   db.collection("registrosToupu").doc(registro.id).update(registro)
     .then(() => {
       console.log("Registro Toupu atualizado com sucesso!");
@@ -2376,20 +2389,18 @@ document.getElementById('confirmarExclusaoBtn').addEventListener('click', () => 
     });
 }
 
-  db.collection("registrosToupu").where("id", "==", registro.id).get()
-    .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        alert("Registro não encontrado.");
-        return;
-      }
-      querySnapshot.forEach((doc) => {
-        doc.ref.update(registro);
-      });
-    })
-    .catch((error) => {
-      console.error("Erro ao atualizar o registro:", error);
-    });
 
+db.collection("registrosToupu").onSnapshot((querySnapshot) => {
+  registrosToupu = [];
+  querySnapshot.forEach((doc) => {
+    const registro = doc.data();
+    registrosToupu.push(registro);
+  });
+  // Agora você pode chamar a função atualizarRegistroToupuFirebase
+  if (registroParaAtualizar) {
+    atualizarRegistroToupuFirebase(registroParaAtualizar);
+  }
+});
 
 
 function excluirRegistroToupuFirebase(id) {
@@ -2412,16 +2423,6 @@ function limparRegistrosAntigos() {
       if (registro.data < new Date().getTime() - 30 * 24 * 60 * 60 * 1000) {
         doc.ref.delete();
       }
-    });
-  });
-}
-
-function carregarRegistrosToupu() {
-  const registrosToupu = db.collection("registrosToupu").orderBy("data", "desc").limit(100);
-  registrosToupu.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const registro = doc.data();
-      // Adicione o registro à tabela
     });
   });
 }
