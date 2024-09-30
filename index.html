@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
+  <style>
     :root {
       --bg-color: #e0e5ec;
       --shadow-light: #ffffff;
@@ -798,13 +798,15 @@
     <!-- Titulo editavel do inicio da pagina -->
     <h1 contenteditable="true">Registro de Etiquetas</h1>
     <!-- Tela de login -->
-       <div id="loginForm">
+   
+    <div id="loginForm">
       <h2></h2>
       <input type="text" id="loginUsername" placeholder="Username">
       <input type="password" id="loginPassword" placeholder="Password">
       <button onclick="login()">Login</button>
     </div>
-      <!-- Tela de login -->
+    
+    <!-- Tela de login -->
       
     <div class="form-container">
       <div class="input-group normal-inputs">
@@ -1450,7 +1452,9 @@ function calcularEtiquetasToupu() {
   function salvarRegistroToupuFirebase(registro) {
   db.collection("registrosToupu").add(registro)
     .then((docRef) => {
-      console.log("Registro Toupu salvo com ID: ", docRef.id);
+      const id = docRef.id;
+      db.collection("registrosToupu").doc(id).set(registro);
+      console.log("Registro Toupu salvo com ID: ", id);
     })
     .catch((error) => {
       console.error("Erro ao salvar registro Toupu: ", error);
@@ -2363,10 +2367,14 @@ document.getElementById('confirmarExclusaoBtn').addEventListener('click', () => 
   }
 
   function atualizarRegistroToupuFirebase(registro) {
-  if (!registro.id.startsWith('T')) {
-    alert("ID de registro inválido.");
-    return;
-  }
+  db.collection("registrosToupu").doc(registro.id).update(registro)
+    .then(() => {
+      console.log("Registro Toupu atualizado com sucesso!");
+    })
+    .catch((error) => {
+      console.error("Erro ao atualizar o registro Toupu: ", error);
+    });
+}
 
   db.collection("registrosToupu").where("id", "==", registro.id).get()
     .then((querySnapshot) => {
@@ -2381,15 +2389,16 @@ document.getElementById('confirmarExclusaoBtn').addEventListener('click', () => 
     .catch((error) => {
       console.error("Erro ao atualizar o registro:", error);
     });
-}
+
 
 
 function excluirRegistroToupuFirebase(id) {
-  db.collection("registrosToupu").where("id", "==", id).get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        doc.ref.delete();
-      });
+  db.collection("registrosToupu").doc(id).delete()
+    .then(() => {
+      console.log("Registro Toupu excluído com sucesso!");
+    })
+    .catch((error) => {
+      console.error("Erro ao excluir o registro Toupu: ", error);
     });
 }
 
