@@ -1,11 +1,12 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
-<base href="https://www.exemplo.com/calculadora-etiquetas/">
+  <base href="https://www.exemplo.com/calculadora-etiquetas/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
-    :root {
+  :root {
       --bg-color: #e0e5ec;
       --shadow-light: #ffffff;
       --shadow-dark: #a3b1c6;
@@ -163,28 +164,48 @@
         inset 4px 4px 8px var(--shadow-dark), 
         inset -4px -4px 8px var(--shadow-light);
     }
-    
-    #calcular, #calcularToupu {
-      background-color: var(--success);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s;
-      box-shadow: 0 4px 8px rgb(255, 255, 255);
-      min-width: 150px;
-      height: 40px;
-    }
 
-    #calcular:hover, #calcularToupu:hover {
-      background-color: #3d9241;
-      box-shadow: 
-        inset 2px 2px 5px var(--shadow-dark), 
-        inset -2px -2px 5px var(--shadow-light);
-      color: #f1f1f1;
-    }
+    #calcular, #calcularToupu {
+  background: #28a745; /* Cor verde */
+  border-radius: 12px; /* Bordas arredondadas */
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2), 
+              -5px -5px 15px rgba(255, 255, 255, 0.7); /* Efeito de sombra */
+  color: white; /* Cor do texto */
+  padding: 10px 20px; /* Padding para o botão */
+  border: none; /* Sem borda */
+  font-size: 16px; /* Tamanho da fonte */
+  cursor: pointer; /* Cursor de ponteiro */
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s; /* Transições suaves */
+  min-width: 150px; /* Largura mínima */
+  height: 40px; /* Altura fixa */
+  position: relative; /* Para posicionamento do pseudo-elemento */
+}
+
+#calcular:hover, #calcularToupu:hover {
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2), 
+              -3px -3px 10px rgba(255, 255, 255, 0.5); /* Efeito ao passar o mouse */
+  background: #218838; /* Escurece o fundo ao passar o mouse */
+}
+
+#calcular:active, #calcularToupu:active {
+  transform: translateY(4px); /* Aprofundar o botão quando clicado */
+  box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.3), 
+              inset -4px -4px 8px rgba(255, 255, 255, 0.3); /* Efeito ao clicar */
+}
+
+/* Animação de brilho suave */
+@keyframes anime {
+  0% { background: #28a745; }
+  50% { background: #3bbf76; }
+  100% { background: #28a745; }
+}
+
+/* Mantém a animação em loop */
+#calcular, #calcularToupu {
+  animation: anime 5s linear infinite;
+}
+
+
 
     #salvarPDF, #salvarXLSX {
       background-color: var(--primary);
@@ -511,36 +532,36 @@
 
     #calculosToupuDetalhados {
     display: none;
-}
+    }
 
-#calculosToupuConteudo {
-  margin: 0;
-}
+    #calculosToupuConteudo {
+     margin: 0;
+    }
 
-  #scrollToTopBtn {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--bg-color);
-    border: none;
-    box-shadow: 
-      5px 5px 10px var(--shadow-dark), 
-      -5px -5px 10px var(--shadow-light);
-    color: var(--primary);
-    font-size: 24px;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--bg-color);
+      border: none;
+      box-shadow: 
+        5px 5px 10px var(--shadow-dark), 
+        -5px -5px 10px var(--shadow-light);
+      color: var(--primary);
+      font-size: 24px;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
   #scrollToTopBtn:hover {
     background: linear-gradient(145deg, var(--shadow-light), var(--shadow-dark));
@@ -764,51 +785,141 @@
 #confirmarApagarTodosModal #cancelarApagarTodosBtn:hover {
   background-color: #000000;
 }
+
+#confirmarExclusaoToupuModal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4);
+}
+
+#confirmarExclusaoToupuModal .modal-content {
+  background-color: var(--bg-color);
+  margin: 15% auto;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 
+    8px 8px 16px var(--shadow-dark), 
+    -8px -8px 16px var(--shadow-light);
+  width: 80%;
+  max-width: 500px;
+}
+
+#confirmarExclusaoToupuModal .close {
+  color: #000000;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#confirmarExclusaoToupuModal .close:hover,
+#confirmarExclusaoToupuModal .close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#confirmarExclusaoToupuModal h2 {
+  text-align: center;
+  color: var(--primary);
+  margin-bottom: 30px;
+  cursor: text;
+  opacity: 0.7;
+  transition: opacity 0.3s;
+}
+
+#confirmarExclusaoToupuModal h2:hover {
+  opacity: 1;
+}
+
+#confirmarExclusaoToupuModal p {
+  margin-bottom: 20px;
+}
+
+#confirmarExclusaoToupuModal button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 
+    4px 4px 8px var(--shadow-dark), 
+    -4px -4px 8px var(--shadow-light);
+}
+
+#confirmarExclusaoToupuModal button:hover {
+  box-shadow: 
+    inset 4px 4px 8px var(--shadow-dark), 
+    inset -4px -4px 8px var(--shadow-light);
+}
+
+#confirmarExclusaoToupuModal #confirmarExclusaoToupuBtn {
+  background-color: var(--danger);
+  color: white;
+}
+
+#confirmarExclusaoToupuModal #confirmarExclusaoToupuBtn:hover {
+  background-color: #ff5252;
+}
+
+#confirmarExclusaoToupuModal #cancelarExclusaoToupuBtn {
+  background-color: #575151;
+  color: white;
+}
+
+#confirmarExclusaoToupuModal #cancelarExclusaoToupuBtn:hover {
+  background-color: #000000;
+}
   
-  </style>
-  </head>
+</style>
+</head>
+<body>
+  <!-- Tela de login -->
+  <div id="loginForm">
+    <h2></h2>
+    <input type="text" id="loginUsername" placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
+  <div class="container" id="appContainer" style="display:none;">
+  <!-- Fim da tela de login -->
+  <h1 contenteditable="true">Registro de Etiquetas</h1>
+<!-- INICIO: Controle de pessoas online -->
+<div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
+  <span class="counter">
+    <span id="connectedUsersCount">0</span> ONLINE
+  </span>
+</div>
+<script>
+  let lastScrollTop = 0;
+  const counter = document.getElementById('counter');
 
-  <body>
-    <!-- INICIO: Controle de pessoas online -->
-    <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
-      <span class="counter">
-        <span id="connectedUsersCount">0</span> ONLINE
-      </span>
-    </div>
-    <script>
-      let lastScrollTop = 0;
-      const counter = document.getElementById('counter');
-    
-      window.addEventListener('scroll', function() {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    
-        if (scrollTop > lastScrollTop) {
-          // Scroll para baixo
-          counter.style.display = 'none';
-        } else if (scrollTop === 0) {
-          // Scroll no topo
-          counter.style.display = 'block';
-        }
-    
-        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para evitar números negativos
-      });
-    </script>
-    <!-- END: Controle de pessoas online -->
+  window.addEventListener('scroll', function() {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
-    <!-- Titulo editavel do inicio da pagina -->
-    <h1 contenteditable="true">Registro de Etiquetas</h1>
-    <!-- Tela de login -->
-    <!--< 
-    <div id="loginForm">
-      <h2></h2>
-      <input type="text" id="loginUsername" placeholder="Username">
-      <input type="password" id="loginPassword" placeholder="Password">
-      <button onclick="login()">Login</button>
-    </div>
-      -->
-    <!-- Tela de login -->
-      
-    <div class="form-container">
+    if (scrollTop > lastScrollTop) {
+      // Scroll para baixo
+      counter.style.display = 'none';
+    } else if (scrollTop === 0) {
+      // Scroll no topo
+      counter.style.display = 'block';
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Para evitar números negativos
+  });
+</script>
+<!-- END: Controle de pessoas online -->
+
+  <!-- Container da página -->
+  <div class="form-container">
+    <!-- Grupo de inputs para registros normais -->
       <div class="input-group normal-inputs">
         <div class="input-field">
           <input type="text" id="codigoPeca" list="codigoPecaList" placeholder="Código da Peça" autocomplete="on">
@@ -830,304 +941,277 @@
         </div>
       </div>
 
-      <div class="input-group toupu-inputs" style="display: none;">
-        <div class="input-field">
-          <select id="codigoPecaToupu">
-            <option value="">Selecione o código Toupu</option>
-            <option value="2095270004-1">2095270004-1</option>
-            <option value="2095270003-1">2095270003-1</option>
-            <option value="20028524-1">20028524-1</option>
-            <option value="10018462-1">10018462-1</option>
-            <option value="2095490002-1">2095490002-1</option>
-            <option value="2095080003-1">2095080003-1</option>
-            <option value="2095160004-1">2095160004-1</option>
-            <option value="10018996-1">10018996-1</option>
-            <option value="2095430002-1">2095430002-1</option>
-            <option value="2095080004-1">2095080004-1</option>
-            <option value="2095160007-1">2095160007-1</option>
- </select>
-        </div>
-        <div class="input-field">
-          <input type="text" id="numeroLoteToupu" list="numeroLoteList" placeholder="Número do Lote" autocomplete="on">
-          <datalist id="numeroLoteList"></datalist>
-        </div>
-        <div class="input-field">
-          <input type="number" id="totalPecasToupu" placeholder="Total de Peças" required autocomplete="on">
-        </div>
-        <div class="input-field">
-          <input type="text" id="observacoesToupu" list="observacoesList" placeholder="Observações" autocomplete="on">
-          <datalist id="observacoesList"></datalist>
-        </div>
+    <!-- Grupo de inputs para registros Toupu -->
+    <div class="input-group toupu-inputs" style="display: none;">
+      <div class="input-field">
+        <select id="codigoPecaToupu">
+          <option value="">Selecione o código Toupu</option>
+          <option value="2095270004-1">2095270004-1</option>
+          <option value="2095270003-1">2095270003-1</option>
+          <option value="20028524-1">20028524-1</option>
+          <option value="10018462-1">10018462-1</option>
+          <option value="2095490002-1">2095490002-1</option>
+          <option value="2095080003-1">2095080003-1</option>
+          <option value="2095160004-1">2095160004-1</option>
+          <option value="10018996-1">10018996-1</option>
+          <option value="2095430002-1">2095430002-1</option>
+          <option value="2095080004-1">2095080004-1</option>
+          <option value="2095160007-1">2095160007-1</option>
+        </select>
       </div>
-       
-      <div id="calculosDetalhados" style="display: none;">
-        
-        <p id="calculosConteudo"></p>
+      <div class="input-field">
+ <input type="text" id="numeroLoteToupu" list="numeroLoteList" placeholder="Número do Lote" autocomplete="on">
+        <datalist id="numeroLoteList"></datalist>
       </div>
-      
-      <div id="calculosToupuDetalhados" style="display: none;">
-        
-        <p id="calculosToupuConteudo"></p>
+      <div class="input-field">
+        <input type="number" id="totalPecasToupu" placeholder="Total de Peças" required autocomplete="on">
       </div>
+      <div class="input-field">
+        <input type="text" id="observacoesToupu" list="observacoesList" placeholder="Observações" autocomplete="on">
+        <datalist id="observacoesList"></datalist>
+      </div>
+    </div>
 
-      <div class="mode-toggles-container">
-        <div class="mode-toggles">
-          <div class="switch-holder">
-            <div class="switch-label">
-              <i class="fa fa-bluetooth-b"></i><span>Modo Toupu</span>
-            </div>
-            <div class="switch-toggle">
-              <input type="checkbox" id="toggleToupu">
-              <label for="toggleToupu"></label>
-            </div>
-          </div>
+    <!-- Cálculos detalhados -->
+    <div id="calculosDetalhados" style="display: none;">
+      <p id="calculosConteudo"></p>
+    </div>
 
-          <div class="switch-holder">
-            <div class="switch-label">
-              <i class="fa fa-bluetooth-b"></i><span>Mostrar Cálculos</span>
-            </div>
-            <div class="switch-toggle">
-              <input type="checkbox" id="mostrarCalculos">
-              <label for="mostrarCalculos"></label>
-            </div>
+    <div id="calculosToupuDetalhados" style="display: none;">
+      <p id="calculosToupuConteudo"></p>
+    </div>
+
+    <!-- Botões de registro -->
+    <div class="mode-toggles-container">
+      <div class="mode-toggles">
+        <div class="switch-holder">
+          <div class="switch-label">
+            <i class="fa fa-bluetooth-b"></i><span>Modo Toupu</span>
           </div>
-          
-          <div class="register-buttons">
-            <button id="calcularToupu" style="display: none;">Registrar T</button>
-            <button id="calcular">Registrar</button>
-            <!-- Resultados -->
-            <span id="resultado" style="display: none;"></span>
-            <span id="resultadoToupu" style="display: none;"></span>
+          <div class="switch-toggle">
+            <input type="checkbox" id="toggleToupu">
+            <label for="toggleToupu"></label>
           </div>
         </div>
-      </div>
-    
-      <div class="actions">
-        <div class="search-bar normal-search">
-          <input type="text" id="searchInput" placeholder="Buscar registros normais...">
+
+        <div class="switch-holder">
+          <div class="switch-label">
+            <i class="fa fa-bluetooth-b"></i><span>Mostrar Cálculos</span>
+          </div>
+          <div class="switch-toggle">
+            <input type="checkbox" id="mostrarCalculos">
+            <label for="mostrarCalculos"></label>
+          </div>
         </div>
-        <div class="search-bar toupu-search" style="display: none;">
-          <input type="text" id="searchInputToupu" placeholder="Buscar registros Toupu...">
+
+        <div class="register-buttons">
+          <button id="calcularToupu" style="display: none;">Registrar</button>
+          <button id="calcular">Registrar</button>
+          <!-- Resultados -->
+          <span id="resultado" style="display: none;"></span>
+          <span id="resultadoToupu" style="display: none;"></span>
         </div>
-
-         <!-- Botoes -->
-        <button id="salvarPDF">Salvar PDF</button>
-        <button id="salvarXLSX">Salvar XLSX</button>
-        <button id="acoes">Ações</button>
-      </div>
-      
-       <!-- Paginação -->
-      <div class="pagination" id="pagination"></div>
-      <div class="pagination" id="paginationToupu" style="display: none;"></div>
-      
-      <table id="registrosTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Data do Registro</th>
-            <th>Código da Peça</th>
-            <th>Número do Lote</th>
-            <th>Total de Peças</th>
-            <th>Peças por Caixa</th>
-            <th>Peças Extras</th>
-            <th>Etiquetas Necessárias</th>
-            <th>Etiquetas Usadas</th>
-            <th>Observação</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    
-      <table id="registrosToupuTable" style="display: none;">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Data do Registro</th>
-            <th>Código da Peça</th>
-            <th>Número do Lote</th>
-            <th>Peças por Saco</th>
-            <th>Sacos por Palete</th>
-            <th>Total de Paletes</th>
-            <th>Etiquetas Necessárias</th>
-            <th>Etiquetas Usadas</th>
-            <th>Observação</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <div id="calculosModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Cálculos Detalhados</h2>
-        <div id="calculosDetalhados"></div>
       </div>
     </div>
 
-    <div id="editModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Editar Registro</h2>
-        <input type="hidden" id="editIndex">
-        <label for="editCodigoPeca">Código da Peça:</label>
-        <input type="text" id="editCodigoPeca" placeholder="Código da Peça">
-        <label for="editNumeroLote">Número do Lote:</label>
-        <input type="text" id="editNumeroLote" placeholder="Número do Lote">
-        <label for="editEtiquetasNecessarias">Etiquetas Necessárias:</label>
-        <input type="number" id="editEtiquetasNecessarias" placeholder="Etiquetas Necessárias" required min="0">
-        <label for="editPecasExtras">Peças Extras:</label>
-        <input type="number" id="editPecasExtras" placeholder="Peças Extras" required min="0">
-        <label for="editObservacoes">Observações:</label>
-        <input type="text" id="editObservacoes" placeholder="Observações">
-        <p id="editTotalPecas">Total de Peças: 0</p>
-        <p id="editEtiquetasNecessariasCalc"></p>
-        <button id="salvarEdicao">Salvar</button>
+    <!-- Barra de busca -->
+    <div class="actions">
+      <div class="search-bar normal-search">
+        <input type="text" id="searchInput" placeholder="Buscar registros normais...">
       </div>
-    </div>
-    
-    <div id="acoesModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Ações</h2>      
-        <button id="apagarTodos">Apagar todos os registros</button>
-        <button id="sairAcoes">Sair</button>
+      <div class="search-bar toupu-search" style="display: none;">
+        <input type="text" id="searchInputToupu" placeholder="Buscar registros Toupu...">
       </div>
+
+      <!-- Botões de ação -->
+      <button id="salvarPDF">Salvar PDF</button>
+      <button id="salvarXLSX">Salvar XLSX</button>
+      <button id="acoes">Ações</button>
     </div>
 
-    <div id="confirmarApagarTodosModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Confirmar exclusão</h2>
-        <p>Tem certeza que deseja apagar todos os registros? Essa ação é irreversível e pode causar perda de dados importantes. Salve os registros antes de prosseguir.</p>
-        <button id="confirmarApagarTodosBtn">Confirmar</button>
-        <button id="cancelarApagarTodosBtn">Cancelar</button>
-      </div>
+    <!-- Paginação -->
+    <div class="pagination" id="pagination"></div>
+    <div class="pagination" id="paginationToupu" style="display: none;"></div>
+
+    <!-- Tabela de registros -->
+    <table id="registrosTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Data do Registro</th>
+          <th>Código da Peça</th>
+          <th>Número do Lote</th>
+          <th>Total de Peças</th>
+          <th>Peças por Caixa</th>
+          <th>Peças Extras</th>
+          <th>Etiquetas Necessárias</th>
+          <th>Etiquetas Usadas</th>
+          <th>Observação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <!-- Tabela de registros Toupu -->
+    <table id="registrosToupuTable" style="display: none;">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Data do Registro</th>
+          <th>Código da Peça</th>
+          <th>Número do Lote</th>
+          <th>Peças por Saco</th>
+          <th>Sacos por Palete</th>
+          <th>Total de Paletes</th>
+          <th>Etiquetas Necessárias</th>
+          <th>Etiquetas Usadas</th>
+          <th>Observação</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Modais -->
+  <div id="calculosModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Cálculos Detalhados</h2>
+      <div id="calculosDetalhados"></div>
     </div>
-    
-    <div id="confirmarApagarModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Confirmar exclusão</h2>
-        <p>Tem certeza que deseja excluir todos os registros? Esta ação não pode ser desfeita.</p>
-        <input type="password" id="senhaAdmin" placeholder="Senha de administrador">
-        <button id="confirmarApagar">Confirmar</button>
-      </div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Editar Registro</h2>
+      <input type="hidden" id="editIndex">
+      <label for="editCodigoPeca">Código da Peça:</label>
+      <input type="text" id="editCodigoPeca" placeholder="Código da Peça">
+      <label for="editNumeroLote">Número do Lote:</label>
+      <input type="text" id="editNumeroLote" placeholder="Número do Lote">
+      <label for="editEtiquetasNecessarias">Etiquetas Necessárias:</label>
+      <input type="number" id="editEtiquetasNecessarias" placeholder="Etiquetas Necessárias" required min="0">
+      <label for="editPecasExtras">Peças Extras:</label>
+      <input type="number" id="editPecasExtras" placeholder="Peças Extras" required min="0">
+      <label for="editObservacoes">Observações:</label>
+      <input type="text" id="editObservacoes" placeholder="Observações">
+      <p id="editTotalPecas">Total de Peças: 0</p>
+      <p id="editEtiquetasNecessariasCalc"></p>
+      <button id="salvarEdicao">Salvar</button>
     </div>
+  </div>
 
-    
-    
-    <div id="confirmarExclusaoModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Confirmar exclusão</h2>
-        <p>Tem certeza que deseja excluir este registro?</p>
-        <button id="confirmarExclusaoBtn">Apagar Registro</button>
-        <button id="cancelarExclusaoBtn">Sair</button>
-      </div>
+  <div id="acoesModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Ações</h2>
+      <button id="apagarTodos">Apagar todos os registros</button>
+      <button id="sairAcoes">Sair</button>
     </div>
+  </div>
 
-    <button id="scrollToTopBtn" title="SUBIR"><i class="fas fa-arrow-alt-circle-up"></i></button>
+  <div id="confirmarApagarTodosModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirmar exclusão</h2>
+      <p>Tem certeza que deseja apagar todos os registros? Essa ação é irreversível e pode causar perda de dados importantes. Salve os registros antes de prosseguir.</p>
+      <button id="confirmarApagarTodosBtn">Confirmar</button>
+      <button id="cancelarApagarTodosBtn">Cancelar</button>
+    </div>
+  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-  <script>
+  <div id="confirmarApagarModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirmar exclusão</h2>
+      <p>Tem certeza que deseja excluir todos os registros? Esta ação não pode ser desfeita.</p>
+      <input type="password" id="senhaAdmin" placeholder="Senha de administrador">
+      <button id="confirmarApagar">Confirmar</button>
+    </div>
+  </div>
 
-const firebaseConfig = {
-      apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
-      authDomain: "etiquetasuptec.firebaseapp.com",
-      projectId: "etiquetasuptec",
-      storageBucket: "etiquetasuptec.appspot.com",
-      messagingSenderId: "1020897973081",
-      appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
-      measurementId: "G-6TS0PYEMRV"
-    };
-  
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    carregarRegistrosFirebase();
-    const auth = firebase.auth();
+  <div id="confirmarExclusaoModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirmar exclusão</h2>
+      <p>Tem certeza que deseja excluir este registro?</p>
+      <button id="confirmarExclusaoBtn">Apagar Registro</button>
+      <button id="cancelarExclusaoBtn">Sair</button>
+    </div>
+  </div>
 
-    function login() {
-      const username = document.getElementById('loginUsername').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      if (username === 'Qualidade' && password === 'Qualidade') {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-        carregarRegistrosFirebase();
-      } else {
-        alert('Usuário ou senha incorretos.');
-      }
-    }
+  <div id="confirmarExclusaoToupuModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Confirmar exclusão</h2>
+      <p>Tem certeza que deseja excluir este registro?</p>
+      <button id="confirmarExclusaoToupuBtn">Apagar Registro</button>
+      <button id="cancelarExclusaoToupuBtn">Sair</button>
+    </div>
+  </div>
 
-    window.onload = function() {
-      document.getElementById('loginForm').style.display = 'flex';
-      document.getElementById('appContainer').style.display = 'none';
-    }
-  
-    let registros = [];
-    let nextId = 1;
-    let paginaAtual = 1;
-    const itensPorPagina = 100;
-    let paginaAtualToupu = 1;
-  const itensPorPaginaToupu = 100;
-    let registroParaExcluir = null;
-    let wordCache = {};
-  const inputFields = ['codigoPeca', 'numeroLote', 'observacoes'];
+  <!-- Botão de scroll para o topo -->
+  <button id="scrollToTopBtn" title="SUBIR"><i class="fas fa-arrow-alt-circle-up"></i></button>
 
-  const toupuCodes = {
-    "2095270004-1": { pecasPorSaco: 100, sacosPorPalete: 43.2, totalPorPalete: 4320 },
-    "2095270003-1": { pecasPorSaco: 25, sacosPorPalete: 77.76, totalPorPalete: 1944 },
-    "20028524-1": { pecasPorSaco: 25, sacosPorPalete: 64.8, totalPorPalete: 1620 },
-    "10018462-1": { pecasPorSaco: 200, sacosPorPalete: 30, totalPorPalete: 6000 },
-    "2095490002-1": { pecasPorSaco: 300, sacosPorPalete: 54, totalPorPalete: 16200 },
-    "2095080003-1": { pecasPorSaco: 100, sacosPorPalete: 50.4, totalPorPalete: 5040 },
-    "2095160004-1": { pecasPorSaco: 20, sacosPorPalete: 108, totalPorPalete: 2160 },
-    "10018996-1": { pecasPorSaco: 50, sacosPorPalete: 66, totalPorPalete: 3300 },
-    "2095430002-1": { pecasPorSaco: 50, sacosPorPalete: 60, totalPorPalete: 3000 },
-    "2095080004-1": { pecasPorSaco: 50, sacosPorPalete: 54, totalPorPalete: 2700 },
-    "2095160007-1": { pecasPorSaco: 50, sacosPorPalete: 43.2, totalPorPalete: 2160 }
+
+  <!-- bibliotecas JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<script>
+
+  // 1. Firebase Configuração e inicialização
+  const firebaseConfig = {
+    apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+    authDomain: "etiquetasuptec.firebaseapp.com",
+    projectId: "etiquetasuptec",
+    storageBucket: "etiquetasuptec.appspot.com",
+    messagingSenderId: "1020897973081",
+    appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+    measurementId: "G-6TS0PYEMRV"
   };
 
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  carregarRegistrosFirebase();
+  const auth = firebase.auth();
+
+  // 2. Variaveis Globais e constantes
+  let registros = [];
+  let nextId = 1;
+  let paginaAtual = 1;
+  const itensPorPagina = 100;
+  let paginaAtualToupu = 1;
+  const itensPorPaginaToupu = 100;
+  let registroParaExcluir = null;
+  let wordCache = {};
+  const inputFields = ['codigoPeca', 'numeroLote', 'observacoes'];
   let registrosToupu = [];
-  let nextIdToupu = 1;  
-
+  let nextIdToupu = 1;
+  let registroParaExcluirToupu = null;
   
-  // Carregar sugestões do Firebase
-  db.collection("sugestoes").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const sugestao = doc.data();
-      const datalist = document.getElementById(`${sugestao.tipo}List`);
-      const option = document.createElement("option");
-      option.value = sugestao.valor;
-      option.textContent = sugestao.valor;
-      datalist.appendChild(option);
-    });
-  });
+  const toupuCodes = {
+  "2095270004-1": { pecasPorSaco: 100, sacosPorPalete: 43.2, totalPorPalete: 4320 },
+  "2095270003-1": { pecasPorSaco: 25, sacosPorPalete: 77.76, totalPorPalete: 1944 },
+  "20028524-1": { pecasPorSaco: 25, sacosPorPalete: 64.8, totalPorPalete: 1620 },
+  "10018462-1": { pecasPorSaco: 200, sacosPorPalete: 30, totalPorPalete: 6000 },
+  "2095490002-1": { pecasPorSaco: 300, sacosPorPalete: 54, totalPorPalete: 16200 },
+  "2095080003-1": { pecasPorSaco: 100, sacosPorPalete: 50.4, totalPorPalete: 5040 },
+  "2095160004-1": { pecasPorSaco: 20, sacosPorPalete: 108, totalPorPalete: 2160 },
+  "10018996-1": { pecasPorSaco: 50, sacosPorPalete: 66, totalPorPalete: 3300 },
+  "2095430002-1": { pecasPorSaco: 50, sacosPorPalete: 60, totalPorPalete: 3000 },
+  "2095080004-1": { pecasPorSaco: 50, sacosPorPalete: 54, totalPorPalete: 2700 },
+  "2095160007-1": { pecasPorSaco: 50, sacosPorPalete: 43.2, totalPorPalete: 2160 }
+};
 
-  // Adicionar evento de clique para excluir sugestões
-  document.querySelectorAll("datalist option").forEach((option) => {
-    option.addEventListener("click", (e) => {
-      const valor = e.target.value;
-      const tipo = e.target.parentNode.id.replace("List", "");
-      db.collection("sugestoes").where("tipo", "==", tipo).where("valor", "==", valor).get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.delete();
-        });
-      });
-    });
-  });
-
-  
-
+  // 3. Funçoes utilitarias
   function loadWordsFromFirebase() {
     inputFields.forEach(field => {
       db.collection('words').doc(field).get().then(doc => {
@@ -1139,16 +1223,14 @@ const firebaseConfig = {
       });
     });
   }
-
   function saveWord(field, word) {
-    if (!wordCache[field].includes(word)) {
+    if (! wordCache[field].includes(word)) {
       wordCache[field].push(word);
       db.collection('words').doc(field).set({
         words: firebase.firestore.FieldValue.arrayUnion(word)
       }, { merge: true });
     }
   }
-
   function removeWord(field, word) {
     const index = wordCache[field].indexOf(word);
     if (index > -1) {
@@ -1158,11 +1240,9 @@ const firebaseConfig = {
       });
     }
   }
-
   function getAutocompleteSuggestions(field, prefix) {
     return wordCache[field].filter(word => word.toLowerCase().startsWith(prefix.toLowerCase()));
   }
-
   function updateAutocompleteList(input, suggestions) {
     let list = input.nextElementSibling;
     if (!list || !list.classList.contains('autocomplete-list')) {
@@ -1190,7 +1270,6 @@ const firebaseConfig = {
       list.appendChild(item);
     });
   }
-
   function highlightReusedWord(input) {
     if (wordCache[input.id].includes(input.value)) {
       input.classList.add('reused-word');
@@ -1199,250 +1278,11 @@ const firebaseConfig = {
     }
   }
 
-  function setupAutocomplete() {
-    inputFields.forEach(fieldId => {
-      const input = document.getElementById(fieldId);
-      input.addEventListener('input', () => {
-        const suggestions = getAutocompleteSuggestions(fieldId, input.value);
-        updateAutocompleteList(input, suggestions);
-        highlightReusedWord(input);
-      });
-      input.addEventListener('blur', () => {
-        if (input.value.trim() !== '') {
-          saveWord(fieldId, input.value.trim());
-        }
-      });
-    });
-  }
-
-    document.getElementById('calcular').addEventListener('click', calcularEtiquetas);
-    document.getElementById('calcularToupu').addEventListener('click', calcularEtiquetasToupu);
-    document.getElementById('searchInput').addEventListener('input', filtrarRegistros);
-    document.getElementById('searchInputToupu').addEventListener('input', filtrarRegistrosToupu);
-    document.getElementById('salvarPDF').addEventListener('click', salvarPDF);
-    document.getElementById('salvarXLSX').addEventListener('click', salvarXLSX);
-    document.getElementById('acoes').addEventListener('click', mostrarAcoes);
-    document.getElementById('sairAcoes').addEventListener('click', fecharModal);
-    document.getElementById('apagarTodos').addEventListener('click', confirmarApagarTodos);
-    document.getElementById('confirmarApagar').addEventListener('click', apagarTodosRegistros);
-    
-    document.getElementById('toggleToupu').addEventListener('change', toggleToupuMode);
-     document.getElementById('mostrarCalculos').addEventListener('change', function() {
-      document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
-       document.getElementById('calculosToupuDetalhados').style.display = this.checked ? 'block' : 'none';
-  });
-
-
-  function toggleToupuMode() {
-    const isToupuMode = document.getElementById('toggleToupu').checked;
-
-    // Ocultar ou mostrar elementos com base no modo Toupu
-    document.querySelector('.normal-inputs').style.display = isToupuMode ? 'none' : 'flex';
-    document.querySelector('.toupu-inputs').style.display = isToupuMode ? 'flex' : 'none';
-    document.getElementById('registrosTable').style.display = isToupuMode ? 'none' : 'table';
-    document.getElementById('registrosToupuTable').style.display = isToupuMode ? 'table' : 'none';
-    document.querySelector('.normal-search').style.display = isToupuMode ? 'none' : 'block';
-    document.querySelector('.toupu-search').style.display = isToupuMode ? 'block' : 'none';
-    document.getElementById('calculosDetalhados').style.display = 'none';
-    document.getElementById('calculosToupuDetalhados').style.display = 'none';
-
-    // Controle dos botões de registro
-    document.getElementById('calcular').style.display = isToupuMode ? 'none' : 'inline-block';
-    document.getElementById('calcularToupu').style.display = isToupuMode ? 'inline-block' : 'none';
-
-    // Controle da paginação
-    document.getElementById('pagination').style.display = isToupuMode ? 'none' : 'flex';
-    document.getElementById('paginationToupu').style.display = isToupuMode ? 'flex' : 'none';
-
-    // Salvar registros no Firebase e atualizar a tabela quando o modo Toupu estiver desativado
-    if (!isToupuMode) {
-        // Salvar os registros no Firebase
-        registrosToupu.forEach(registro => {
-            salvarRegistroToupuFirebase(registro);
-        });
-
-        // Limpar a coleção no Firebase
-        db.collection("registrosToupu").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                doc.ref.delete();
-            });
-        });
-
-        // Atualizar a tabela e salvar no localStorage
-        atualizarTabelaToupu();
-        salvarLocalStorageToupu();
-    } else {
-        // Quando o modo Toupu é ativado, carregar os registros do Firebase
-        carregarRegistrosToupuFirebase();
-    }
-}
-
-
-  document.getElementById('toggleToupu').addEventListener('change', toggleToupuMode);
-    document.getElementById('searchInputToupu').addEventListener('input', filtrarRegistrosToupu);
-  document.addEventListener('DOMContentLoaded', toggleToupuMode);
-
-        // Exemplo de funcionalidade de contagem de usuários (adapte com Firebase)
-        const connectedUsersRef = firebase.database().ref('connectedUsers');
-        const connectedRef = firebase.database().ref('.info/connected');
-
-        connectedRef.on('value', (snap) => {
-            if (snap.val() === true) {
-                const con = connectedUsersRef.push();
-                con.onDisconnect().remove();
-                con.set(true);
-            }
-        });
-
-        connectedUsersRef.on('value', (snap) => {
-            const connectedUsers = snap.numChildren();
-            document.getElementById('connectedUsersCount').textContent = connectedUsers;
-        });
-    
-
-        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
-
-  window.addEventListener("scroll", () => {
-    if (window.pageYOffset > 300) {
-      scrollToTopBtn.classList.add("visible");
-    } else {
-      scrollToTopBtn.classList.remove("visible");
-    }
-  });
-
-  scrollToTopBtn.addEventListener("click", () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  });
-  
-  function calcularEtiquetas() {
-  const codigoPeca = document.getElementById('codigoPeca').value;
-  const numeroLote = document.getElementById('numeroLote').value;
-  const totalPecas = parseInt(document.getElementById('totalPecas').value);
-  const pecasPorCaixa = parseInt(document.getElementById('pecasPorCaixa').value);
-  const observacoes = document.getElementById('observacoes').value;
-
-  if (!totalPecas || !pecasPorCaixa) {
-    alert('Por favor, preencha os campos obrigatórios.');
-    return;
-  }
-
-  const etiquetasNecessarias = Math.ceil(totalPecas / pecasPorCaixa);
-  const etiquetasCompletas = Math.floor(totalPecas / pecasPorCaixa);
-  const pecasExtras = totalPecas % pecasPorCaixa;
-
-  const resultado = 
-  `Total de etiquetas: ${etiquetasNecessarias} <br>
-  ${pecasExtras > 0 ? `(${etiquetasCompletas} completas + ${pecasExtras} extra com ${pecasExtras} peças)` : ''}`;
-
-  document.getElementById('resultado').innerHTML = resultado;
-  document.getElementById('resultado').style.display = 'block';
-  document.getElementById('resultadoToupu').style.display = 'none';
-
-  const novoRegistro = {
-    id: nextId++,
-    data: new Date().toLocaleString(),
-    codigoPeca,
-    numeroLote,
-    totalPecas,
-    pecasPorCaixa,
-    etiquetasNecessarias,
-    pecasExtras,
-    etiquetasUsadas: 0,
-    observacoes
-  };
-
-  registros.unshift(novoRegistro);
-  salvarRegistroFirebase(novoRegistro);
-  atualizarTabela();
-
-  const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
-  if (mostrarCalculos) {
-    const calculosDetalhados = `
-      <p>Total de Peças: ${totalPecas}</p>
-      <p>Peças por Caixa: ${pecasPorCaixa}</p>
-      <p>Matemática:</p>
-      <p>${totalPecas} / ${pecasPorCaixa} = ${totalPecas / pecasPorCaixa}</p>
-      <p>${etiquetasCompletas} * ${pecasPorCaixa} = ${etiquetasCompletas * pecasPorCaixa}</p>
-      <p>${totalPecas} - ${etiquetasCompletas * pecasPorCaixa} = ${pecasExtras}</p>
-    `;
-    document.getElementById('calculosConteudo').innerHTML = calculosDetalhados;
-    document.getElementById('calculosDetalhados').style.display = 'block';
-  } else {
-    document.getElementById('calculosDetalhados').style.display = 'none';
-  }
-}
-
-function calcularEtiquetasToupu() {
-  const codigoPeca = document.getElementById('codigoPecaToupu').value;
-  const numeroLote = document.getElementById('numeroLoteToupu').value;
-  const totalPecas = parseInt(document.getElementById('totalPecasToupu').value);
-  const observacoes = document.getElementById('observacoesToupu').value;
-
-  if (!codigoPeca || !totalPecas) {
-    alert('Por favor, preencha os campos obrigatórios.');
-    return;
-  }
-
-  const toupuData = toupuCodes[codigoPeca];
-  if (!toupuData) {
-    alert('Código Toupu inválido.');
-    return;
-  }
-
-  const totalPaletes = Math.ceil(totalPecas / toupuData.totalPorPalete);
-  const sacosCompletos = Math.floor(totalPecas / toupuData.pecasPorSaco);
-  const pecasExtras = totalPecas % toupuData.pecasPorSaco;
-  const etiquetasNecessarias = sacosCompletos + (pecasExtras > 0 ? 1 : 0);
-
-  const resultado = `Total de paletes: ${totalPaletes}, Etiquetas necessárias: ${etiquetasNecessarias}${pecasExtras > 0 ? ` (${sacosCompletos} completas + 1 extra com ${pecasExtras} peças)` : ''}`;
-  document.getElementById('resultadoToupu').textContent = resultado;
-  document.getElementById('resultadoToupu').style.display = 'block';
-  document.getElementById('resultado').style.display = 'none';
-
-  const novoRegistro = {
-    id: `T${nextIdToupu++}`,
-    data: new Date().toLocaleString(),
-    codigoPeca,
-    numeroLote,
-    pecasPorSaco: toupuData.pecasPorSaco,
-    sacosPorPalete: toupuData.sacosPorPalete,
-    totalPaletes,
-    etiquetasNecessarias,
-    etiquetasCompletas: sacosCompletos,
-    pecasExtras,
-    etiquetasUsadas: 0,
-    totalPecas,
-    observacoes
-  };
-
-  registrosToupu.unshift(novoRegistro);
-  salvarRegistroToupuFirebase(novoRegistro);
-  atualizarTabelaToupu();
-
-  const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
-  if (mostrarCalculos) {
-    const calculosDetalhados = `
-      <p>Total de Peças: ${totalPecas}</p>
-      <p>Peças por Saco: ${toupuData.pecasPorSaco}</p>
-      <p>Matemática:</p>
-      <p>${totalPecas} / ${toupuData.pecasPorSaco} = ${totalPecas / toupuData.pecasPorSaco}</p>
-      <p>${sacosCompletos} * ${toupuData.pecasPorSaco} = ${sacosCompletos * toupuData.pecasPorSaco}</p>
-      <p>${totalPecas} - ${sacosCompletos * toupuData.pecasPorSaco} = ${pecasExtras}</p>
-    `;
-    document.getElementById('calculosToupuConteudo').innerHTML = calculosDetalhados;
-    document.getElementById('calculosToupuDetalhados').style.display = 'block';
-  } else {
-    document.getElementById('calculosToupuDetalhados').style.display = 'none';
-  }
-}
-  
-    function salvarRegistroFirebase(registro) {
+  // 4. Funcoes gerenciamento de dados
+  function salvarRegistroFirebase(registro) {
     db.collection("registros").doc(String(registro.id)).set(registro)
       .then(() => {
-        console.log("Registro salvo com ID: ", registro.id);
+        console.log("Registro salvo com S: ", registro.id);
       })
       .catch((error) => {
         console.error("Erro ao salvar registro: ", error);
@@ -1450,109 +1290,169 @@ function calcularEtiquetasToupu() {
   }
 
   function salvarRegistroToupuFirebase(registro) {
-  db.collection("registrosToupu").add(registro)
-    .then((docRef) => {
-      const id = docRef.id;
-      db.collection("registrosToupu").doc(id).set(registro);
-      console.log("Registro Toupu salvo com ID: ", id);
+  const registroId = registro.id || `T${nextIdToupu}`; 
+  
+  db.collection("registrosToupu").doc(registroId).set(registro)
+    .then(() => {
+      console.log("Registro Toupu salvo com sucesso:", registroId);
     })
     .catch((error) => {
-      console.error("Erro ao salvar registro Toupu: ", error);
+      console.error("Erro ao salvar registro Toupu:", error);
     });
 }
-  
-    function atualizarRegistroFirebase(registro) {
-      db.collection("registros").where("id", "==", registro.id).get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            doc.ref.update(registro);
-          });
+
+
+  function atualizarRegistroFirebase(registro) {
+    db.collection("registros").where("id", "==", registro.id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.update(registro);
         });
-    }
-  
-    function excluirRegistro(id) {
-  if (!id.startsWith('T')) {
-    const index = registros.findIndex(r => r.id === id);
-    if (index !== -1) {
-      registros.splice(index, 1);
-      atualizarTabela();
-      salvarLocalStorage();
-      excluirRegistroFirebase(id);
-    } else {
-      alert("ID de registro inválido.");
-    }
-  } else {
-    const index = registrosToupu.findIndex(r => r.id === id);
-    if (index !== -1) {
-      registrosToupu.splice(index, 1);
-      atualizarTabelaToupu();
-      salvarLocalStorageToupu();
-      excluirRegistroToupuFirebase(id);
-    } else {
-      alert("ID de registro inválido.");
-    }
-  }
-}
-  
-    function carregarRegistrosFirebase() {
-    db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
-      registros = []; // Limpa os registros antes de carregar os novos
-      querySnapshot.forEach((doc) => {
-        const registro = doc.data();
-        registros.push(registro);
       });
-  
-      nextId = registros.length > 0 ? Math.max(...registros.map(r => r.id)) + 1 : 1; // Define o próximo ID
-      atualizarTabela();
-    }, (error) => {
-      console.error("Erro ao carregar registros: ", error);
+  }
+  function excluirRegistroFirebase(id) {
+    db.collection("registros").where("id", "==", id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+  }
+  function carregarRegistrosFirebase() {
+  db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
+    registros = []; // Limpa os registros antes de carregar os novos
+    querySnapshot.forEach((doc) => {
+      const registro = doc.data();
+      registros.push(registro); // Adiciona o registro à lista
     });
-  }
-  
-  
-    function atualizarTabela() {
-      const tbody = document.querySelector('#registrosTable tbody');
-      tbody.innerHTML = '';
-  
-      const inicio = (paginaAtual - 1) * itensPorPagina;
-      const fim = inicio + itensPorPagina;
-      const registrosPagina = registros.slice(inicio, fim);
-  
-      registrosPagina.forEach((registro, index) => {
-        const tr = document.createElement('tr');
-        if (registro.etiquetasUsadas === registro.etiquetasNecessarias) {
-          tr.classList.add('used-all');
-        }
-        const etiquetasCompletas = registro.etiquetasNecessarias - (registro.pecasExtras > 0 ? 1 : 0);
-        tr.innerHTML = `
-          <td>${registro.id}</td>
-          <td>${registro.data}</td>
-          <td>${registro.codigoPeca}</td>
-          <td>${registro.numeroLote}</td>
-          <td>${registro.totalPecas}</td>
-          <td>${registro.pecasPorCaixa}</td>
-          <td>${registro.pecasExtras}</td>
-          <td>${registro.etiquetasNecessarias}${registro.pecasExtras > 0 ? ` (${etiquetasCompletas} completas + 1 extra)` : ''}</td>
-          <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${index + inicio}, this)">${registro.etiquetasUsadas}</td>
-          <td>${registro.observacoes}</td>
-          <td>
-            <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
-           <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-  
-      atualizarPaginacao();
+
+    if (registros.length > 0) {
+      nextId = Math.max(...registros.map(r => r.id)) + 1; // Atualiza o próximo ID para registros
+    } else {
+      nextId = 1;
     }
-  
-    function atualizarTabelaToupu() {
+
+    atualizarTabela(); // Atualiza a tabela com os registros carregados
+  }, (error) => {
+    console.error("Erro ao carregar registros: ", error);
+  });
+}
+ 
+  function carregarRegistrosToupuFirebase() {
+  db.collection("registrosToupu").get().then((querySnapshot) => {
+    registrosToupu = []; // Limpa os registros antes de carregar novos
+    querySnapshot.forEach((doc) => {
+      let registro = doc.data();
+      registro.id = doc.id; // Assegura que o ID do Firebase é mantido
+      registrosToupu.push(registro); // Adiciona o registro à lista
+    });
+
+    if (registrosToupu.length > 0) {
+      nextIdToupu = Math.max(...registrosToupu.map(r => parseInt(r.id.replace('T', ''), 10))) + 1;
+    } else {
+      nextIdToupu = 1;
+    }
+
+    atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
+  }).catch((error) => {
+    console.error("Erro ao carregar registros Toupu do Firebase: ", error);
+  });
+}
+  function salvarLocalStorage() {
+    localStorage.setItem('registrosEtiquetas', JSON.stringify(registros));
+  }
+  function carregarLocalStorage() {
+    const savedRegistros = localStorage.getItem('registrosEtiquetas');
+    if (savedRegistros) {
+      registros = JSON.parse(savedRegistros);
+      nextId = Math.max(...registros.map(r => r.id)) + 1;
+    }
+  }
+  function salvarLocalStorageToupu() {
+    localStorage.setItem('registrosToupu', JSON.stringify(registrosToupu));
+  }
+  function carregarLocalStorageToupu() {
+    const savedRegistros = localStorage.getItem('registrosToupu');
+    if (savedRegistros) {
+      registrosToupu = JSON.parse(savedRegistros);
+      nextIdToupu = Math.max(...registrosToupu.map(r => r.id)) + 1;
+    }
+  }
+  function atualizarRegistroToupuFirebase(registro) {
+    if (!registro.id.startsWith('T')) {
+      alert("ID de registro inválido.");
+      return;
+    }
+
+    db.collection("registrosT oupu").where("id", "==", registro.id).get()
+      .then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          alert("Registro não encontrado.");
+          return;
+        }
+        querySnapshot.forEach((doc) => {
+          doc.ref.update(registro);
+        });
+      })
+      .catch((error) => {
+        console.error("Erro ao atualizar o registro:", error);
+      });
+  }
+  function excluirRegistroToupuFirebase(id) {
+    db.collection("registrosToupu").where("id", "==", id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+  }
+
+  // 5. funçoes de updates
+  function atualizarTabela() {
+    const tbody = document.querySelector('#registrosTable tbody');
+    tbody.innerHTML = '';
+
+    const inicio = (paginaAtual - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+    const registrosPagina = registros.slice(inicio, fim);
+
+    registrosPagina.forEach((registro, index) => {
+      const tr = document.createElement('tr');
+      if (registro.etiquetasUsadas === registro.etiquetasNecessarias) {
+        tr.classList.add('used-all');
+      }
+      const etiquetasCompletas = registro.etiquetasNecessarias - (registro.pecasExtras > 0 ? 1 : 0);
+      tr.innerHTML = `
+        <td>${registro.id}</td>
+        <td>${registro.data}</td>
+        <td>${registro.codigoPeca}</td>
+        <td>${registro.numeroLote}</td>
+        <td>${registro.totalPecas}</td>
+        <td>${registro.pecasPorCaixa}</td>
+        <td>${registro.pecasExtras}</td>
+        <td>${registro.etiquetasNecessarias}${registro.pecasExtras > 0 ? ` (${etiquetasCompletas} completas + 1 extra (${registro.pecasExtras} peças)` : ''}</td>
+        <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${index + inicio}, this)">${registro.etiquetasUsadas}</td>
+        <td>${registro.observacoes}</td>
+        <td>
+          <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
+         <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    atualizarPaginacao();
+  }
+  function atualizarTabelaToupu() {
   const tbody = document.querySelector('#registrosToupuTable tbody');
   tbody.innerHTML = '';
 
+  // Ordena os registros por ID de forma decrescente (mais recentes no topo)
+  const registrosOrdenados = [...registrosToupu].sort((a, b) => parseInt(b.id.replace('T', '')) - parseInt(a.id.replace('T', '')));
+
   const inicio = (paginaAtualToupu - 1) * itensPorPaginaToupu;
   const fim = inicio + itensPorPaginaToupu;
-  const registrosPagina = registrosToupu.slice(inicio, fim);
+  const registrosPagina = registrosOrdenados.slice(inicio, fim); // Exibe os registros da página atual
 
   registrosPagina.forEach((registro, index) => {
     const tr = document.createElement('tr');
@@ -1574,8 +1474,8 @@ function calcularEtiquetasToupu() {
       <td contenteditable="true" oninput="atualizarEtiquetasUsadasToupu(${index}, this)">${registro.etiquetasUsadas}</td>
       <td>${registro.observacoes}</td>
       <td>
-        <button class="delete-btn" onclick="excluirRegistroToupu('${registro.id}')">🗑️</button>
-      </td>
+  <button class="delete-btn" onclick="confirmarExclusaoRegistroToupu('${registro.id}')">🗑️</button>
+</td>
     `;
     tbody.appendChild(tr);
   });
@@ -1591,7 +1491,7 @@ function calcularEtiquetasToupu() {
     // Add "Anterior" button
     const anteriorButton = document.createElement('button');
     anteriorButton.textContent = 'Anterior';
-    anteriorButton.addEventListener('click', () => {
+anteriorButton.addEventListener('click', () => {
       if (paginaAtual > 1) {
         paginaAtual--;
         atualizarTabela();
@@ -1645,7 +1545,6 @@ function calcularEtiquetasToupu() {
     });
     paginationContainer.appendChild(proximoButton);
   }
-
   function atualizarPaginacaoToupu() {
     const totalPaginas = Math.ceil(registrosToupu.length / itensPorPaginaToupu);
     const paginationContainer = document.getElementById('paginationToupu');
@@ -1707,48 +1606,44 @@ function calcularEtiquetasToupu() {
       }
     });
     paginationContainer.appendChild(proximoButton);
-
-    
   }
-  
-    function filtrarRegistros() {
-      const termo = document.getElementById('searchInput').value.toLowerCase();
-      const registrosFiltrados = registros.filter(registro => 
-        Object.values(registro).some(valor => 
-          valor.toString().toLowerCase().includes(termo)
-        )
-      );
-      
-      const tbody = document.querySelector('#registrosTable tbody');
-      tbody.innerHTML = '';
-      
-      registrosFiltrados.forEach((registro, index) => {
-        const tr = document.createElement('tr');
-        if (registro.etiquetasUsadas === registro.etiquetasNecessarias) {
-          tr.classList.add('used-all');
-        }
-        const etiquetasCompletas = registro.etiquetasNecessarias - (registro.pecasExtras > 0 ? 1 : 0);
-        tr.innerHTML = `
-          <td>${registro.id}</td>
-          <td>${registro.data}</td>
-          <td>${registro.codigoPeca}</td>
-          <td>${registro.numeroLote}</td>
-          <td>${registro.totalPecas}</td>
-          <td>${registro.pecasPorCaixa}</td>
-          <td>${registro.pecasExtras}</td>
-          <td>${registro.etiquetasNecessarias}${registro.pecasExtras > 0 ? ` (${etiquetasCompletas} completas + 1 extra)` : ''}</td>
-          <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${registros.indexOf(registro)}, this)">${registro.etiquetasUsadas}</td>
-          <td>${registro.observacoes}</td>
-          <td>
-            <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
-             <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function filtrarRegistrosToupu() {
+  function filtrarRegistros() {
+    const termo = document.getElementById('searchInput').value.toLowerCase();
+    const registrosFiltrados = registros.filter(registro => 
+      Object.values(registro).some(valor => 
+        valor.toString().toLowerCase().includes(termo)
+      )
+    );
+    
+    const tbody = document.querySelector('#registrosTable tbody');
+    tbody.innerHTML = '';
+    
+    registrosFiltrados.forEach((registro, index) => {
+      const tr = document.createElement('tr');
+      if (registro.etiquetasUsadas === registro.etiquetasNecessarias) {
+        tr.classList.add('used-all');
+      }
+      const etiquetasCompletas = registro.etiquetasNecessarias - (registro.pecasExtras > 0 ? 1 : 0);
+      tr.innerHTML = `
+        <td>${registro.id}</td>
+        <td>${registro.data}</td>
+        <td>${registro.codigoPeca}</td>
+        <td>${registro.numeroLote}</td>
+        <td>${registro.totalPecas}</td>
+        <td>${registro.pecasPorCaixa}</td>
+        <td>${registro.pecasExtras}</td>
+        <td>${registro.etiquetasNecessarias}${registro.pecasExtras > 0 ? ` (${etiquetasCompletas} completas + 1 extra)` : ''}</td>
+        <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${registros.indexOf(registro)}, this)">${registro.etiquetasUsadas}</td>
+        <td>${registro.observacoes}</td>
+        <td>
+          <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
+           <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+  function filtrarRegistrosToupu() {
     const termo = document.getElementById('searchInputToupu').value.toLowerCase();
     const registrosFiltrados = registrosToupu.filter(registro => 
       Object.values(registro).some(valor => 
@@ -1791,339 +1686,579 @@ function calcularEtiquetasToupu() {
 
     atualizarPaginacaoToupu();
   }
-  
 
-  function salvarPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-
-  const allRegistros = [...registros, ...registrosToupu];
-  allRegistros.sort((a, b) => new Date(b.data) - new Date(a.data));
-
-  // Título - Fundo azul escuro e texto branco
-  doc.setFillColor(0, 51, 153); // Azul escuro
-  doc.rect(10, 10, 190, 10, 'F'); // Fundo do título
-  doc.setTextColor(255, 255, 255); // Texto branco
-  doc.setFontSize(14);
-  
-  // Texto do título
-  doc.text("Relatório de registros", 14, 17);
-
-  // Adiciona a data do documento no canto superior direito
-  const dataAtual = new Date().toLocaleDateString('pt-BR');
-  doc.text(`criado em: ${dataAtual}`, 130, 17); // Alinha à direita com o texto "Relatório criado em:"
-
-  // Resetando cores para a tabela
-  doc.setTextColor(0, 0, 0); // Texto preto para o conteúdo da tabela
-
-  const columns = [
-    "ID", "Data", "Código", "Lote", "Total de\nPeças", "Peças por\nCaixa",
-    "Peças\nExtras", "Etiquetas\nNecessárias", "Etiquetas\nUsadas", "Observações"
-  ];
-
-  const data = registros.map(r => [
-    r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
-    r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
-  ]);
-
-  // Configurações da tabela
-  doc.autoTable({
-    head: [columns],
-    body: data,
-    startY: 30, // Abaixo do título
-    theme: 'grid',
-    styles: {
-      fontSize: 7, // Diminuindo o tamanho da fonte
-      cellPadding: 2, // Reduzindo o espaçamento entre as células
-      minCellHeight: 8, // Altura mínima das células
-      textColor: [0, 0, 0], // Texto preto
-      valign: 'middle', // Alinhamento vertical no meio
-      halign: 'center' // Alinhamento à esquerda
-    },
-    headStyles: {
-      fillColor: [0, 0, 128], // Azul escuro no cabeçalho
-      textColor: [255, 255, 255], // Texto branco no cabeçalho
-      fontSize: 9, // Tamanho da fonte do cabeçalho
-      halign: 'center' // Texto centralizado nos títulos das colunas
-    },
-    alternateRowStyles: {
-          fillColor: [224, 247, 250]
-        },
-    columnStyles: {
-      0: { cellWidth: 'auto' }, 
-      1: { cellWidth: 'auto' },
-      4: { cellWidth: 'auto' }, // "Total de Peças"
-      5: { cellWidth: 'auto' }, // "Peças por Caixa"
-      6: { cellWidth: 'auto' }, // "Peças Extras"
-      7: { cellWidth: 'auto' }, // "Etiquetas Necessárias"
-      8: { cellWidth: 'auto' }  // "Etiquetas Usadas"
-    },
-    bodyStyles: function (data, rowIndex) {
-      // Alternar fundo das linhas
-      return {
-        fillColor: rowIndex % 2 === 0 ? [240, 240, 240] : [173, 216, 230] // Alternância de fundo
-      };
+  // 6. Funçoes para manipular eventos
+  function atualizarEtiquetasUsadas(index, element) {
+    // Obtém o valor atual e tenta convertê-lo para um número inteiro
+    let valor = parseInt(element.textContent);
+    const registro = registros[index];
+    
+    // Valida o valor
+    if (isNaN(valor) || valor < 0) {
+      valor = 0; // Se o valor não for um número ou for negativo, define como 0
+    } else if (valor > registro.etiquetasNecessarias) {
+      valor = registro.etiquetasNecessarias; // Limita o valor ao máximo de etiquetas necessárias
     }
-  });
+    
+    // Atualiza o registro com o novo valor de etiquetas usadas
+    registro.etiquetasUsadas = valor;
+    element.textContent = valor; // Atualiza o elemento na interface
 
-  // Salvando o documento
-  doc.save(`RelatorioGeral ${dataAtual}.pdf`);
+    // Adiciona ou remove a classe 'used-all' na linha da tabela com base no valor
+    if (valor === registro.etiquetasNecessarias) {
+      element.closest('tr').classList.add('used-all');
+    } else {
+      element.closest('tr').classList.remove('used-all');
+    }
+    
+    // Salva as alterações no armazenamento local e no Firebase
+    salvarLocalStorage();
+    atualizarRegistroFirebase(registro);
+  }
+  function atualizarEtiquetasUsadasToupu(index, element) {
+    let valor = parseInt(element.textContent);
+    const registro = registrosToupu[index];
+    
+    // Verifica se o valor é válido
+    if (isNaN(valor) || valor < 0) {
+      valor = 0;
+    } else if (valor > registro.etiquetasNecessarias) {
+      valor = registro.etiquetasNecessarias;
+    }
+    
+    // Atualiza o registro e o conteúdo do elemento
+    registro.etiquetasUsadas = valor;
+    element.textContent = valor;
+    
+    // Adiciona ou remove classe baseado na quantidade de etiquetas usadas
+    if (valor === registro.etiquetasNecessarias) {
+      element.closest('tr').classList.add('used-all');
+    } else {
+      element.closest('tr').classList.remove('used-all');
+    }
+    
+    // Salva as alterações
+    salvarLocalStorageToupu(); // Certifique-se de ter uma função para salvar dados Toupu
+    atualizarRegistroFirebaseToupu(registro); // Certifique-se de ter uma função para atualizar registro Firebase para Toupu
+  }
+  function editarRegistro(id) {
+    const index = registros.findIndex(r => r.id === id);
+    if (index !== -1) {
+      const registro = registros[index];
+      document.getElementById('editIndex').value = index;
+      document.getElementById('editCodigoPeca').value = registro.codigoPeca;
+      document.getElementById('editNumeroLote').value = registro.numeroLote;
+      document.getElementById('editEtiquetasNecessarias').value = registro.etiquetasNecessarias;
+      document.getElementById('editPecasExtras').value = registro.pecasExtras;
+      document.getElementById('editObservacoes').value = registro.observacoes;
+      document.getElementById('editModal').style.display = 'block';
+      atualizarCalculosEdicao();
+    } else {
+      alert("ID de registro inválido.");
+    }
+  }
 
-  // Criando um novo documento para os registros Toupu
-  const docToupu = new jsPDF();
+  function atualizarCalculosEdicao() {
+    const index = document.getElementById('editIndex').value;
+    const etiquetasNecessarias = parseInt(document.getElementById('editEtiquetasNecessarias').value) || 0;
+    const pecasExtras = parseInt(document.getElementById('editPecasExtras').value) || 0;
+    const pecasPorCaixa = registros[index].pecasPorCaixa;
+    
+    if (pecasExtras >= pecasPorCaixa) {
+      document.getElementById('editPecasExtras').value = pecasPorCaixa - 1;
+      return atualizarCalculosEdicao();
+    }
+    
+    const totalPecas = etiquetasNecessarias * pecasPorCaixa + pecasExtras;
+    const etiquetasReais = etiquetasNecessarias + (pecasExtras > 0 ? 1 : 0);
+    
+    document.getElementById('editTotalPecas').textContent = `Total de Peças: ${totalPecas}`;
+    document.getElementById('editEtiquetasNecessariasCalc').textContent = `Etiquetas Necessárias: ${etiquetasReais}${pecasExtras > 0 ? ` (${etiquetasNecessarias} completas + 1 extra)` : ''}`;
+  }
+
+  document.getElementById('editEtiquetasNecessarias').addEventListener('input', atualizarCalculosEdicao);
+  document.getElementById('editPecasExtras').addEventListener('input', atualizarCalculosEdicao);
+
+  function excluirRegistro(id) {
+    const index = registros.findIndex(r => r.id === id);
+    if (index !== -1) {
+      if (confirm(`Tem certeza que deseja excluir o registro ${id}?`)) {
+        registros.splice(index, 1);
+        atualizarTabela();
+        salvarLocalStorage();
+        excluirRegistroFirebase(id);
+        atualizarTabela();
+salvarLocalStorage();
+      }
+    } else {
+      alert("ID de registro inválido.");
+    }
+  }
+
+  function excluirRegistroToupu(id) {
+    const index = registrosToupu.findIndex(r => r.id === id);
+    
+    // Verifica se o registro foi encontrado
+    if (index !== -1) {
+      // Confirma a exclusão
+      if (confirm(`Tem certeza que deseja excluir o registro ${id}?`)) {
+        registrosToupu.splice(index, 1); // Remove o registro
+        atualizarTabelaToupu(); // Atualiza a tabela
+        salvarLocalStorageToupu(); // Salva as alterações no localStorage
+        excluirRegistroToupuFirebase(id); // Chama a função para excluir do Firebase
+      }
+    } else {
+      alert("Registro não encontrado."); // Mensagem mais clara
+    }
+  }
+
+  document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', function() {
+  document.getElementById('confirmarExclusaoToupuModal').style.display = 'none';
+});
+
+document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('click', function() {
+  document.getElementById('confirmarExclusaoToupuModal').style.display = 'none';
+});
+
+  // 7. funçoes de calcular
+  function calcularEtiquetas() {
+    const codigoPeca = document.getElementById('codigoPeca').value;
+    const numeroLote = document.getElementById('numeroLote').value;
+    const totalPecas = parseInt(document.getElementById('totalPecas').value);
+    const pecasPorCaixa = parseInt(document.getElementById('pecasPorCaixa').value);
+    const observacoes = document.getElementById('observacoes').value;
+
+
+    if (!totalPecas || !pecasPorCaixa) {
+      alert('Por favor, preencha os campos obrigatórios.');
+      return;
+    }
+
+    const etiquetasNecessarias = Math.ceil(totalPecas / pecasPorCaixa);
+    const etiquetasCompletas = Math.floor(totalPecas / pecasPorCaixa);
+    const pecasExtras = totalPecas % pecasPorCaixa;
+
+    const resultado = 
+    `Total de etiquetas: ${etiquetasNecessarias} <br>
+    ${pecasExtras > 0 ? `(${etiquetasCompletas} completas + ${pecasExtras} extra com ${pecasExtras} peças)` : ''}`;
+
+    document.getElementById('resultado').innerHTML = resultado;
+    document.getElementById('resultado').style.display = 'block';
+    document.getElementById('resultadoToupu').style.display = 'none';
+
+
+    const novoRegistro = {
+      id: nextId++,
+      data: new Date().toLocaleString(),
+      codigoPeca,
+      numeroLote,
+      totalPecas,
+      pecasPorCaixa,
+      etiquetasNecessarias,
+      pecasExtras,
+      etiquetasUsadas: 0,
+      observacoes
+    };
+
+    registros.unshift(novoRegistro);
+    salvarRegistroFirebase(novoRegistro);
+    atualizarTabela();
+
+    const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
+    if (mostrarCalculos) {
+      const calculosDetalhados = `
+        <p>Total de Peças: ${totalPecas}</p>
+        <p>Peças por Caixa: ${pecasPorCaixa}</p>
+        <p>Matemática:</p>
+        <p>${totalPecas} / ${pecasPorCaixa} = ${totalPecas / pecasPorCaixa}</p>
+        <p>${etiquetasCompletas} * ${pecasPorCaixa} = ${etiquetasCompletas * pecasPorCaixa}</p>
+        <p>${totalPecas} - ${etiquetasCompletas * pecasPorCaixa} = ${pecasExtras}</p>
+      `;
+      document.getElementById('calculosConteudo').innerHTML = calculosDetalhados;
+      document.getElementById('calculosDetalhados').style.display = 'block';
+    } else {
+      document.getElementById('calculosDetalhados').style.display = 'none';
+    }
+  }
+  function calcularEtiquetasToupu() {
+    const codigoPeca = document.getElementById('codigoPecaToupu').value;
+    const numeroLote = document.getElementById('numeroLoteToupu').value;
+    const totalPecas = parseInt(document.getElementById('totalPecasToupu').value);
+    const observacoes = document.getElementById('observacoesToupu').value;
+
+    if (!codigoPeca || !totalPecas) {
+      alert('Por favor, preencha os campos obrigatórios.');
+      return;
+    }
+
+    const toupuData = toupuCodes[codigoPeca];
+    if (!toupuData) {
+      alert('Código Toupu inválido.');
+      return;
+    }
+
+    const totalPaletes = Math.ceil(totalPecas / toupuData.totalPorPalete);
+    const sacosCompletos = Math.floor(totalPecas / toupuData.pecasPorSaco);
+    const pecasExtras = totalPecas % toupuData.pecasPorSaco;
+    const etiquetasNecessarias = sacosCompletos + (pecasExtras > 0 ? 1 : 0);
+
+    const resultado = `Total de paletes: ${totalPaletes}, Etiquetas necessárias: ${etiquetasNecessarias}${pecasExtras > 0 ? ` (${sacosCompletos} completas + 1 extra com ${pecasExtras} peças)` : ''}`;
+    document.getElementById('resultadoToupu').textContent = resultado;
+    document.getElementById('resultadoToupu').style.display = 'block';
+    document.getElementById('resultado').style.display = 'none';
+
+
+    const novoRegistro = {
+      id: `T${nextIdToupu++}`,
+      data: new Date().toLocaleString(),
+      codigoPeca,
+      numeroLote,
+      pecasPorSaco: toupuData.pecasPorSaco,
+      sacosPorPalete: toupuData.sacosPorPalete,
+      totalPaletes,
+      etiquetasNecessarias,
+      etiquetasCompletas: sacosCompletos,
+      pecasExtras,
+      etiquetasUsadas: 0,
+      totalPecas,
+      observacoes
+    };
+
+    registrosToupu.unshift(novoRegistro);
+    salvarRegistroToupuFirebase(novoRegistro);
+    atualizarTabelaToupu();
+
+    const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
+    if (mostrarCalculos) {
+      const calculosToupuDetalhados = `
+        <p>Total de Peças: ${totalPecas}</p>
+        <p>Peças por Saco: ${toupuData.pecasPorSaco}</p>
+        <p>Matemática:</p>
+        <p>${totalPecas} / ${toupuData.pecasPorSaco} = ${totalPecas / toupuData.pecasPorSaco}</p>
+        <p>${sacosCompletos} * ${toupuData.pecasPorSaco} = ${sacosCompletos * toupuData.pecasPorSaco}</p>
+        <p>${totalPecas} - ${sacosCompletos * toupuData.pecasPorSaco} = ${pecasExtras}</p>
+      `;
+      document.getElementById('calculosToupuConteudo').innerHTML = calculosToupuDetalhados;
+      document.getElementById('calculosToupuDetalhados').style.display = 'block';
+      
+    } else {
+      document.getElementById('calculosToupuDetalhados').style.display = 'none';
+    }
+  }
+
+  // 8. funçoes exportar dados
+  function salvarPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const allRegistros = [...registros, ...registrosToupu];
+    allRegistros.sort((a, b) => new Date(b.data) - new Date(a.data));
 
     // Título - Fundo azul escuro e texto branco
-    docToupu.setFillColor(0, 51, 153); // Azul escuro
-    docToupu.rect(10, 10, 190, 10, 'F'); // Fundo do título
-    docToupu.setTextColor(255, 255, 255); // Texto branco
-    docToupu.setFontSize(14);
-  
+    doc.setFillColor(0, 51, 153); // Azul escuro
+    doc.rect(10, 10, 190, 10, 'F'); // Fundo do título
+    doc.setTextColor(255, 255, 255); // Texto branco
+    doc.setFontSize(14);
+    
+    // Texto do título
+    doc.text("Relatório de registros", 14, 17);
 
-  // Título da tabela Toupu
-  docToupu.text("Relatório de Registros Toupu", 14, 17);
+    // Adiciona a data do documento no canto superior direito
+    const dataAtual = new Date().toLocaleDateString('pt-BR');
+    doc.text(`criado em: ${dataAtual}`, 130, 17); // Alinha à direita com o texto "Relatório criado em:"
 
+    // Resetando cores para a tabela
+    doc.setTextColor(0, 0, 0); // Texto preto para o conteúdo da tabela
 
-  // Adiciona a data do documento no canto superior direito
-  docToupu.text(`criado em: ${dataAtual}`, 130, 17); // Alinha à direita com o texto "Relatório
+    const columns = [
+      "ID", "Data", "Código", "Lote", "Total de\nPeças", "Peças por\nCaixa",
+      "Peças\nExtras", "Etiquetas\nNecessárias", "Etiquetas\nUsadas", "Observações"
+    ];
 
+    const data = registros.map(r => [
+      r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
+      r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
+    ]);
 
-  const columnsToupu = [
-    "ID", "Data", "Código", "Lote", "Peças\npor Saco", "Sacos por\nPalete",
-    "Etiquetas\nNecessárias ", "Etiquetas\nUsadas", "Total de\n Paletes", "Observações"
-  ];
-
-  const dataToupu = registrosToupu.map(r => [
-    r.id, r.data, r.codigoPeca, r.numeroLote, r.pecasPorSaco, r.sacosPorPalete,
-    r.etiquetasNecessarias, r.etiquetasUsadas, r.totalPaletes, r.observacoes
-  ]);
-
-  // Configurações da tabela Toupu
-  docToupu.autoTable({
-    head: [columnsToupu],
-    body: dataToupu,
-    startY: 20,
-    theme: 'grid',
-    styles: {
-      fontSize: 7, // Diminuindo o tamanho da fonte
-      cellPadding: 2, // Reduzindo o espaçamento entre as células
-      minCellHeight: 8, // Altura mínima das células
-      textColor: [0, 0, 0], // Texto preto
-      valign: 'middle', // Alinhamento vertical no meio
-      halign: 'center' // Alinhamento à esquerda
-    },
-    headStyles: {
-      fillColor: [0, 0, 128], // Azul escuro no cabeçalho
-      textColor: [255, 255, 255], // Texto branco no cabeçalho
-      fontSize: 9, // Tamanho da fonte do cabeçalho
-      halign: 'center' // Texto centralizado nos títulos das colunas
-    },
-    alternateRowStyles: {
-          fillColor: [224, 247, 250]
+    // Configurações da tabela
+    doc.autoTable({
+      head: [columns],
+      body: data,
+      startY: 30, // Abaixo do título
+      theme: 'grid',
+      styles: {
+        fontSize: 7, // Diminuindo o tamanho da fonte
+        cellPadding: 2, // Reduzindo o espaçamento entre as células
+        minCellHeight: 8, // Altura mínima das células
+        textColor: [0, 0, 0], // Texto preto
+        valign: 'middle', // Alinhamento vertical no meio
+        halign: 'center' // Alinhamento à esquerda
+      },
+      headStyles: {
+        fillColor: [0, 0, 128], // Azul escuro no cabeçalho
+        textColor: [255, 255, 255], // Texto branco no cabeçalho
+        fontSize: 9, // Tamanho da fonte do cabeçalho
+        halign: 'center' // Texto centralizado nos títulos das colunas
         },
-    columnStyles: {
-      0: { cellWidth: 'auto' }, 
-      1: { cellWidth: 'auto' },
-      4: { cellWidth: 'auto' }, // "Total de Peças"
-      5: { cellWidth: 'auto' }, // "Peças por Caixa"
-      6: { cellWidth: 'auto' }, // "Peças Extras"
-      7: { cellWidth: 'auto' }, // "Etiquetas Necessárias"
-      8: { cellWidth: 'auto' }  // "Etiquetas Usadas"
-    },
-    bodyStyles: function (data, rowIndex) {
-      // Alternar fundo das linhas
-      return {
-        fillColor: rowIndex % 2 === 0 ? [240, 240, 240] : [173, 216, 230] // Alternância de fundo
-      };
-    }
-  });
-
-  // Salvando o documento
-  docToupu.save(`RelatorioToupu ${dataAtual}.pdf`);
-}
-  
-
-
-function salvarXLSX() {
-  // Cria uma nova pasta de trabalho (workbook) e planilha (worksheet)
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet([]);
-
-  // Define o título do relatório e a data
-  const title = "Relatório de registros de etiquetas";
-  const date = new Date();
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
-  const year = date.getFullYear();
-  const formattedDate = `${day}-${month}-${year}`; // Formata para DD-MM-YYYY
-  const readableDate = date.toLocaleDateString('pt-BR'); // Para exibir no relatório
-  XLSX.utils.sheet_add_aoa(ws, [[`${title} criado em: ${readableDate}`]], { origin: 'A1' });
-
-  // Cabeçalhos da planilha
-  const headers = [
-    "ID", "Data", "Código", "Lote", "Total de Peças", "Peças por Caixa",
-    "Peças Extras", "Etiquetas Necessárias", "Etiquetas Usadas", "Observações"
-  ];
-  XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
-
-  // Adiciona os dados dos registros
-  const data = registros.map(r => [
-    r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
-    r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
-  ]);
-  XLSX.utils.sheet_add_aoa(ws, data, { origin: 'A3' });
-
-  // Definir a largura das colunas
-  const colWidths = [10, 20, 15, 15, 15, 15, 15, 20, 15, 30];
-  ws['!cols'] = colWidths.map(w => ({ wch: w }));
-
-  // Estilo do cabeçalho
-  const headerStyle = {
-    fill: { fgColor: { rgb: "000080" } }, // Cor de fundo azul escuro
-    font: { color: { rgb: "FFFFFF" }, bold: true }, // Texto branco e negrito
-    alignment: { horizontal: "center", vertical: "center" } // Alinhamento centralizado
-  };
-
-  // Estilo para as linhas pares e ímpares
-  const evenRowStyle = { fill: { fgColor: { rgb: "E6E6E6" } }, alignment: { horizontal: "center" } }; // Cinza claro para linhas pares
-  const oddRowStyle = { fill: { fgColor: { rgb: "FFFFFF" } }, alignment: { horizontal: "center" } }; // Branco para linhas ímpares
-
-  // Centralizar o título
-  const titleCell = XLSX.utils.encode_cell({ r: 0, c: 0 });
-  if (!ws[titleCell]) ws[titleCell] = {};
-  ws[titleCell].s = { alignment: { horizontal: "center" } };
-
-  // Aplicar estilo ao cabeçalho
-  for (let i = 0; i < headers.length; i++) {
-    const cell = XLSX.utils.encode_cell({ r: 1, c: i });
-    if (!ws[cell]) ws[cell] = {};
-    ws[cell].s = headerStyle;
-  }
-
-  // Aplicar estilo às linhas de dados (alternando cores e centralizando)
-  for (let i = 0; i < data.length; i++) {
-    const rowStyle = i % 2 === 0 ? evenRowStyle : oddRowStyle; // Alterna a cor das linhas
-    for (let j = 0; j < headers.length; j++) {
-      const cell = XLSX.utils.encode_cell({ r: i + 2, c: j });
-      if (!ws[cell]) ws[cell] = {};
-      ws[cell].s = rowStyle;
-    }
-  }
-
-  // Criar uma nova planilha para os registros Toupu
-  const wsToupu = XLSX.utils.json_to_sheet([]);
-
-  // Define o título do relatório e a data
-  const titleToupu = "Relatório de Registros Toupu";
-  XLSX.utils.sheet_add_aoa(wsToupu, [[`${titleToupu} criado em: ${readableDate}`]], { origin: 'A1' });
-
-  // Cabeçalhos da planilha
-  const headersToupu = [
-    "ID", "Data", "Código", "Lote", "Peças por Saco", "Sacos por Palete",
-    "Etiquetas Necessárias", "Etiquetas Usadas", "Total de Paletes", "Observações"
-  ];
-  XLSX.utils.sheet_add_aoa(wsToupu, [headersToupu], { origin: 'A2' });
-
-  // Adiciona os dados dos registros Toupu
-  const dataToupu = registrosToupu.map(r => [
-    r.id, r.data, r.codigoPeca, r.numeroLote, r.pecasPorSaco, r.sacosPorPalete,
-    r.etiquetasNecessarias, r.etiquetasUsadas, r.totalPaletes, r.observacoes
-  ]);
-  XLSX.utils.sheet_add_aoa(wsToupu, dataToupu, { origin: 'A3' });
-
-  // Definir a largura das colunas
-  const colWidthsToupu = [10, 20, 15, 15, 15, 15, 20, 15, 15, 30];
-  wsToupu['!cols'] = colWidthsToupu.map(w => ({ wch: w }));
-
-  // Estilo do cabeçalho
-  const headerStyleToupu = {
-    fill: { fgColor: { rgb: "000080" } }, // Cor de fundo azul escuro
-    font: { color: { rgb: "FFFFFF" }, bold: true }, // Texto branco e negrito
-    alignment: { horizontal: "center", vertical: "center" } // Alinhamento centralizado
-  };
-
-  // Estilo para as linhas pares e ímpares
-  const evenRowStyleToupu = { fill: { fgColor: { rgb: "E6E6E6" } }, alignment: { horizontal: "center" } }; // Cinza claro para linhas pares
-  const oddRowStyleToupu = { fill: { fgColor: { rgb: "FFFFFF" } }, alignment: { horizontal: "center" } }; // Branco para linhas ímpares
-
-  // Centralizar o título
-  const titleCellToupu = XLSX.utils.encode_cell({ r: 0, c: 0 });
-  if (!wsToupu[titleCellToupu]) wsToupu[titleCellToupu] = {};
-  wsToupu[titleCellToupu].s = { alignment: { horizontal: "center" } };
-
-  // Aplicar estilo ao cabeçalho
-  for (let i = 0; i < headersToupu.length; i++) {
-    const cell = XLSX.utils.encode_cell({ r: 1, c: i });
-    if (!wsToupu[cell]) wsToupu[cell] = {};
-    wsToupu[cell].s = headerStyleToupu;
-  }
-
-  // Aplicar estilo às linhas de dados (alternando cores e centralizando)
-  for (let i = 0; i < dataToupu.length; i++) {
-    const rowStyle = i % 2 === 0 ? evenRowStyleToupu : oddRowStyleToupu; // Alterna a cor das linhas
-    for (let j = 0; j < headersToupu.length; j++) {
-      const cell = XLSX.utils.encode_cell({ r: i + 2, c: j });
-      if (!wsToupu[cell]) wsToupu[cell] = {};
-      wsToupu[cell].s = rowStyle;
-    }
-  }
-
-  // Adicionar as planilhas ao livro e salvar os arquivos
-  XLSX.utils.book_append_sheet(wb, ws, "Registros Gerais");
-  XLSX.utils.book_append_sheet(wb, wsToupu, "Registros Toupu");
-  XLSX.writeFile(wb, `Relatorio_Registros_Completo_${formattedDate}.xlsx`); // Inclui a data no nome do arquivo
-}
-
-
-    function mostrarAcoes() {
-      document.getElementById('acoesModal').style.display = 'block';
-    }
-  
-    function confirmarApagarTodos() {
-        document.getElementById('confirmarApagarTodosModal').style.display = 'block';
+        alternateRowStyles: {
+            fillColor: [224, 247, 250]
+          },
+      columnStyles: {
+        0: { cellWidth: 'auto' }, 
+        1: { cellWidth: 'auto' },
+        4: { cellWidth: 'auto' }, // "Total de Peças"
+        5: { cellWidth: 'auto' }, // "Peças por Caixa"
+        6: { cellWidth: 'auto' }, // "Peças Extras"
+        7: { cellWidth: 'auto' }, // "Etiquetas Necessárias"
+        8: { cellWidth: 'auto' }  // "Etiquetas Usadas"
+      },
+      bodyStyles: function (data, rowIndex) {
+        // Alternar fundo das linhas
+        return {
+          fillColor: rowIndex % 2 === 0 ? [240, 240, 240] : [173, 216, 230] // Alternância de fundo
+        };
       }
-
-      document.getElementById('confirmarApagarTodosBtn').addEventListener('click', () => {
-        document.getElementById('confirmarApagarTodosModal').style.display = 'none';
-        document.getElementById('confirmarApagarModal').style.display = 'block';
-      });
-
-      document.getElementById('cancelarApagarTodosBtn').addEventListener('click', () => {
-        document.getElementById('confirmarApagarTodosModal').style.display = 'none';
-      });
-        
-
-    function apagarTodosRegistros() {
-  const senha = document.getElementById('senhaAdmin').value;
-  if (senha === "Medeiros") {
-    registros = [];
-    registrosToupu = [];
-    nextId = 1;
-    nextIdToupu = 1;
-    atualizarTabela();
-    atualizarTabelaToupu();
-    salvarLocalStorage();
-    salvarLocalStorageToupu();
-    db.collection("registros").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        doc.ref.delete();
-      });
     });
-    db.collection("registrosToupu").get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        doc.ref.delete();
-      });
+
+    // Salvando o documento
+    doc.save(`RelatorioGeral ${dataAtual}.pdf`);
+
+    // Criando um novo documento para os registros Toupu
+    const docToupu = new jsPDF();
+
+      // Título - Fundo azul escuro e texto branco
+      docToupu.setFillColor(0, 51, 153); // Azul escuro
+      docToupu.rect(10, 10, 190, 10, 'F'); // Fundo do título
+      docToupu.setTextColor(255, 255, 255); // Texto branco
+      docToupu.setFontSize(14);
+    
+    // Título da tabela Toupu
+    docToupu.text("Relatório de Registros Toupu", 14, 17);
+
+
+    // Adiciona a data do documento no canto superior direito
+    docToupu.text(`criado em: ${dataAtual}`, 130, 17); // Alinha à direita com o texto "Relatório
+
+    const columnsToupu = [
+      "ID", "Data", "Código", "Lote", "Peças\npor Saco", "Sacos por\nPalete",
+      "Etiquetas\nNecessárias ", "Etiquetas\nUsadas", "Total de\n Paletes", "Observações"
+    ];
+
+    const dataToupu = registrosToupu.map(r => [
+      r.id, r.data, r.codigoPeca, r.numeroLote, r.pecasPorSaco, r.sacosPorPalete,
+      r.etiquetasNecessarias, r.etiquetasUsadas, r.totalPaletes, r.observacoes
+    ]);
+
+    // Configurações da tabela Toupu
+    docToupu.autoTable({
+      head: [columnsToupu],
+      body: dataToupu,
+      startY: 20,
+      theme: 'grid',
+      styles: {
+        fontSize: 7, // Diminuindo o tamanho da fonte
+        cellPadding: 2, // Reduzindo o espaçamento entre as células
+        minCellHeight: 8, // Altura mínima das células
+        textColor: [0, 0, 0], // Texto preto
+        valign: 'middle', // Alinhamento vertical no meio
+        halign: 'center' // Alinhamento à esquerda
+      },
+      headStyles: {
+        fillColor: [0, 0, 128], // Azul escuro no cabeçalho
+        textColor: [255, 255, 255], // Texto branco no cabeçalho
+        fontSize: 9, // Tamanho da fonte do cabeçalho
+        halign: 'center' // Texto centralizado nos títulos das colunas
+      },
+      alternateRowStyles: {
+            fillColor: [224, 247, 250]
+          },
+      columnStyles: {
+        0: { cellWidth: 'auto' }, 
+        1: { cellWidth: 'auto' },
+        4: { cellWidth: 'auto' }, // "Total de Peças"
+        5: { cellWidth: 'auto' }, // "Peças por Caixa"
+        6: { cellWidth: 'auto' }, // "Peças Extras"
+        7: { cellWidth: 'auto' }, // "Etiquetas Necessárias"
+        8: { cellWidth: 'auto' }  // "Etiquetas Usadas"
+      },
+      bodyStyles: function (data, rowIndex) {
+        // Alternar fundo das linhas
+        return {
+          fillColor: rowIndex % 2 === 0 ? [240, 240, 240] : [173, 216, 230] // Alternância de fundo
+        };
+      }
     });
-    fecharModal();
-  } else {
-    alert("Senha incorreta.");
+
+    // Salvando o documento
+    docToupu.save(`RelatorioToupu ${dataAtual}.pdf`);
   }
-}
+  function salvarXLSX() {
+    // Cria uma nova pasta de trabalho (workbook) e planilha (worksheet)
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet([]);
 
-    function confirmarExclusaoRegistro(id) {
+    // Define o título do relatório e a data
+    const title = "Relatório de registros de etiquetas";
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Janeiro é 0
+    const year = date.getFullYear();
+    const formattedDate = `${day}-${month}-${year}`; // Formata para DD-MM-YYYY
+    const readableDate = date.toLocaleDateString('pt-BR'); // Para exibir no relatório
+    XLSX.utils.sheet_add_aoa(ws, [[`${title} criado em: ${readableDate}`]], { origin: 'A1' });
+
+    // Cabeçalhos da planilha
+    const headers = [
+      "ID", "Data", "Código", "Lote", "Total de Peças", "Peças por Caixa",
+      "Peças Extras", "Etiquetas Necessárias", "Etiquetas Usadas", "Observações"
+    ];
+    XLSX.utils.sheet_add_aoa(ws, [headers], { origin: 'A2' });
+
+    // Adiciona os dados dos registros
+    const data = registros.map(r => [
+      r.id, r.data, r.codigoPeca, r.numeroLote, r.totalPecas, r.pecasPorCaixa,
+      r.pecasExtras, r.etiquetasNecessarias, r.etiquetasUsadas, r.observacoes
+    ]);
+    XLSX.utils.sheet_add_aoa(ws, data, { origin: 'A3' });
+
+    // Definir a largura das colunas
+    const colWidths = [10, 20, 15, 15, 15, 15, 15, 20, 15, 30];
+    ws['!cols'] = colWidths.map(w => ({ wch: w }));
+
+    // Estilo do cabeçalho
+    const headerStyle = {
+      fill: { fgColor: { rgb: "000080" } }, // Cor de fundo azul escuro
+      font: { color: { rgb: "FFFFFF" }, bold: true }, // Texto branco e negrito
+      alignment: { horizontal: "center", vertical: "center" } // Alinhamento centralizado
+    };
+
+    // Estilo para as linhas pares e ímpares
+    const evenRowStyle = { fill: { fgColor: { rgb: "E6E6E6" } }, alignment: { horizontal: "center" } }; // Cinza claro para linhas pares
+    const oddRowStyle = { fill: { fgColor: { rgb: "FFFFFF" } }, alignment: { horizontal: "center" } }; // Branco para linhas ímpares
+
+    // Centralizar o título
+    const titleCell = XLSX.utils.encode_cell({ r: 0, c: 0 });
+    if (!ws[titleCell]) ws[titleCell] = {};
+    ws[titleCell].s = { alignment: { horizontal: "center" } };
+
+    // Aplicar estilo ao cabeçalho
+    for (let i = 0; i < headers.length; i++) {
+      const cell = XLSX.utils.encode_cell({ r: 1, c: i });
+      if (!ws[cell]) ws[cell] = {};
+      ws[cell].s = headerStyle;
+    }
+
+    // Aplicar estilo às linhas de dados (alternando cores e centralizando)
+    for (let i = 0; i < data.length; i++) {
+      const rowStyle = i % 2 === 0 ? evenRowStyle : oddRowStyle; // Alterna a cor das linhas
+      for (let j = 0; j < headers.length; j++) {
+        const cell = XLSX.utils.encode_cell({ r: i + 2, c: j });
+        if (!ws[cell]) ws[cell] = {};
+        ws[cell].s = rowStyle;
+      }
+    }
+
+    // Criar uma nova planilha para os registros Toupu
+    const wsToupu = XLSX.utils.json_to_sheet([]);
+
+    // Define o título do relatório e a data
+    const titleToupu = "Relatório de Registros Toupu";
+    XLSX.utils.sheet_add_aoa(wsToupu, [[`${titleToupu} criado em: ${readableDate}`]], { origin: 'A1' });
+
+    // Cabeçalhos da planilha
+    const headersToupu = [
+      "ID", "Data", "Código", "Lote", "Peças por Saco", "Sacos por Palete",
+      "Etiquetas Necessárias", "Etiquetas Usadas", "Total de Paletes", "Observações"
+    ];
+    XLSX.utils.sheet_add_aoa(wsToupu, [headersToupu], { origin: 'A2' });
+
+    // Adiciona os dados dos registros Toupu
+    const dataToupu = registrosToupu.map(r => [
+      r.id, r.data, r.codigoPeca, r.numeroLote, r.pecasPorSaco, r.sacosPorPalete,
+      r.etiquetasNecessarias, r.etiquetasUsadas, r.totalPaletes, r.observacoes
+    ]);
+    XLSX.utils.sheet_add_aoa(wsToupu, dataToupu, { origin: 'A3' });
+
+    // Definir a largura das colunas
+    const colWidthsToupu = [10, 20, 15, 15, 15, 15, 20, 15, 15, 30];
+    wsToupu['!cols'] = colWidthsToupu.map(w => ({ wch: w }));
+
+    // Estilo do cabeçalho
+    const headerStyleToupu = {
+      fill: { fgColor: { rgb: "000080" } }, // Cor de fundo azul escuro
+      font: { color: { rgb: "FFFFFF" }, bold: true }, // Texto branco e negrito
+      alignment: { horizontal: "center", vertical: "center" } // Alinhamento centralizado
+    };
+
+    // Estilo para as linhas pares e ímpares
+    const evenRowStyleToupu = { fill: { fgColor: { rgb: "E6E6E6" } }, alignment: { horizontal: "center" } }; // Cinza claro para linhas pares
+    const oddRowStyleToupu = { fill: { fgColor: { rgb: "FFFFFF" } }, alignment: { horizontal: "center" } }; // Branco para linhas ímpares
+
+    // Centralizar o título
+    const titleCellToupu = XLSX.utils.encode_cell({ r: 0, c: 0 });
+    if (!wsToupu[titleCellToupu]) wsToupu[titleCellToupu] = {};
+    wsToupu[titleCellToupu].s = { alignment: { horizontal: "center" } };
+
+    // Aplicar estilo ao cabeçalho
+    for (let i = 0; i < headersToupu.length; i++) {
+      const cell = XLSX.utils.encode_cell({ r: 1, c: i });
+      if (!wsToupu[cell]) wsToupu[cell] = {};
+      wsToupu[cell].s = headerStyleToupu;
+    }
+
+    // Aplicar estilo às linhas de dados (alternando cores e centralizando)
+    for (let i = 0; i < dataToupu.length; i++) {
+      const rowStyle = i % 2 === 0 ? evenRowStyleToupu : oddRowStyleToupu; // Alterna a cor das linhas
+      for (let j = 0; j < headersToupu.length; j++) {
+        const cell = XLSX.utils.encode_cell({ r: i + 2, c: j });
+        if (!wsToupu[cell]) wsToupu[cell] = {};
+        wsToupu[cell].s = rowStyle;
+      }
+    }
+
+    // Adicionar as planilhas ao livro e salvar os arquivos
+    XLSX.utils.book_append_sheet(wb, ws, "Registros Gerais");
+    XLSX.utils.book_append_sheet(wb, wsToupu, "Registros Toupu");
+    XLSX.writeFile(wb, `Relatorio_Registros_Completo_${formattedDate}.xlsx`); // Inclui a data no nome do arquivo
+  }
+
+  // 9. funçoes gerenciar modal
+  function mostrarAcoes() {
+    document.getElementById('acoesModal').style.display = 'block';
+  }
+  function confirmarApagarTodos() {
+      document.getElementById('confirmarApagarTodosModal').style.display = 'block';
+    }
+  function apagarTodosRegistros() {
+    const senha = document.getElementById('senhaAdmin').value;
+    if (senha === "Medeiros") {
+      registros = [];
+      registrosToupu = [];
+      nextId = 1;
+      nextIdToupu = 1;
+      atualizarTabela();
+      atualizarTabelaToupu();
+      salvarLocalStorage();
+      salvarLocalStorageToupu();
+      db.collection("registros").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+      db.collection("registrosToupu").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+      fecharModal();
+    } else {
+      alert("Senha incorreta.");
+    }
+  }
+  function confirmarExclusaoRegistro(id) {
     registroParaExcluir = id;
     document.getElementById('confirmarExclusaoModal').style.display = 'block';
   }
-
   function excluirRegistroConfirmado() {
     if (registroParaExcluir !== null) {
       const index = registros.findIndex(r => r.id === registroParaExcluir);
@@ -2137,355 +2272,277 @@ function salvarXLSX() {
       registroParaExcluir = null;
     }
   }
-  
-    function fecharModal() {
-      document.getElementById('acoesModal').style.display = 'none';
-      document.getElementById('confirmarApagarModal').style.display = 'none';
-      document.getElementById('editModal').style.display = 'none';
-      document.getElementById('calculosModal').style.display = 'none';
-      document.getElementById('confirmarExclusaoModal').style.display = 'none';
+  function confirmarExclusaoRegistroToupu(id) {
+  registroParaExcluirToupu = id;
+  document.getElementById('confirmarExclusaoToupuModal').style.display = 'block';
+}
+
+function excluirRegistroToupuConfirmado() {
+  if (registroParaExcluirToupu !== null) {
+    const index = registrosToupu.findIndex(r => r.id === registroParaExcluirToupu);
+    if (index !== -1) {
+      registrosToupu.splice(index, 1);
+      atualizarTabelaToupu();
+      salvarLocalStorageToupu();
+      excluirRegistroToupuFirebase(registroParaExcluirToupu);
     }
-  
-    document.querySelectorAll('.close').forEach(closeBtn => {
-      closeBtn.addEventListener('click', fecharModal);
+    registroParaExcluirToupu = null;
+    document.getElementById('confirmarExclusaoToupuModal').style.display = 'none';
+  }
+}
+
+document.getElementById('confirmarExclusaoToupuBtn').addEventListener('click', excluirRegistroToupuConfirmado);
+document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fecharModal);
+  function fecharModal() {
+    // Oculta todos os modais
+    document.getElementById('acoesModal').style.display = 'none';
+    document.getElementById('confirmarApagarModal').style.display = 'none';
+    document.getElementById('editModal').style.display = 'none';
+    document.getElementById('calculosModal').style.display = 'none';
+    document.getElementById('confirmarExclusaoModal').style.display = 'none';
+  }
+
+  // Adiciona evento para botões de fechar
+  document.querySelectorAll('.close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', fecharModal);
+  });
+
+  // Botão para cancelar exclusão
+  document.getElementById('cancelarExclusaoBtn').addEventListener('click', fecharModal);
+
+  // Botão para confirmar exclusão
+  document.getElementById('confirmarExclusaoBtn').addEventListener('click', excluirRegistroConfirmado);
+
+  // Botão para salvar edição e fechar modal
+  document.getElementById('salvarEdicao').addEventListener('click', () => {
+    const index = document.getElementById('editIndex').value;
+    const etiquetasNecessarias = parseInt(document.getElementById('editEtiquetasNecessarias').value);
+    const pecasExtras = parseInt(document.getElementById('editPecasExtras').value);
+    const pecasPorCaixa = registros[index].pecasPorCaixa;
+    
+    if (pecasExtras >= pecasPorCaixa) {
+      document.getElementById('editPecasExtras').value = pecasPorCaixa - 1;
+      return atualizarCalculosEdicao();
+    }
+    
+    const totalPecas = etiquetasNecessarias * pecasPorCaixa + pecasExtras;
+    const etiquetasReais = etiquetasNecessarias + (pecasExtras > 0 ? 1 : 0);
+
+    // Atualiza registro
+    registros[index] = {
+      ...registros[index],
+      codigoPeca: document.getElementById('editCodigoPeca').value,
+      numeroLote: document.getElementById('editNumeroLote').value,
+      totalPecas: totalPecas,
+      etiquetasNecessarias: etiquetasReais,
+      pecasExtras: pecasExtras,
+      etiquetasUsadas: etiquetasReais,
+      observacoes: document.getElementById('editObservacoes').value
+    };
+    
+    atualizarTabela();
+    salvarLocalStorage();
+    atualizarRegistroFirebase(registros[index]);
+    fecharModal();
+  });
+
+  // 10. inicialização e configuração
+  function setupAutocomplete() {
+    const inputs = ['codigoPeca', 'numeroLote', 'observacoes'];
+    inputs.forEach(inputId => {
+      const input = document.getElementById(inputId);
+      const datalist = document.createElement('datalist');
+      datalist.id = `${inputId}List`;
+      input.setAttribute('list', datalist.id);
+      document.body.appendChild(datalist);
+
+      input.addEventListener('input', () => {
+        updateAutocompleteOptions(inputId, input.value);
+      });
     });
-  
-    document.getElementById('cancelarExclusaoBtn').addEventListener('click', fecharModal);
-    document.getElementById('confirmarExclusaoBtn').addEventListener('click', excluirRegistroConfirmado);
+  }
+  function updateAutocompleteOptions(inputId, value) {
+    const datalist = document.getElementById(`${inputId}List`);
+    datalist.innerHTML = '';
+    const options = new Set(registros.map(r => r[inputId]).filter(v => v && v.toLowerCase().includes(value.toLowerCase())));
+    options.forEach(option => {
+      const optionElement = document.createElement('option');
+      optionElement.value = option;
+      datalist.appendChild(optionElement);
+    });
+  }
+
+  setupAutocomplete();
+  function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    if (username === 'Qualidade' && password === 'Qualidade') {
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+      carregarRegistrosFirebase();
+    } else {
+      alert('Usuário ou senha incorretos.');
+    }
+  }
+
+  window.onload = function() {
+    document.getElementById('loginForm').style.display = 'flex';
+    document.getElementById('appContainer').style.display = 'none';
+  }
+
+
+  // Função para atualizar a exibição dos elementos com base no modo Toupu
+  function atualizarExibicaoToupu(isToupuMode) {
+    // Oculta ou mostra elementos com base no modo Toupu
+    document.querySelector('.normal-inputs').style.display = isToupuMode ? 'none' : 'flex';
+    document.querySelector('.toupu-inputs').style.display = isToupuMode ? 'flex' : 'none';
+    document.getElementById('registrosTable').style.display = isToupuMode ? 'none' : 'table';
+    document.getElementById('registrosToupuTable').style.display = isToupuMode ? 'table' : 'none';
+    document.querySelector('.normal-search').style.display = isToupuMode ? 'none' : 'block';
+    document.querySelector('.toupu-search').style.display = isToupuMode ? 'block' : 'none';
+    document.getElementById('calculosToupuDetalhados').style.display = 'none';
+  }
+
+  // Adiciona ouvintes de eventos aos elementos do DOM
+  document.getElementById('calcular').addEventListener('click', calcularEtiquetas);
+  document.getElementById('calcularToupu').addEventListener('click', calcularEtiquetasToupu);
+  document.getElementById('searchInput').addEventListener('input', filtrarRegistros);
+  document.getElementById('searchInputToupu').addEventListener('input', filtrarRegistrosToupu);
+  document.getElementById('salvarPDF').addEventListener('click', salvarPDF);
+  document.getElementById('salvarXLSX').addEventListener('click', salvarXLSX);
+  document.getElementById('acoes').addEventListener('click', mostrarAcoes);
+  document.getElementById('sairAcoes').addEventListener('click', fecharModal);
+  document.getElementById('apagarTodos').addEventListener('click', confirmarApagarTodos);
+  document.getElementById('confirmarApagar').addEventListener('click', apagarTodosRegistros);
+  document.getElementById('toggleToupu').addEventListener('change', toggleToupuMode);
+
+  // Controla a exibição dos cálculos detalhados
+  document.getElementById('mostrarCalculos').addEventListener('change', function() {
+    document.getElementById('calculosToupuDetalhados').style.display = this.checked ? 'block' : 'none';
+  });
+
+  document.getElementById('confirmarApagarTodosBtn').addEventListener('click', () => {
+    document.getElementById('confirmarApagarTodosModal').style.display = 'none';
+    document.getElementById('confirmarApagarModal').style.display = 'block';
+  });
+
+  document.getElementById('cancelarApagarTodosBtn').addEventListener('click', () => {
+    document.getElementById('confirmarApagarTodosModal').style.display = 'none';
+  });
+
+  document.addEventListener('DOMContentLoaded', toggleToupuMode);
+
+  // Exemplo de funcionalidade de contagem de usuários (adapte com Firebase)
+  const connectedUsersRef = firebase.database().ref('connectedUsers');
+        const connectedRef = firebase.database().ref('.info/connected');
+
+        connectedRef.on('value', (snap) => {
+            if (snap.val() === true) {
+                const con = connectedUsersRef.push();
+                con.onDisconnect().remove();
+                con.set(true);
+            }
+        });
+
+        connectedUsersRef.on('value', (snap) => {
+            const connectedUsers = snap.numChildren();
+            document.getElementById('connectedUsersCount').textContent = connectedUsers;
+        });
     
 
-    document.getElementById('salvarEdicao').addEventListener('click', () => {
-      const index = document.getElementById('editIndex').value;
-      const etiquetasNecessarias = parseInt(document.getElementById('editEtiquetasNecessarias').value);
-      const pecasExtras = parseInt(document.getElementById('editPecasExtras').value);
-      const pecasPorCaixa = registros[index].pecasPorCaixa;
-      
-      if (isNaN(pecasExtras) || pecasExtras >= pecasPorCaixa) {
-        alert('Valor inválido para Peças Extras. Deve ser menor que Peças por Caixa.');
-        return;
-      }
-      
-      const totalPecas = etiquetasNecessarias * pecasPorCaixa + pecasExtras;
-      const etiquetasReais = etiquetasNecessarias + (pecasExtras > 0 ? 1 : 0);
-  
-      registros[index] = {
-        ...registros[index],
-        codigoPeca: document.getElementById('editCodigoPeca').value,
-        numeroLote: document.getElementById('editNumeroLote').value,
-        totalPecas: totalPecas,
-        etiquetasNecessarias: etiquetasReais,
-        pecasExtras: pecasExtras,
-        etiquetasUsadas: etiquetasReais,
-        observacoes: document.getElementById('editObservacoes').value
-      };
-      atualizarTabela();
-      salvarLocalStorage();
-      atualizarRegistroFirebase(registros[index]);
-      fecharModal();
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.classList.add("visible");
+    } else {
+      scrollToTopBtn.classList.remove("visible");
+    }
+  });
+
+  scrollToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
     });
-  
-    function salvarLocalStorage() {
-      localStorage.setItem('registrosEtiquetas', JSON.stringify(registros));
+  });
+
+  function toggleToupuMode() {
+  const isToupuMode = document.getElementById('toggleToupu').checked;
+
+  // Controle dos botões de registro
+  document.getElementById('calcular').style.display = isToupuMode ? 'none' : 'inline-block';
+  document.getElementById('calcularToupu').style.display = isToupuMode ? 'inline-block' : 'none';
+
+  // Controle da paginação
+  document.getElementById('pagination').style.display = isToupuMode ? 'none' : 'flex';
+  document.getElementById('paginationToupu').style.display = isToupuMode ? 'flex' : 'none';
+
+  document.querySelector('.normal-inputs').style.display = isToupuMode ? 'none' : 'flex';
+  document.querySelector('.toupu-inputs').style.display = isToupuMode ? 'flex' : 'none';
+  document.getElementById('registrosTable').style.display = isToupuMode ? 'none' : 'table';
+  document.getElementById('registrosToupuTable').style.display = isToupuMode ? 'table' : 'none';
+  document.querySelector('.normal-search').style.display = isToupuMode ? 'none' : 'block';
+  document.querySelector('.toupu-search').style.display = isToupuMode ? 'block' : 'none';
+
+  // Limpar o conteúdo do elemento #calculosConteudo e #calculosToupuConteudo
+  document.getElementById('calculosConteudo').innerHTML = '';
+  document.getElementById('calculosToupuConteudo').innerHTML = '';
+
+  // Atualiza a exibição dos cálculos detalhados com base no modo Toupu
+  document.getElementById('mostrarCalculos').addEventListener('change', function() {
+    if (isToupuMode) {
+      document.getElementById('calculosDetalhados').style.display = 'none';
+      document.getElementById('calculosToupuDetalhados').style.display = this.checked ? 'block' : 'none';
+    } else {
+      document.getElementById('calculosToupuDetalhados').style.display = 'none';
+      document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
     }
-  
-    function carregarLocalStorage() {
-      const savedRegistros = localStorage.getItem('registrosEtiquetas');
-      if (savedRegistros) {
-        registros = JSON.parse(savedRegistros);
-        nextId = Math.max(...registros.map(r => r.id)) + 1;
+  });
+
+  // Salvar registros no Firebase e atualizar a tabela quando o modo Toupu estiver desativado
+  if (!isToupuMode) {
+    registrosToupu.forEach(registro => {
+      if (!registro.id) { // Gera o ID apenas para novos registros
+        registro.id = `T${nextIdToupu}`;
+        nextIdToupu++;
       }
-    }
-  
-    function editarRegistro(id) {
-      const index = registros.findIndex(r => r.id === id);
-      if (index !== -1) {
-        const registro = registros[index];
-        document.getElementById('editIndex').value = index;
-        document.getElementById('editCodigoPeca').value = registro.codigoPeca;
-        document.getElementById('editNumeroLote').value = registro.numeroLote;
-        document.getElementById('editEtiquetasNecessarias').value = registro.etiquetasNecessarias;
-        document.getElementById('editPecasExtras').value = registro.pecasExtras;
-        document.getElementById('editObservacoes').value = registro.observacoes;
-        document.getElementById('editModal').style.display = 'block';
-        atualizarCalculosEdicao();
-      } else {
-        alert("ID de registro inválido.");
-      }
-    }
-  
-    function atualizarCalculosEdicao() {
-      const index = document.getElementById('editIndex').value;
-      const etiquetasNecessarias = parseInt(document.getElementById('editEtiquetasNecessarias').value) || 0;
-      const pecasExtras = parseInt(document.getElementById('editPecasExtras').value) || 0;
-      const pecasPorCaixa = registros[index].pecasPorCaixa;
-      
-      if (pecasExtras >= pecasPorCaixa) {
-        document.getElementById('editPecasExtras').value = pecasPorCaixa - 1;
-        return atualizarCalculosEdicao();
-      }
-      
-      const totalPecas = etiquetasNecessarias * pecasPorCaixa + pecasExtras;
-      const etiquetasReais = etiquetasNecessarias + (pecasExtras > 0 ? 1 : 0);
-      
-      document.getElementById('editTotalPecas').textContent = `Total de Peças: ${totalPecas}`;
-      document.getElementById('editEtiquetasNecessariasCalc').textContent = `Etiquetas Necessárias: ${etiquetasReais}${pecasExtras > 0 ? ` (${etiquetasNecessarias} completas + 1 extra)` : ''}`;
-    }
-  
-    document.getElementById('editEtiquetasNecessarias').addEventListener('input', atualizarCalculosEdicao);
-    document.getElementById('editPecasExtras').addEventListener('input', atualizarCalculosEdicao);
-  
-    function excluirRegistro(id) {
-      const index = registros.findIndex(r => r.id === id);
-      if (index !== -1) {
-        if (confirm(`Tem certeza que deseja excluir o registro ${id}?`)) {
-          registros.splice(index, 1);
-          atualizarTabela();
-          salvarLocalStorage();
-          excluirRegistroFirebase(id);
-          atualizarTabela();
-salvarLocalStorage();
-        }
-      } else {
-        alert("ID de registro inválido.");
-      }
-    }
-  
-    function atualizarEtiquetasUsadas(index, element) {
-      let valor = parseInt(element.textContent);
-      const registro = registros[index];
-      
-      if (isNaN(valor) || valor < 0) {
-        valor = 0;
-      } else if (valor > registro.etiquetasNecessarias) {
-        valor = registro.etiquetasNecessarias;
-      }
-      
-      registro.etiquetasUsadas = valor;
-      element.textContent = valor;
-      
-      if (valor === registro.etiquetasNecessarias) {
-        element.closest('tr').classList.add('used-all');
-      } else {
-        element.closest('tr').classList.remove('used-all');
-      }
-      
-      salvarLocalStorage();
-      atualizarRegistroFirebase(registro);
-    }
-  
-    carregarLocalStorage();
-    carregarRegistrosFirebase();
+      salvarRegistroToupuFirebase(registro); // Mantém os IDs existentes
+    });
+
+    atualizarTabelaToupu();
+    salvarLocalStorageToupu();
+  } else {
+    carregarRegistrosToupuFirebase(); // Carrega os registros Toupu do Firebase
+  }
+
+  // Atualizar a tabela e os campos de entrada com base no modo ativo
+  if (isToupuMode) {
+    atualizarTabelaToupu();
+    document.getElementById('codigoPecaToupu').focus();
+  } else {
     atualizarTabela();
-  
-    document.querySelectorAll('input[type="text"], input[type="number"]').forEach(input => {
-      input.setAttribute('autocomplete', 'on');
-    });
-
-    function atualizarEtiquetasUsadasToupu(index, element) {
-  let valor = parseInt(element.textContent);
-  const registro = registrosToupu[index];
-  
-  if (isNaN(valor) || valor < 0) {
-    valor = 0;
-  } else if (valor > registro.etiquetasNecessarias) {
-    valor = registro.etiquetasNecessarias;
-  }
-  
-  registro.etiquetasUsadas = valor;
-  element.textContent = valor;
-  
-  if (valor === registro .etiquetasNecessarias) {
-    element.closest('tr').classList.add('used-all');
-  } else {
-    element.closest('tr').classList.remove('used-all');
-  }
-  
-  salvarLocalStorageToupu();
-  atualizarRegistroToupuFirebase(registro);
-}
-
-
-function excluirRegistroToupu(id) {
-  if (!id.startsWith('T')) {
-    alert("ID de registro inválido.");
-    return;
-  }
-
-  const index = registrosToupu.findIndex(r => r.id === id);
-  if (index !== -1) {
-    if (confirm(`Tem certeza que deseja excluir o registro ${id}?`)) {
-      registrosToupu.splice(index, 1);
-      atualizarTabelaToupu();
-      salvarLocalStorageToupu();
-      excluirRegistroToupuFirebase(id);
-    }
-  } else {
-    alert("Registro não encontrado.");
+    document.getElementById('codigoPeca').focus();
   }
 }
 
-document.querySelectorAll('.delete-btn').forEach(button => {
-  button.addEventListener('click', () => {
-    const registroId = button.closest('tr').querySelector('td:first-child').textContent; registroParaExcluir = registroId;
-    document.getElementById('confirmarExclusaoModal').style.display = 'block';
-    document.getElementById('confirmarExclusaoBtn').addEventListener('click', () => {
-      excluirRegistroToupu(registroId);
-      document.getElementById('confirmarExclusaoModal').style.display = 'none';
-    });
-  });
-});
 
-document.getElementById('confirmarExclusaoBtn').addEventListener('click', () => {
-  excluirRegistroToupu(registroParaExcluir);
-  document.getElementById('confirmarExclusaoModal').style.display = 'none';
-});
-
-
-  const index = registrosToupu.findIndex(r => r.id === id);
-  if (index !== -1) {
-    if (confirm(`Tem certeza que deseja excluir o registro ${id}?`)) {
-      registrosToupu.splice(index, 1);
-      atualizarTabelaToupu();
-      salvarLocalStorageToupu();
-      excluirRegistroToupuFirebase(id);
-    }
-  } else {
-    alert("Registro não encontrado.");
-  }
-
-
-  function salvarLocalStorageToupu() {
-  localStorage.setItem('registrosToupu', JSON.stringify(registrosToupu));
-}
-
-  function carregarLocalStorageToupu() {
-    const savedRegistros = localStorage.getItem('registrosToupu');
-    if (savedRegistros) {
-      registrosToupu = JSON.parse(savedRegistros);
-      nextIdToupu = Math.max(...registrosToupu.map(r => r.id)) + 1;
-    }
-  }
-
-  function carregarRegistrosToupu() {
-  const registrosToupu = db.collection("registrosToupu").orderBy("data", "desc").limit(100);
-  registrosToupu.get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const registro = doc.data();
-      // Adicione o registro à tabela
-    });
-  });
-}
-
-let registroParaAtualizar = null;
-
-function atualizarRegistroToupuFirebase(registro) {
-    registroParaAtualizar = registro;
-  db.collection("registrosToupu").doc(registro.id).update(registro)
-    .then(() => {
-      console.log("Registro Toupu atualizado com sucesso!");
-    })
-    .catch((error) => {
-      console.error("Erro ao atualizar o registro Toupu: ", error);
-    });
-}
-
-
-db.collection("registrosToupu").onSnapshot((querySnapshot) => {
-  registrosToupu = [];
-  querySnapshot.forEach((doc) => {
-    const registro = doc.data();
-    registrosToupu.push(registro);
-  });
-  // Agora você pode chamar a função atualizarRegistroToupuFirebase
-  if (registroParaAtualizar) {
-    atualizarRegistroToupuFirebase(registroParaAtualizar);
-  }
-});
-
-
-function excluirRegistroToupuFirebase(id) {
-  db.collection("registrosToupu").doc(id).delete()
-    .then(() => {
-      console.log("Registro Toupu excluído com sucesso!");
-    })
-    .catch((error) => {
-      console.error("Erro ao excluir o registro Toupu: ", error);
-    });
-}
-
-
-
-function limparRegistrosAntigos() {
-  const registrosToupu = db.collection("registrosToupu").get();
-  registrosToupu.then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const registro = doc.data();
-      if (registro.data < new Date().getTime() - 30 * 24 * 60 * 60 * 1000) {
-        doc.ref.delete();
-      }
-    });
-  });
-}
-
+// Aguarda o carregamento do DOM antes de executar as funções
+document.addEventListener('DOMContentLoaded', () => {
+  // Carrega registros do Firebase e do Local Storage
+  carregarRegistrosFirebase();
   carregarLocalStorage();
   carregarLocalStorageToupu();
   atualizarTabela();
-
-
-  db.collection("registros").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const registro = doc.data();
-      if (!registros.some(r => r.id === registro.id)) {
-        registros.push(registro);
-      }
-    });
-    registros.sort((a, b) => b.id - a.id);
-    nextId = Math.max(...registros.map(r => r.id)) + 1;
-    atualizarTabela();
-  });
-
-  db.collection("registrosToupu").get().then((querySnapshot) => {
-    querySnapshot.forEach((doc) => {
-      const registro = doc.data();
-      if (!registrosToupu.some(r => r.id === registro.id)) {
-        registrosToupu.push(registro);
-      }
-    });
-    registrosToupu.sort((a, b) => b.id - a.id);
-    nextIdToupu = Math.max(...registrosToupu.map(r => r.id)) + 1;
-    atualizarTabelaToupu();
-  });
-
-  document.querySelectorAll('input[type="text"], input[type="number"], select').forEach(input => {
-    input.setAttribute('autocomplete', 'on');
-  });
-
-    function setupAutocomplete() {
-      const inputs = ['codigoPeca', 'numeroLote', 'observacoes'];
-      inputs.forEach(inputId => {
-        const input = document.getElementById(inputId);
-        const datalist = document.createElement('datalist');
-        datalist.id = `${inputId}List`;
-        input.setAttribute('list', datalist.id);
-        document.body.appendChild(datalist);
+  setupAutocomplete();
   
-        input.addEventListener('input', () => {
-          updateAutocompleteOptions(inputId, input.value);
-        });
-      });
-    }
-  
-    function updateAutocompleteOptions(inputId, value) {
-      const datalist = document.getElementById(`${inputId}List`);
-      datalist.innerHTML = '';
-      const options = new Set(registros.map(r => r[inputId]).filter(v => v && v.toLowerCase().includes(value.toLowerCase())));
-      options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        datalist.appendChild(optionElement);
-      });
-    }
-  
-    setupAutocomplete();
-  </script>
-  </body></html>
+  // Configura a exibição inicial com base no modo Toupu
+  atualizarExibicaoToupu(isToupuMode);
+});
+
+
+
+</script>
+</body>
+</html>
