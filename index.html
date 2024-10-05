@@ -1181,6 +1181,7 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   carregarRegistrosFirebase();
+  carregarRegistrosToupuFirebase();
   const auth = firebase.auth();
 
   // 2. Variaveis Globais e constantes
@@ -1279,7 +1280,8 @@
   }
 
   // 4. Funcoes gerenciamento de dados
-    // Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
+    
+// Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
 function carregarRegistrosFirebase() {
   db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
     registros = []; // Limpa os registros antes de carregar os novos
@@ -1299,9 +1301,9 @@ function carregarRegistrosFirebase() {
     console.error("Erro ao carregar registros: ", error);
   });
 }
- 
-  function carregarRegistrosToupuFirebase() {
-  db.collection("registrosToupu").get().then((querySnapshot) => {
+
+function carregarRegistrosToupuFirebase() {
+  db.collection("registrosToupu").orderBy("id", "desc").onSnapshot((querySnapshot) => {
     registrosToupu = []; // Limpa os registros antes de carregar novos
     querySnapshot.forEach((doc) => {
       let registro = doc.data();
@@ -1316,20 +1318,12 @@ function carregarRegistrosFirebase() {
     }
 
     atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
-  }).catch((error) => {
+  }, (error) => {
     console.error("Erro ao carregar registros Toupu do Firebase: ", error);
   });
 }
 
-  function atualizarRegistroFirebase(registro) {
-    db.collection("registros").where("id", "==", registro.id).get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.update(registro);
-        });
-      });
-  }
-  function salvarRegistroFirebase(registro) {
+    function salvarRegistroFirebase(registro) {
     db.collection("registros").doc(String(registro.id)).set(registro)
       .then(() => {
         console.log("Registro salvo com Sucesso: ", registro.id);
