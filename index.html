@@ -1282,7 +1282,7 @@
   function salvarRegistroFirebase(registro) {
     db.collection("registros").doc(String(registro.id)).set(registro)
       .then(() => {
-        console.log("Registro salvo com S: ", registro.id);
+        console.log("Registro salvo com Sucesso: ", registro.id);
       })
       .catch((error) => {
         console.error("Erro ao salvar registro: ", error);
@@ -1318,7 +1318,8 @@
         });
       });
   }
-  function carregarRegistrosFirebase() {
+// Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
+function carregarRegistrosFirebase() {
   db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
     registros = []; // Limpa os registros antes de carregar os novos
     querySnapshot.forEach((doc) => {
