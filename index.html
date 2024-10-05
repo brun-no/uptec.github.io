@@ -2369,18 +2369,52 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
   }
 
   setupAutocomplete();
-  function login() {
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    if (username === 'Qualidade' && password === 'Qualidade') {
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('appContainer').style.display = 'block';
-      carregarRegistrosFirebase();
-    } else {
-      alert('Usuário ou senha incorretos.');
-    }
+// Função para verificar o login no carregamento da página
+function checkLoginStatus() {
+  // Verifica se o usuário já está logado
+  if (localStorage.getItem('loggedIn') === 'true') {
+    // Mostra a página principal e oculta o formulário de login
+    document.getElementById('appContainer').style.display = 'block';
+    document.getElementById('loginForm').style.display = 'none';
+  } else {
+    // Mostra o formulário de login e oculta a página principal
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('appContainer').style.display = 'none';
   }
+}
+
+// Função de login
+function login() {
+  const username = document.getElementById('loginUsername').value;
+  const password = document.getElementById('loginPassword').value;
+
+  // Verifica as credenciais
+  if (username === 'Qualidade' && password === 'Qualidade') {
+    // Oculta o formulário de login e mostra a página principal
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
+
+    // Armazena o estado de login no Local Storage
+    localStorage.setItem('loggedIn', 'true');
+
+    // Carrega os registros do Firebase
+    carregarRegistrosFirebase();
+  } else {
+    alert('Usuário ou senha incorretos.');
+  }
+}
+
+// Função de logout
+function logout() {
+  // Remove o estado de login do Local Storage
+  localStorage.removeItem('loggedIn');
+  
+  // Redireciona para a página de login ou recarrega a página
+  window.location.reload();
+}
+
+// Verifica o estado de login quando a página é carregada
+window.onload = checkLoginStatus;
 
   window.onload = function() {
     document.getElementById('loginForm').style.display = 'flex';
