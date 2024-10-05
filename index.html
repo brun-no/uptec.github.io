@@ -1279,46 +1279,7 @@
   }
 
   // 4. Funcoes gerenciamento de dados
-  function salvarRegistroFirebase(registro) {
-    db.collection("registros").doc(String(registro.id)).set(registro)
-      .then(() => {
-        console.log("Registro salvo com Sucesso: ", registro.id);
-      })
-      .catch((error) => {
-        console.error("Erro ao salvar registro: ", error);
-      });
-  }
-
-  function salvarRegistroToupuFirebase(registro) {
-  const registroId = registro.id || `T${nextIdToupu}`; 
-  
-  db.collection("registrosToupu").doc(registroId).set(registro)
-    .then(() => {
-      console.log("Registro Toupu salvo com sucesso:", registroId);
-    })
-    .catch((error) => {
-      console.error("Erro ao salvar registro Toupu:", error);
-    });
-}
-
-
-  function atualizarRegistroFirebase(registro) {
-    db.collection("registros").where("id", "==", registro.id).get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.update(registro);
-        });
-      });
-  }
-  function excluirRegistroFirebase(id) {
-    db.collection("registros").where("id", "==", id).get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.delete();
-        });
-      });
-  }
-// Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
+    // Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
 function carregarRegistrosFirebase() {
   db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
     registros = []; // Limpa os registros antes de carregar os novos
@@ -1359,6 +1320,46 @@ function carregarRegistrosFirebase() {
     console.error("Erro ao carregar registros Toupu do Firebase: ", error);
   });
 }
+
+  function atualizarRegistroFirebase(registro) {
+    db.collection("registros").where("id", "==", registro.id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.update(registro);
+        });
+      });
+  }
+  function salvarRegistroFirebase(registro) {
+    db.collection("registros").doc(String(registro.id)).set(registro)
+      .then(() => {
+        console.log("Registro salvo com Sucesso: ", registro.id);
+      })
+      .catch((error) => {
+        console.error("Erro ao salvar registro: ", error);
+      });
+  }
+
+  function salvarRegistroToupuFirebase(registro) {
+  const registroId = registro.id || `T${nextIdToupu}`; 
+  
+  db.collection("registrosToupu").doc(registroId).set(registro)
+    .then(() => {
+      console.log("Registro Toupu salvo com sucesso:", registroId);
+    })
+    .catch((error) => {
+      console.error("Erro ao salvar registro Toupu:", error);
+    });
+}
+
+  function excluirRegistroFirebase(id) {
+    db.collection("registros").where("id", "==", id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+  }
+
   function salvarLocalStorage() {
     localStorage.setItem('registrosEtiquetas', JSON.stringify(registros));
   }
