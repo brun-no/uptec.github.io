@@ -69,6 +69,7 @@
       max-width: 1200px;
       margin: 0 auto;
     }
+
     
     h1 {
       text-align: center;
@@ -882,13 +883,14 @@
 </head>
 <body>
   <!-- Tela de login -->
-  <div id="loginForm">
+     <div id="loginForm">
     <h2></h2>
-    <input type="text" id="loginUsername" placeholder="Username">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <button onclick="login()">Login</button>
+    <input type="email" id="loginEmail" placeholder="Email">
+    <input type="password" id="loginPassword" placeholder="Senha">
+    <button onclick="login()">Acessar</button>
   </div>
   <div class="container" id="appContainer" style="display:none;">
+
   <!-- Fim da tela de login -->
   <h1 contenteditable="true">Registro de Etiquetas</h1>
 <!-- INICIO: Controle de pessoas online -->
@@ -1279,6 +1281,7 @@
     }
   }
 
+
   // 4. Funcoes gerenciamento de dados
     
 // Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
@@ -1297,6 +1300,19 @@ function carregarRegistrosFirebase() {
     }
 
     atualizarTabela(); // Atualiza a tabela com os registros carregados
+
+    // Adiciona um evento de input ao campo de lote
+    const loteInput = document.getElementById('numeroLote');
+    loteInput.addEventListener('input', (e) => {
+      const lote = e.target.value;
+      verificarLote(lote);
+      if (lote === '') {
+    // Resetar a cor da borda para o valor padrão
+    document.getElementById('numeroLote').style.border = 'none';
+  } else {
+    verificarLote(lote);
+  }
+    });
   }, (error) => {
     console.error("Erro ao carregar registros: ", error);
   });
@@ -1320,6 +1336,76 @@ function carregarRegistrosToupuFirebase() {
     atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
   }, (error) => {
     console.error("Erro ao carregar registros Toupu do Firebase: ", error);
+  });
+}
+
+// Função para carregar as quantidades de peças do Firebase
+function carregarQuantidadesPecas() {
+  db.collection('pecasPorCaixa').get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      const codigoPeca = doc.id;
+      const quantidadePecas = doc.data().quantidadePecas;
+      // Preenche o campo de quantidade de peças com a quantidade armazenada no Firebase
+      document.getElementById('pecasPorCaixa').value = quantidadePecas;
+    });
+  });
+}
+
+// Chama a função para carregar as quantidades de peças do Firebase quando a página é carregada
+document.addEventListener('DOMContentLoaded', carregarQuantidadesPecas);
+// Função para armazenar a quantidade de peças
+function armazenarQuantidadePecas(codigoPeca, quantidadePecas) {
+  db.collection('pecasPorCaixa').doc(codigoPeca).set({
+    quantidadePecas: quantidadePecas
+  });
+}
+
+// Função para preencher automaticamente o campo de quantidade de peças
+function preencherQuantidadePecas(codigoPeca) {
+  db.collection('pecasPorCaixa').doc(codigoPeca).get().then(doc => {
+    if (doc.exists) {
+      const quantidadePecas = doc.data().quantidadePecas;
+      document.getElementById('pecasPorCaixa').value = quantidadePecas;
+    }
+  });
+}
+
+// Adiciona um evento de input ao campo de código de peça
+const codigoPecaInput = document.getElementById('codigoPeca');
+codigoPecaInput.addEventListener('input', (e) => {
+  const codigoPeca = e.target.value;
+  preencherQuantidadePecas(codigoPeca);
+});
+
+// Adiciona um evento de click ao botão de registrar
+const registrarButton = document.getElementById('calcular');
+registrarButton.addEventListener('click', () => {
+  const codigoPeca = document.getElementById('codigoPeca').value;
+  const quantidadePecas = document.getElementById('pecasPorCaixa').value;
+  armazenarQuantidadePecas(codigoPeca, quantidadePecas);
+});
+
+// Função para verificar se o lote existe
+function verificarLote(lote) {
+  if (lote === '') {
+    return;
+  }
+  const registros = db.collection('registros').where('numeroLote', '==', lote);
+  registros.get().then((querySnapshot) => {
+    if (querySnapshot.docs.length > 0) {
+      console.log('Lote repetido!');
+      // Exibe um alerta para o usuário
+      alert('Lote repetido!');
+      // Muda a cor da caixa de entrada de lote para vermelho
+      document.getElementById('numeroLote').style.border = '3px solid red';
+    } else {
+      console.log('Lote não existe!');
+      // Muda a cor da caixa de entrada de lote para verde
+      document.getElementById('numeroLote').style.border = '3px solid blue';
+    }
+  }).catch((error) => {
+    console.error("Erro ao verificar lote: ", error);
+    alert("Erro ao verificar lote: " + error.message);
   });
 }
 
@@ -2369,57 +2455,64 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
   }
 
   setupAutocomplete();
-// Função para verificar o login no carregamento da página
-function checkLoginStatus() {
-  // Verifica se o usuário já está logado
-  if (localStorage.getItem('loggedIn') === 'true') {
-    // Mostra a página principal e oculta o formulário de login
-    document.getElementById('appContainer').style.display = 'block';
+
+
+// Verifica se o usuário está logado ao carregar a página
+auth.onAuthStateChanged((user) => {
+  if (user) {
+    console.log('Usuário logado!');
     document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
   } else {
-    // Mostra o formulário de login e oculta a página principal
+    console.log('Usuário não logado!');
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('appContainer').style.display = 'none';
   }
-}
+});
 
 // Função de login
 function login() {
-  const username = document.getElementById('loginUsername').value;
+  const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
 
-  // Verifica as credenciais
-  if (username === 'Qualidade' && password === 'Qualidade') {
-    // Oculta o formulário de login e mostra a página principal
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('appContainer').style.display = 'block';
-
-    // Armazena o estado de login no Local Storage
-    localStorage.setItem('loggedIn', 'true');
-
-    // Carrega os registros do Firebase
-    carregarRegistrosFirebase();
-  } else {
-    alert('Usuário ou senha incorretos.');
-  }
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log('Usuário logado com sucesso!');
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+      // Armazena o token de autenticação do usuário no local storage
+      localStorage.setItem('token', userCredential.user.getIdToken());
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
+      alert('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
+    });
 }
 
-// Função de logout
-function logout() {
-  // Remove o estado de login do Local Storage
-  localStorage.removeItem('loggedIn');
-  
-  // Redireciona para a página de login ou recarrega a página
-  window.location.reload();
-}
-
-// Verifica o estado de login quando a página é carregada
-window.onload = checkLoginStatus;
-
-  window.onload = function() {
-    document.getElementById('loginForm').style.display = 'flex';
-    document.getElementById('appContainer').style.display = 'none';
+// Verifica se o usuário está conectado ao carregar a página
+window.onload = function() {
+  const token = localStorage.getItem('token');
+  if (token) {
+    auth.signInWithCustomToken(token)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log('Usuário conectado com sucesso!');
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('appContainer').style.display = 'block';
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('Erro ao conectar: ' + errorCode + ' - ' + errorMessage);
+        alert('Erro ao conectar: ' + errorCode + ' - ' + errorMessage);
+      });
   }
+}
 
 
   // Função para atualizar a exibição dos elementos com base no modo Toupu
