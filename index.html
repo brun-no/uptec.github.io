@@ -1397,11 +1397,11 @@ function verificarLote(lote) {
       // Exibe um alerta para o usuário
       alert('Lote repetido!');
       // Muda a cor da caixa de entrada de lote para vermelho
-      document.getElementById('numeroLote').style.border = '3px solid red';
+      document.getElementById('numeroLote').style.border = '2px solid red';
     } else {
       console.log('Lote não existe!');
       // Muda a cor da caixa de entrada de lote para verde
-      document.getElementById('numeroLote').style.border = '3px solid blue';
+      document.getElementById('numeroLote').style.border = '2px solid blue';
     }
   }).catch((error) => {
     console.error("Erro ao verificar lote: ", error);
