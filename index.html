@@ -886,7 +886,7 @@
      <div id="loginForm">
     <h2></h2>
     <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Senha">
+    <input type="password" id="loginPassword" placeholder="Senha" autocomplete="off">
     <button onclick="login()">Acessar</button>
   </div>
   <div class="container" id="appContainer" style="display:none;">
@@ -1130,7 +1130,7 @@
       <span class="close">&times;</span>
       <h2>Confirmar exclusão</h2>
       <p>Tem certeza que deseja excluir todos os registros? Esta ação não pode ser desfeita.</p>
-      <input type="password" id="senhaAdmin" placeholder="Senha de administrador">
+      <input type="password" id="senhaAdmin" placeholder="Senha de administrador" autocomplete="off">
       <button id="confirmarApagar">Confirmar</button>
     </div>
   </div>
@@ -1215,17 +1215,67 @@
 };
 
   // 3. Funçoes utilitarias
-  function loadWordsFromFirebase() {
+  // Função para carregar as palavras da coleção 'words'
+function loadWordsFromFirebase() {
     inputFields.forEach(field => {
-      db.collection('words').doc(field).get().then(doc => {
-        if (doc.exists) {
-          wordCache[field] = doc.data().words;
-        } else {
-          wordCache[field] = [];
-        }
-      });
+        db.collection('words').doc(field).get().then(doc => {
+            if (doc.exists) {
+                wordCache[field] = doc.data().words;
+                // Atualiza o datalist com as palavras carregadas
+                updateAutocompleteList(document.getElementById(field), wordCache[field]);
+            } else {
+                wordCache[field] = [];
+            }
+        });
     });
-  }
+}
+
+// Função para carregar sugestões do localStorage
+function loadSuggestionsFromLocalStorage() {
+    const suggestions = JSON.parse(localStorage.getItem('suggestions')) || [];
+    suggestions.forEach(suggestion => {
+        addSuggestionToDatalist(suggestion);
+    });
+}
+
+// Função para adicionar uma sugestão ao datalist
+function addSuggestionToDatalist(suggestion) {
+    const datalist = document.getElementById('codigoPecaList'); // ou outro datalist conforme necessário
+    const option = document.createElement('option');
+    option.value = suggestion;
+    datalist.appendChild(option);
+}
+
+// Função para atualizar as opções de autocomplete
+function updateAutocompleteOptions(inputId, value) {
+    const datalist = document.getElementById(`${inputId}List`);
+    datalist.innerHTML = '';
+    const options = new Set(registros.map(r => r[inputId]).filter(v => v && v.toLowerCase().includes(value.toLowerCase())));
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        datalist.appendChild(optionElement);
+    });
+}
+
+// Função para atualizar o localStorage com palavras
+function updateLocalStorageWithWords() {
+  const uniqueWords = new Set();
+
+  // Coletar palavras de todos os registros
+  registros.forEach(registro => {
+    if (registro.codigoPeca) uniqueWords.add(registro.codigoPeca);
+    if (registro.numeroLote) uniqueWords.add(registro.numeroLote);
+    if (registro.observacoes) uniqueWords.add(registro.observacoes);
+  });
+
+  // Armazenar no localStorage
+  localStorage.setItem('suggestions', JSON.stringify(Array.from(uniqueWords)));
+}
+
+// Chama a função para carregar as palavras ao iniciar
+document.addEventListener('DOMContentLoaded', loadWordsFromFirebase);
+
   function saveWord(field, word) {
     if (! wordCache[field].includes(word)) {
       wordCache[field].push(word);
@@ -1281,6 +1331,28 @@
     }
   }
 
+  function saveSuggestionToFirebase(codigoPeca, numeroLote) {
+    // Salva o código da peça
+    db.collection('suggestions').doc(codigoPeca).set({
+        codigo: codigoPeca
+    }, { merge: true });
+
+    // Salva o número do lote
+    db.collection('suggestions').doc(numeroLote).set({
+        lote: numeroLote
+    }, { merge: true });
+}
+  
+function loadSuggestionsFromFirebase() {
+    db.collection('suggestions').get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            const suggestion = doc.id; // O ID do documento é o código ou lote
+            addSuggestionToDatalist(suggestion); // Adiciona a sugestão ao datalist
+        });
+    }).catch((error) => {
+        console.error("Erro ao carregar sugestões: ", error);
+    });
+}
 
   // 4. Funcoes gerenciamento de dados
     
@@ -1395,7 +1467,7 @@ function verificarLote(lote) {
     if (querySnapshot.docs.length > 0) {
       console.log('Lote repetido!');
       // Exibe um alerta para o usuário
-      alert('Lote repetido!');
+      
       // Muda a cor da caixa de entrada de lote para vermelho
       document.getElementById('numeroLote').style.border = '2px solid red';
     } else {
@@ -1466,7 +1538,7 @@ function verificarLote(lote) {
       return;
     }
 
-    db.collection("registrosT oupu").where("id", "==", registro.id).get()
+    db.collection("registrosToupu").where("id", "==", registro.id).get()
       .then((querySnapshot) => {
         if (querySnapshot.empty) {
           alert("Registro não encontrado.");
@@ -1928,6 +2000,12 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
     document.getElementById('resultado').style.display = 'block';
     document.getElementById('resultadoToupu').style.display = 'none';
 
+      // Verificação de duplicidade
+  const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+  if (registroExistente) {
+    alert('Registro já existe!');
+    return; // Não prossegue com a criação do novo registro
+  }
 
     const novoRegistro = {
       id: nextId++,
@@ -1944,7 +2022,17 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
 
     registros.unshift(novoRegistro);
     salvarRegistroFirebase(novoRegistro);
+    saveSuggestionToFirebase(codigoPeca, numeroLote); // Salva sugestões no Firebase
     atualizarTabela();
+
+     // Atualizar o localStorage com as palavras
+  updateLocalStorageWithWords();
+
+// Carregar sugestões do localStorage
+loadSuggestionsFromLocalStorage();
+
+// Carregar sugestões do localStorage ao iniciar
+document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
 
     const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
     if (mostrarCalculos) {
@@ -2311,32 +2399,59 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
   function confirmarApagarTodos() {
       document.getElementById('confirmarApagarTodosModal').style.display = 'block';
     }
-  function apagarTodosRegistros() {
+    
+    function apagarTodosRegistros() {
     const senha = document.getElementById('senhaAdmin').value;
     if (senha === "Medeiros") {
-      registros = [];
-      registrosToupu = [];
-      nextId = 1;
-      nextIdToupu = 1;
-      atualizarTabela();
-      atualizarTabelaToupu();
-      salvarLocalStorage();
-      salvarLocalStorageToupu();
-      db.collection("registros").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.delete();
+        // Limpa os arrays locais
+        registros = [];
+        registrosToupu = [];
+        nextId = 1;
+        nextIdToupu = 1;
+
+        // Limpa o localStorage
+        localStorage.removeItem('registrosEtiquetas');
+        localStorage.removeItem('registrosToupu');
+        localStorage.removeItem('suggestions');
+
+        // Exclui documentos nas coleções específicas
+        const batch = db.batch();
+        db.collection("registros").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                batch.delete(doc.ref);
+            });
+            return batch.commit();
+        }).then(() => {
+            console.log("Todos os registros da coleção 'registros' foram excluídos.");
+            carregarRegistrosFirebase(); // Recarregar os registros após a exclusão
+            updateLocalStorageWithWords(); // Atualizar o localStorage
+            loadSuggestionsFromLocalStorage(); // Carregar sugestões do Local Storage
+        }).catch((error) => {
+            console.error("Erro ao excluir registros da coleção 'registros': ", error);
         });
-      });
-      db.collection("registrosToupu").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          doc.ref.delete();
+
+        // Reiniciar o batch para a próxima coleção
+        const batchToupu = db.batch();
+        db.collection("registrosToupu").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                batchToupu.delete(doc.ref);
+            });
+            return batchToupu.commit();
+        }).then(() => {
+            console.log("Todos os registros da coleção 'registrosToupu' foram excluídos.");
+            carregarRegistrosToupuFirebase(); // Recarregar os registros Toupu após a exclusão
+            updateLocalStorageWithWords(); // Atualizar o localStorage
+            loadSuggestionsFromLocalStorage(); // Carregar sugestões do Local Storage
+        }).catch((error) => {
+            console.error("Erro ao excluir registros da coleção 'registrosToupu': ", error);
         });
-      });
-      fecharModal();
+
+        fecharModal();
     } else {
-      alert("Senha incorreta.");
+        alert("Senha incorreta.");
     }
-  }
+}
+
   function confirmarExclusaoRegistro(id) {
     registroParaExcluir = id;
     document.getElementById('confirmarExclusaoModal').style.display = 'block';
@@ -2659,6 +2774,7 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarLocalStorageToupu();
   atualizarTabela();
   setupAutocomplete();
+  loadSuggestionsFromFirebase(); 
   
   // Configura a exibição inicial com base no modo Toupu
   atualizarExibicaoToupu(isToupuMode);
