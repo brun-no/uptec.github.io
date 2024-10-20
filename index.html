@@ -2426,6 +2426,9 @@ document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
             carregarRegistrosFirebase(); // Recarregar os registros após a exclusão
             updateLocalStorageWithWords(); // Atualizar o localStorage
             loadSuggestionsFromLocalStorage(); // Carregar sugestões do Local Storage
+            
+            // Limpar o campo de senha após a exclusão
+            document.getElementById('senhaAdmin').value = ''; // Limpa o campo de senha
         }).catch((error) => {
             console.error("Erro ao excluir registros da coleção 'registros': ", error);
         });
