@@ -1360,21 +1360,26 @@ function loadSuggestionsFromFirebase() {
 // Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
 function carregarRegistrosFirebase() {
   db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
-    
+    const novosRegistros = []; // Cria uma nova lista para os novos registros
     querySnapshot.forEach((doc) => {
       const registro = doc.data();
       registro.id = doc.id; // Adiciona o ID do documento
-      registros.push(registro); // Adiciona o registro à lista
+      novosRegistros.push(registro); // Adiciona o registro à lista
     });
-    atualizarTabela(); // Atualiza a tabela com os registros carregados
 
+    // Atualiza a lista de registros e a tabela apenas uma vez
+    registros = novosRegistros; // Atualiza a lista de registros
+    atualizarTabela(); // Atualiza a tabela com os novos registros
+
+    // Atualiza o próximo ID para registros
     if (registros.length > 0) {
-      nextId = Math.max(...registros.map(r => r.id)) + 1; // Atualiza o próximo ID para registros
+      nextId = Math.max(...registros.map(r => parseInt(r.id))) + 1; // Converte ID para inteiro antes de calcular
     } else {
       nextId = 1;
     }
-
-    atualizarTabela(); // Atualiza a tabela com os registros carregados
+  }, (error) => {
+    console.error("Erro ao carregar registros: ", error);
+  
 
     // Adiciona um evento de input ao campo de lote
     const loteInput = document.getElementById('numeroLote');
@@ -1847,6 +1852,16 @@ anteriorButton.addEventListener('click', () => {
   }
 
   // 6. Funçoes para manipular eventos
+  function atualizarRegistroFirebase(registro) {
+  db.collection("registros").doc(registro.id).update({
+    etiquetasUsadas: registro.etiquetasUsadas
+  }).then(() => {
+    console.log("Registro atualizado com sucesso!");
+  }).catch((error) => {
+    console.error("Erro ao atualizar registro: ", error);
+  });
+}
+
   function atualizarEtiquetasUsadas(index, element) {
     // Obtém o valor atual e tenta convertê-lo para um número inteiro
     let valor = parseInt(element.textContent);
