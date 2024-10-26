@@ -1535,14 +1535,6 @@ function excluirRegistroFirebase(id) {
     }
   }
 
-  function atualizarRegistroFirebase(registro) {
-    return db.collection("registros").doc(registro.id).set(registro).then(() => {
-        console.log("Registro atualizado com sucesso!");
-        atualizarTabela(); // Atualiza a tabela após a confirmação
-    }).catch((error) => {
-        console.error("Erro ao atualizar registro: ", error);
-    });
-}
 
   function atualizarRegistroToupuFirebase(registro) {
     if (!registro.id.startsWith('T')) {
