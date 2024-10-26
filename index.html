@@ -882,7 +882,7 @@
 </style>
 </head>
 <body>
-  <!-- Tela de login -->
+  <!-- Tela de login 
      <div id="loginForm">
     <h2></h2>
     <input type="email" id="loginEmail" placeholder="Email">
@@ -891,7 +891,7 @@
   </div>
   <div class="container" id="appContainer" style="display:none;">
 
-  <!-- Fim da tela de login -->
+   Fim da tela de login -->
   <h1 contenteditable="true">Registro de Etiquetas</h1>
 <!-- INICIO: Controle de pessoas online -->
 <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
@@ -1170,20 +1170,16 @@
 <script>
 
   // 1. Firebase Configuração e inicialização
-  
-
   const firebaseConfig = {
-  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
-  authDomain: "osucessotriunfal.firebaseapp.com",
-  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
-  projectId: "osucessotriunfal",
-  storageBucket: "osucessotriunfal.appspot.com",
-  messagingSenderId: "954572226460",
-  appId: "1:954572226460:web:12f970646aeadc1f08d259",
-  measurementId: "G-WGMQR3SFM5"
-};
+    apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+    authDomain: "etiquetasuptec.firebaseapp.com",
+    projectId: "etiquetasuptec",
+    storageBucket: "etiquetasuptec.appspot.com",
+    messagingSenderId: "1020897973081",
+    appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+    measurementId: "G-6TS0PYEMRV"
+  };
 
-  // Inicializa o Firestore
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   carregarRegistrosFirebase();
@@ -1219,75 +1215,6 @@
 };
 
   // 3. Funçoes utilitarias
-
-  // Função para salvar ou atualizar os dados no Firestore
-function saveData(field, value) {
-    const userId = firebase.auth().currentUser .uid; // ID do usuário conectado
-    const docRef = db.collection('registros').doc(userId); // Referência ao documento do usuário
-
-    docRef.set({
-        [field]: value
-    }, { merge: true }) // merge: true atualiza o campo sem apagar outros dados
-    .then(() => {
-        console.log(`Dado salvo: ${field} = ${value}`);
-    })
-    .catch((error) => {
-        console.error("Erro ao salvar dados: ", error);
-    });
-}
-
-// Função para carregar dados do Firestore e sincronizar em tempo real
-function loadData() {
-    const userId = firebase.auth().currentUser .uid; // ID do usuário conectado
-    const docRef = db.collection('registros').doc(userId); // Referência ao documento do usuário
-
-    docRef.onSnapshot((doc) => {
-        if (doc.exists) {
-            const data = doc.data();
-            // Atualiza os campos com os dados do Firestore
-            document.getElementById('codigoPeca').value = data.codigoPeca || '';
-            document.getElementById('numeroLote').value = data.numeroLote || '';
-            document.getElementById('totalPecas').value = data.totalPecas || '';
-            document.getElementById('pecasPorCaixa').value = data.pecasPorCaixa || '';
-            document.getElementById('observacoes').value = data.observacoes || '';
-            atualizarTabela(); // Atualiza a tabela aqui para garantir que os dados estão carregados
-        } else {
-            console.log("Nenhum documento encontrado!");
-        }
-    });
-}
-
-// Chame a função loadData após o usuário logar
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        console.log('Usuário logado!');
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-        loadData(); // Carrega dados assim que o usuário está logado
-    } else {
-        console.log('Usuário não logado!');
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('appContainer').style.display = 'none';
-    }
-});
-
-// Adiciona eventos de input para salvar dados em tempo real
-document.getElementById('codigoPeca').addEventListener('input', function() {
-    saveData('codigoPeca', this.value);
-});
-document.getElementById('numeroLote').addEventListener('input', function() {
-    saveData('numeroLote', this.value);
-});
-document.getElementById('totalPecas').addEventListener('input', function() {
-    saveData('totalPecas', this.value);
-});
-document.getElementById('pecasPorCaixa').addEventListener('input', function() {
-    saveData('pecasPorCaixa', this.value);
-});
-document.getElementById('observacoes').addEventListener('input', function() {
-    saveData('observacoes', this.value);
-});
-
   // Função para carregar as palavras da coleção 'words'
 function loadWordsFromFirebase() {
     inputFields.forEach(field => {
@@ -2647,41 +2574,50 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
 
   setupAutocomplete();
 
+
 // Verifica se o usuário está logado ao carregar a página
 auth.onAuthStateChanged((user) => {
-    if (user) {
-        console.log('Usuário logado!');
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-        loadData(); // Carrega dados assim que o usuário está logado
-    } else {
-        console.log('Usuário não logado!');
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('appContainer').style.display = 'none';
-    }
+  if (user) {
+    console.log('Usuário logado!');
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('appContainer').style.display = 'block';
+  } else {
+    console.log('Usuário não logado!');
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('appContainer').style.display = 'none';
+  }
+
+  
 });
 
 // Função de login
 function login() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
 
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // Signed in
-            const user = userCredential.user;
-            console.log('Usuário logado com sucesso!');
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('appContainer').style.display = 'block';
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
-            alert('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
-        });
+  auth.signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Signed in
+      const user = userCredential.user;
+      console.log('Usuário logado com sucesso!');
+      // Aqui você pode obter o token
+      return user.getIdToken();
+    })
+    .then((token) => {
+      // Armazena o token no localStorage
+      localStorage.setItem('token', token);
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
+      alert('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
+    });
+
+    localStorage.removeItem('token');
 }
-
 
 // Verifica se o usuário está conectado ao carregar a página
 window.onload = function() {
@@ -2730,8 +2666,6 @@ window.onload = function() {
   document.getElementById('confirmarApagar').addEventListener('click', apagarTodosRegistros);
   document.getElementById('toggleToupu').addEventListener('change', toggleToupuMode);
 
-
-  
   // Controla a exibição dos cálculos detalhados
   document.getElementById('mostrarCalculos').addEventListener('change', function() {
     document.getElementById('calculosToupuDetalhados').style.display = this.checked ? 'block' : 'none';
