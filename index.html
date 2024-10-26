@@ -2575,18 +2575,20 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
   setupAutocomplete();
 
 
-// Verifica se o usuário está logado ao carregar a página
+// Verifica o estado de autenticação do usuário ao carregar a página
 auth.onAuthStateChanged((user) => {
   if (user) {
+    // Usuário está autenticado
     console.log('Usuário logado!');
     document.getElementById('loginForm').style.display = 'none';
     document.getElementById('appContainer').style.display = 'block';
   } else {
+    // Usuário não está autenticado
     console.log('Usuário não logado!');
     document.getElementById('loginForm').style.display = 'block';
     document.getElementById('appContainer').style.display = 'none';
-  }
-
+  }  
+  localStorage.removeItem('token');
   
 });
 
@@ -2597,15 +2599,15 @@ function login() {
 
   auth.signInWithEmailAndPassword(email, password)
     .then((userCredential) => {
-      // Signed in
+      // Login bem-sucedido
       const user = userCredential.user;
       console.log('Usuário logado com sucesso!');
-      // Aqui você pode obter o token
-      return user.getIdToken();
+      // Armazena o token no localStorage
+      return user.getIdToken(); // Obtém o token
     })
     .then((token) => {
-      // Armazena o token no localStorage
-      localStorage.setItem('token', token);
+      localStorage.setItem('token', token); 
+      // Armazena o token
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('appContainer').style.display = 'block';
     })
@@ -2615,29 +2617,6 @@ function login() {
       console.log('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
       alert('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
     });
-
-    localStorage.removeItem('token');
-}
-
-// Verifica se o usuário está conectado ao carregar a página
-window.onload = function() {
-  const token = localStorage.getItem('token');
-  if (token) {
-    auth.signInWithCustomToken(token)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log('Usuário conectado com sucesso!');
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('appContainer').style.display = 'block';
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('Erro ao conectar: ' + errorCode + ' - ' + errorMessage);
-        alert('Erro ao conectar: ' + errorCode + ' - ' + errorMessage);
-      });
-  }
 }
 
 
