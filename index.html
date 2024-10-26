@@ -1360,7 +1360,7 @@ function loadSuggestionsFromFirebase() {
 // Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
 function carregarRegistrosFirebase() {
   db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
-    registros = []; // Limpa os registros antes de carregar os novos
+    
     querySnapshot.forEach((doc) => {
       const registro = doc.data();
       registro.id = doc.id; // Adiciona o ID do documento
