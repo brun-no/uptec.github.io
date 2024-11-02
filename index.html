@@ -69,7 +69,6 @@
       max-width: 1200px;
       margin: 0 auto;
     }
-
     
     h1 {
       text-align: center;
@@ -882,16 +881,15 @@
 </style>
 </head>
 <body>
-  <!-- Tela de login 
-     <div id="loginForm">
+  <!-- Tela de login -->
+  <div id="loginForm">
     <h2></h2>
-    <input type="email" id="loginEmail" placeholder="Email">
-    <input type="password" id="loginPassword" placeholder="Senha" autocomplete="off">
-    <button onclick="login()">Acessar</button>
+    <input type="text" id="loginUsername" placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button onclick="login()">Login</button>
   </div>
   <div class="container" id="appContainer" style="display:none;">
-
-   Fim da tela de login -->
+  <!-- Fim da tela de login -->
   <h1 contenteditable="true">Registro de Etiquetas</h1>
 <!-- INICIO: Controle de pessoas online -->
 <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
@@ -1130,7 +1128,7 @@
       <span class="close">&times;</span>
       <h2>Confirmar exclusão</h2>
       <p>Tem certeza que deseja excluir todos os registros? Esta ação não pode ser desfeita.</p>
-      <input type="password" id="senhaAdmin" placeholder="Senha de administrador" autocomplete="off">
+      <input type="password" id="senhaAdmin" placeholder="Senha de administrador">
       <button id="confirmarApagar">Confirmar</button>
     </div>
   </div>
@@ -1171,20 +1169,18 @@
 
   // 1. Firebase Configuração e inicialização
   const firebaseConfig = {
-  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
-  authDomain: "osucessotriunfal.firebaseapp.com",
-  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
-  projectId: "osucessotriunfal",
-  storageBucket: "osucessotriunfal.appspot.com",
-  messagingSenderId: "954572226460",
-  appId: "1:954572226460:web:12f970646aeadc1f08d259",
-  measurementId: "G-WGMQR3SFM5"
-};
+    apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+    authDomain: "etiquetasuptec.firebaseapp.com",
+    projectId: "etiquetasuptec",
+    storageBucket: "etiquetasuptec.appspot.com",
+    messagingSenderId: "1020897973081",
+    appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+    measurementId: "G-6TS0PYEMRV"
+  };
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
   carregarRegistrosFirebase();
-  carregarRegistrosToupuFirebase();
   const auth = firebase.auth();
 
   // 2. Variaveis Globais e constantes
@@ -1216,67 +1212,17 @@
 };
 
   // 3. Funçoes utilitarias
-  // Função para carregar as palavras da coleção 'words'
-function loadWordsFromFirebase() {
+  function loadWordsFromFirebase() {
     inputFields.forEach(field => {
-        db.collection('words').doc(field).get().then(doc => {
-            if (doc.exists) {
-                wordCache[field] = doc.data().words;
-                // Atualiza o datalist com as palavras carregadas
-                updateAutocompleteList(document.getElementById(field), wordCache[field]);
-            } else {
-                wordCache[field] = [];
-            }
-        });
+      db.collection('words').doc(field).get().then(doc => {
+        if (doc.exists) {
+          wordCache[field] = doc.data().words;
+        } else {
+          wordCache[field] = [];
+        }
+      });
     });
-}
-
-// Função para carregar sugestões do localStorage
-function loadSuggestionsFromLocalStorage() {
-    const suggestions = JSON.parse(localStorage.getItem('suggestions')) || [];
-    suggestions.forEach(suggestion => {
-        addSuggestionToDatalist(suggestion);
-    });
-}
-
-// Função para adicionar uma sugestão ao datalist
-function addSuggestionToDatalist(suggestion) {
-    const datalist = document.getElementById('codigoPecaList'); // ou outro datalist conforme necessário
-    const option = document.createElement('option');
-    option.value = suggestion;
-    datalist.appendChild(option);
-}
-
-// Função para atualizar as opções de autocomplete
-function updateAutocompleteOptions(inputId, value) {
-    const datalist = document.getElementById(`${inputId}List`);
-    datalist.innerHTML = '';
-    const options = new Set(registros.map(r => r[inputId]).filter(v => v && v.toLowerCase().includes(value.toLowerCase())));
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        datalist.appendChild(optionElement);
-    });
-}
-
-// Função para atualizar o localStorage com palavras
-function updateLocalStorageWithWords() {
-  const uniqueWords = new Set();
-
-  // Coletar palavras de todos os registros
-  registros.forEach(registro => {
-    if (registro.codigoPeca) uniqueWords.add(registro.codigoPeca);
-    if (registro.numeroLote) uniqueWords.add(registro.numeroLote);
-    if (registro.observacoes) uniqueWords.add(registro.observacoes);
-  });
-
-  // Armazenar no localStorage
-  localStorage.setItem('suggestions', JSON.stringify(Array.from(uniqueWords)));
-}
-
-// Chama a função para carregar as palavras ao iniciar
-document.addEventListener('DOMContentLoaded', loadWordsFromFirebase);
-
+  }
   function saveWord(field, word) {
     if (! wordCache[field].includes(word)) {
       wordCache[field].push(word);
@@ -1332,167 +1278,11 @@ document.addEventListener('DOMContentLoaded', loadWordsFromFirebase);
     }
   }
 
-  function saveSuggestionToFirebase(codigoPeca, numeroLote) {
-    // Salva o código da peça
-    db.collection('suggestions').doc(codigoPeca).set({
-        codigo: codigoPeca
-    }, { merge: true });
-
-    // Salva o número do lote
-    db.collection('suggestions').doc(numeroLote).set({
-        lote: numeroLote
-    }, { merge: true });
-}
-  
-function loadSuggestionsFromFirebase() {
-    db.collection('suggestions').get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            const suggestion = doc.id; // O ID do documento é o código ou lote
-            addSuggestionToDatalist(suggestion); // Adiciona a sugestão ao datalist
-        });
-    }).catch((error) => {
-        console.error("Erro ao carregar sugestões: ", error);
-    });
-}
-
   // 4. Funcoes gerenciamento de dados
-    
-// Função para ouvir as alterações nos dados e atualizar a tabela em tempo real
-function carregarRegistrosFirebase() {
-  db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
-    const novosRegistros = []; // Cria uma nova lista para os novos registros
-    querySnapshot.forEach((doc) => {
-      const registro = doc.data();
-      registro.id = doc.id; // Adiciona o ID do documento
-      novosRegistros.push(registro); // Adiciona o registro à lista
-    });
-
-    // Atualiza a lista de registros e a tabela apenas uma vez
-    registros = novosRegistros; // Atualiza a lista de registros
-    atualizarTabela(); // Atualiza a tabela com os novos registros
-
-    // Atualiza o próximo ID para registros
-    if (registros.length > 0) {
-      nextId = Math.max(...registros.map(r => parseInt(r.id))) + 1; // Converte ID para inteiro antes de calcular
-    } else {
-      nextId = 1;
-    }
-  }, (error) => {
-    console.error("Erro ao carregar registros: ", error);
-  
-
-    // Adiciona um evento de input ao campo de lote
-    const loteInput = document.getElementById('numeroLote');
-    loteInput.addEventListener('input', (e) => {
-      const lote = e.target.value;
-      verificarLote(lote);
-      if (lote === '') {
-    // Resetar a cor da borda para o valor padrão
-    document.getElementById('numeroLote').style.border = 'none';
-  } else {
-    verificarLote(lote);
-  }
-    });
-  }, (error) => {
-    console.error("Erro ao carregar registros: ", error);
-  });
-}
-
-function carregarRegistrosToupuFirebase() {
-  db.collection("registrosToupu").orderBy("id", "desc").onSnapshot((querySnapshot) => {
-    registrosToupu = []; // Limpa os registros antes de carregar novos
-    querySnapshot.forEach((doc) => {
-      let registro = doc.data();
-      registro.id = doc.id; // Assegura que o ID do Firebase é mantido
-      registrosToupu.push(registro); // Adiciona o registro à lista
-    });
-
-    if (registrosToupu.length > 0) {
-      nextIdToupu = Math.max(...registrosToupu.map(r => parseInt(r.id.replace('T', ''), 10))) + 1;
-    } else {
-      nextIdToupu = 1;
-    }
-
-    atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
-  }, (error) => {
-    console.error("Erro ao carregar registros Toupu do Firebase: ", error);
-  });
-}
-
-// Função para carregar as quantidades de peças do Firebase
-function carregarQuantidadesPecas() {
-  db.collection('pecasPorCaixa').get().then(querySnapshot => {
-    querySnapshot.forEach(doc => {
-      const codigoPeca = doc.id;
-      const quantidadePecas = doc.data().quantidadePecas;
-      // Preenche o campo de quantidade de peças com a quantidade armazenada no Firebase
-      document.getElementById('pecasPorCaixa').value = quantidadePecas;
-    });
-  });
-}
-
-// Chama a função para carregar as quantidades de peças do Firebase quando a página é carregada
-document.addEventListener('DOMContentLoaded', carregarQuantidadesPecas);
-// Função para armazenar a quantidade de peças
-function armazenarQuantidadePecas(codigoPeca, quantidadePecas) {
-  db.collection('pecasPorCaixa').doc(codigoPeca).set({
-    quantidadePecas: quantidadePecas
-  });
-}
-
-// Função para preencher automaticamente o campo de quantidade de peças
-function preencherQuantidadePecas(codigoPeca) {
-  db.collection('pecasPorCaixa').doc(codigoPeca).get().then(doc => {
-    if (doc.exists) {
-      const quantidadePecas = doc.data().quantidadePecas;
-      document.getElementById('pecasPorCaixa').value = quantidadePecas;
-    }
-  });
-}
-
-// Adiciona um evento de input ao campo de código de peça
-const codigoPecaInput = document.getElementById('codigoPeca');
-codigoPecaInput.addEventListener('input', (e) => {
-  const codigoPeca = e.target.value;
-  preencherQuantidadePecas(codigoPeca);
-});
-
-// Adiciona um evento de click ao botão de registrar
-const registrarButton = document.getElementById('calcular');
-registrarButton.addEventListener('click', () => {
-  const codigoPeca = document.getElementById('codigoPeca').value;
-  const quantidadePecas = document.getElementById('pecasPorCaixa').value;
-  armazenarQuantidadePecas(codigoPeca, quantidadePecas);
-});
-
-// Função para verificar se o lote existe
-function verificarLote(lote) {
-  if (lote === '') {
-    return;
-  }
-  const registros = db.collection('registros').where('numeroLote', '==', lote);
-  registros.get().then((querySnapshot) => {
-    if (querySnapshot.docs.length > 0) {
-      console.log('Lote repetido!');
-      // Exibe um alerta para o usuário
-      
-      // Muda a cor da caixa de entrada de lote para vermelho
-      document.getElementById('numeroLote').style.border = '2px solid red';
-    } else {
-      console.log('Lote não existe!');
-      // Muda a cor da caixa de entrada de lote para verde
-      document.getElementById('numeroLote').style.border = '2px solid blue';
-    }
-  }).catch((error) => {
-    console.error("Erro ao verificar lote: ", error);
-    alert("Erro ao verificar lote: " + error.message);
-  });
-}
-
-    function salvarRegistroFirebase(registro) {
+  function salvarRegistroFirebase(registro) {
     db.collection("registros").doc(String(registro.id)).set(registro)
       .then(() => {
-        console.log("Registro salvo com Sucesso: ", registro.id);
+        console.log("Registro salvo com S: ", registro.id);
       })
       .catch((error) => {
         console.error("Erro ao salvar registro: ", error);
@@ -1511,15 +1301,63 @@ function verificarLote(lote) {
     });
 }
 
-function excluirRegistroFirebase(id) {
-    db.collection("registros").doc(id).delete().then(() => {
-        console.log("Registro excluído com sucesso!");
-        atualizarTabela(); // Chame a função para atualizar a tabela após a exclusão
-    }).catch((error) => {
-        console.error("Erro ao excluir registro: ", error);
-    });
-}
 
+  function atualizarRegistroFirebase(registro) {
+    db.collection("registros").where("id", "==", registro.id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.update(registro);
+        });
+      });
+  }
+  function excluirRegistroFirebase(id) {
+    db.collection("registros").where("id", "==", id).get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
+  }
+  function carregarRegistrosFirebase() {
+  db.collection("registros").orderBy("id", "desc").onSnapshot((querySnapshot) => {
+    registros = []; // Limpa os registros antes de carregar os novos
+    querySnapshot.forEach((doc) => {
+      const registro = doc.data();
+      registros.push(registro); // Adiciona o registro à lista
+    });
+
+    if (registros.length > 0) {
+      nextId = Math.max(...registros.map(r => r.id)) + 1; // Atualiza o próximo ID para registros
+    } else {
+      nextId = 1;
+    }
+
+    atualizarTabela(); // Atualiza a tabela com os registros carregados
+  }, (error) => {
+    console.error("Erro ao carregar registros: ", error);
+  });
+}
+ 
+  function carregarRegistrosToupuFirebase() {
+  db.collection("registrosToupu").get().then((querySnapshot) => {
+    registrosToupu = []; // Limpa os registros antes de carregar novos
+    querySnapshot.forEach((doc) => {
+      let registro = doc.data();
+      registro.id = doc.id; // Assegura que o ID do Firebase é mantido
+      registrosToupu.push(registro); // Adiciona o registro à lista
+    });
+
+    if (registrosToupu.length > 0) {
+      nextIdToupu = Math.max(...registrosToupu.map(r => parseInt(r.id.replace('T', ''), 10))) + 1;
+    } else {
+      nextIdToupu = 1;
+    }
+
+    atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
+  }).catch((error) => {
+    console.error("Erro ao carregar registros Toupu do Firebase: ", error);
+  });
+}
   function salvarLocalStorage() {
     localStorage.setItem('registrosEtiquetas', JSON.stringify(registros));
   }
@@ -1540,15 +1378,13 @@ function excluirRegistroFirebase(id) {
       nextIdToupu = Math.max(...registrosToupu.map(r => r.id)) + 1;
     }
   }
-
-
   function atualizarRegistroToupuFirebase(registro) {
     if (!registro.id.startsWith('T')) {
       alert("ID de registro inválido.");
       return;
     }
 
-    db.collection("registrosToupu").where("id", "==", registro.id).get()
+    db.collection("registrosT oupu").where("id", "==", registro.id).get()
       .then((querySnapshot) => {
         if (querySnapshot.empty) {
           alert("Registro não encontrado.");
@@ -1852,16 +1688,6 @@ anteriorButton.addEventListener('click', () => {
   }
 
   // 6. Funçoes para manipular eventos
-  function atualizarRegistroFirebase(registro) {
-  db.collection("registros").doc(registro.id).update({
-    etiquetasUsadas: registro.etiquetasUsadas
-  }).then(() => {
-    console.log("Registro atualizado com sucesso!");
-  }).catch((error) => {
-    console.error("Erro ao atualizar registro: ", error);
-  });
-}
-
   function atualizarEtiquetasUsadas(index, element) {
     // Obtém o valor atual e tenta convertê-lo para um número inteiro
     let valor = parseInt(element.textContent);
@@ -1911,15 +1737,9 @@ anteriorButton.addEventListener('click', () => {
       element.closest('tr').classList.remove('used-all');
     }
     
-    // Salva as alterações no armazenamento local e no Firebase
-    salvarLocalStorage();
-    atualizarRegistroFirebase(registro);
-
-     // Exibir feedback visual
-     element.classList.add('saving'); // Adicione uma classe de estilo para indicar que está salvando
-    atualizarRegistroFirebase(registro).then(() => {
-        element.classList.remove('saving'); // Remova a classe após salvar
-    });
+    // Salva as alterações
+    salvarLocalStorageToupu(); // Certifique-se de ter uma função para salvar dados Toupu
+    atualizarRegistroFirebaseToupu(registro); // Certifique-se de ter uma função para atualizar registro Firebase para Toupu
   }
   function editarRegistro(id) {
     const index = registros.findIndex(r => r.id === id);
@@ -2026,12 +1846,6 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
     document.getElementById('resultado').style.display = 'block';
     document.getElementById('resultadoToupu').style.display = 'none';
 
-      // Verificação de duplicidade
-  const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
-  if (registroExistente) {
-    alert('Registro já existe!');
-    return; // Não prossegue com a criação do novo registro
-  }
 
     const novoRegistro = {
       id: nextId++,
@@ -2048,17 +1862,7 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
 
     registros.unshift(novoRegistro);
     salvarRegistroFirebase(novoRegistro);
-    saveSuggestionToFirebase(codigoPeca, numeroLote); // Salva sugestões no Firebase
     atualizarTabela();
-
-     // Atualizar o localStorage com as palavras
-  updateLocalStorageWithWords();
-
-// Carregar sugestões do localStorage
-loadSuggestionsFromLocalStorage();
-
-// Carregar sugestões do localStorage ao iniciar
-document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
 
     const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
     if (mostrarCalculos) {
@@ -2425,62 +2229,32 @@ document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
   function confirmarApagarTodos() {
       document.getElementById('confirmarApagarTodosModal').style.display = 'block';
     }
-    
-    function apagarTodosRegistros() {
+  function apagarTodosRegistros() {
     const senha = document.getElementById('senhaAdmin').value;
     if (senha === "Medeiros") {
-        // Limpa os arrays locais
-        registros = [];
-        registrosToupu = [];
-        nextId = 1;
-        nextIdToupu = 1;
-
-        // Limpa o localStorage
-        localStorage.removeItem('registrosEtiquetas');
-        localStorage.removeItem('registrosToupu');
-        localStorage.removeItem('suggestions');
-
-        // Exclui documentos nas coleções específicas
-        const batch = db.batch();
-        db.collection("registros").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                batch.delete(doc.ref);
-            });
-            return batch.commit();
-        }).then(() => {
-            console.log("Todos os registros da coleção 'registros' foram excluídos.");
-            carregarRegistrosFirebase(); // Recarregar os registros após a exclusão
-            updateLocalStorageWithWords(); // Atualizar o localStorage
-            loadSuggestionsFromLocalStorage(); // Carregar sugestões do Local Storage
-            
-            // Limpar o campo de senha após a exclusão
-            document.getElementById('senhaAdmin').value = ''; // Limpa o campo de senha
-        }).catch((error) => {
-            console.error("Erro ao excluir registros da coleção 'registros': ", error);
+      registros = [];
+      registrosToupu = [];
+      nextId = 1;
+      nextIdToupu = 1;
+      atualizarTabela();
+      atualizarTabelaToupu();
+      salvarLocalStorage();
+      salvarLocalStorageToupu();
+      db.collection("registros").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
         });
-
-        // Reiniciar o batch para a próxima coleção
-        const batchToupu = db.batch();
-        db.collection("registrosToupu").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                batchToupu.delete(doc.ref);
-            });
-            return batchToupu.commit();
-        }).then(() => {
-            console.log("Todos os registros da coleção 'registrosToupu' foram excluídos.");
-            carregarRegistrosToupuFirebase(); // Recarregar os registros Toupu após a exclusão
-            updateLocalStorageWithWords(); // Atualizar o localStorage
-            loadSuggestionsFromLocalStorage(); // Carregar sugestões do Local Storage
-        }).catch((error) => {
-            console.error("Erro ao excluir registros da coleção 'registrosToupu': ", error);
+      });
+      db.collection("registrosToupu").get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          doc.ref.delete();
         });
-
-        fecharModal();
+      });
+      fecharModal();
     } else {
-        alert("Senha incorreta.");
+      alert("Senha incorreta.");
     }
-}
-
+  }
   function confirmarExclusaoRegistro(id) {
     registroParaExcluir = id;
     document.getElementById('confirmarExclusaoModal').style.display = 'block';
@@ -2599,51 +2373,23 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
   }
 
   setupAutocomplete();
-
-
-// Verifica o estado de autenticação do usuário ao carregar a página
-auth.onAuthStateChanged((user) => {
-  if (user) {
-    // Usuário está autenticado
-    console.log('Usuário logado!');
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('appContainer').style.display = 'block';
-  } else {
-    // Usuário não está autenticado
-    console.log('Usuário não logado!');
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('appContainer').style.display = 'none';
-  }  
-  localStorage.removeItem('token');
-  
-});
-
-// Função de login
-function login() {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then((userCredential) => {
-      // Login bem-sucedido
-      const user = userCredential.user;
-      console.log('Usuário logado com sucesso!');
-      // Armazena o token no localStorage
-      return user.getIdToken(); // Obtém o token
-    })
-    .then((token) => {
-      localStorage.setItem('token', token); 
-      // Armazena o token
+  function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    
+    if (username === 'Qualidade' && password === 'Qualidade') {
       document.getElementById('loginForm').style.display = 'none';
       document.getElementById('appContainer').style.display = 'block';
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
-      alert('Erro ao logar: ' + errorCode + ' - ' + errorMessage);
-    });
-}
+      carregarRegistrosFirebase();
+    } else {
+      alert('Usuário ou senha incorretos.');
+    }
+  }
+
+  window.onload = function() {
+    document.getElementById('loginForm').style.display = 'flex';
+    document.getElementById('appContainer').style.display = 'none';
+  }
 
 
   // Função para atualizar a exibição dos elementos com base no modo Toupu
@@ -2790,7 +2536,6 @@ document.addEventListener('DOMContentLoaded', () => {
   carregarLocalStorageToupu();
   atualizarTabela();
   setupAutocomplete();
-  loadSuggestionsFromFirebase(); 
   
   // Configura a exibição inicial com base no modo Toupu
   atualizarExibicaoToupu(isToupuMode);
@@ -2800,4 +2545,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 </body>
-</html>
+</html> 
