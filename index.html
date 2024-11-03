@@ -917,6 +917,7 @@
 </script>
 <!-- END: Controle de pessoas online -->
 
+ 
   <!-- Container da página -->
   <div class="form-container">
     <!-- Grupo de inputs para registros normais -->
@@ -1156,7 +1157,6 @@
   <!-- Botão de scroll para o topo -->
   <button id="scrollToTopBtn" title="SUBIR"><i class="fas fa-arrow-alt-circle-up"></i></button>
 
-
   <!-- bibliotecas JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
@@ -1343,76 +1343,6 @@ function loadSuggestionsFromFirebase() {
     });
 }
 
-// Função para carregar as quantidades de peças do Firebase
-function carregarQuantidadesPecas() {
-    db.collection('pecasPorCaixa').get().then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-            const codigoPeca = doc.id;
-            const quantidadePecas = doc.data().quantidadePecas;
-            // Preenche o campo de quantidade de peças com a quantidade armazenada no Firebase
-            document.getElementById('pecasPorCaixa').value = quantidadePecas;
-        });
-    });
-}
-
-// Chama a função para carregar as quantidades de peças do Firebase quando a página é carregada
-document.addEventListener('DOMContentLoaded', carregarQuantidadesPecas);
-
-// Função para armazenar a quantidade de peças
-function armazenarQuantidadePecas(codigoPeca, quantidadePecas) {
-    db.collection('pecasPorCaixa').doc(codigoPeca).set({
-        quantidadePecas: quantidadePecas
-    });
-}
-
-// Função para preencher automaticamente o campo de quantidade de peças
-function preencherQuantidadePecas(codigoPeca) {
-    db.collection('pecasPorCaixa').doc(codigoPeca).get().then(doc => {
-        if (doc.exists) {
-            const quantidadePecas = doc.data().quantidadePecas;
-            document.getElementById('pecasPorCaixa').value = quantidadePecas;
-        }
-    });
-}
-
-// Adiciona um evento de input ao campo de código de peça
-const codigoPecaInput = document.getElementById('codigoPeca');
-codigoPecaInput.addEventListener('input', (e) => {
-    const codigoPeca = e.target.value;
-    preencherQuantidadePecas(codigoPeca);
-});
-
-// Adiciona um evento de click ao botão de registrar
-const registrarButton = document.getElementById('calcular');
-registrarButton.addEventListener('click', () => {
-    const codigoPeca = document.getElementById('codigoPeca').value;
-    const quantidadePecas = document.getElementById('pecasPorCaixa').value;
-    armazenarQuantidadePecas(codigoPeca, quantidadePecas);
-});
-
-// Função para verificar se o lote existe
-function verificarLote(lote) {
-    if (lote === '') {
-        return;
-    }
-
-    const registros = db.collection('registros').where('numeroLote', '==', lote);
-    registros.get().then((querySnapshot) => {
-        if (querySnapshot.docs.length > 0) {
-            console.log('Lote repetido!');
-            // Muda a cor da caixa de entrada de lote para vermelho
-            document.getElementById('numeroLote').style.border = '2px solid red';
-        } else {
-            console.log('Lote não existe!');
-            // Muda a cor da caixa de entrada de lote para azul
-            document.getElementById('numeroLote').style.border = '2px solid blue';
-        }
-    }).catch((error) => {
-        console.error("Erro ao verificar lote: ", error);
-        alert("Erro ao verificar lote: " + error.message);
-    });
-}
-
 
 // Função para salvar registro no Firebase
 function salvarRegistroFirebase(registro) {
@@ -1424,7 +1354,6 @@ function salvarRegistroFirebase(registro) {
         console.error("Erro ao salvar registro: ", error);
     });
 }
-
 
 
   // 4. Funcoes gerenciamento de dados
@@ -1513,6 +1442,75 @@ function salvarRegistroFirebase(registro) {
   });
 }
 
+// Função para carregar as quantidades de peças do Firebase
+function carregarQuantidadesPecas() {
+  db.collection('pecasPorCaixa').get().then(querySnapshot => {
+    querySnapshot.forEach(doc => {
+      const codigoPeca = doc.id;
+      const quantidadePecas = doc.data().quantidadePecas;
+      // Preenche o campo de quantidade de peças com a quantidade armazenada no Firebase
+      document.getElementById('pecasPorCaixa').value = quantidadePecas;
+    });
+  });
+}
+
+// Chama a função para carregar as quantidades de peças do Firebase quando a página é carregada
+document.addEventListener('DOMContentLoaded', carregarQuantidadesPecas);
+// Função para armazenar a quantidade de peças
+function armazenarQuantidadePecas(codigoPeca, quantidadePecas) {
+  db.collection('pecasPorCaixa').doc(codigoPeca).set({
+    quantidadePecas: quantidadePecas
+  });
+}
+
+// Função para preencher automaticamente o campo de quantidade de peças
+function preencherQuantidadePecas(codigoPeca) {
+  db.collection('pecasPorCaixa').doc(codigoPeca).get().then(doc => {
+    if (doc.exists) {
+      const quantidadePecas = doc.data().quantidadePecas;
+      document.getElementById('pecasPorCaixa').value = quantidadePecas;
+    }
+  });
+}
+
+// Adiciona um evento de input ao campo de código de peça
+const codigoPecaInput = document.getElementById('codigoPeca');
+codigoPecaInput.addEventListener('input', (e) => {
+  const codigoPeca = e.target.value;
+  preencherQuantidadePecas(codigoPeca);
+});
+
+// Adiciona um evento de click ao botão de registrar
+const registrarButton = document.getElementById('calcular');
+registrarButton.addEventListener('click', () => {
+  const codigoPeca = document.getElementById('codigoPeca').value;
+  const quantidadePecas = document.getElementById('pecasPorCaixa').value;
+  armazenarQuantidadePecas(codigoPeca, quantidadePecas);
+});
+
+// Função para verificar se o lote existe
+function verificarLote(lote) {
+  if (lote === '') {
+    return;
+  }
+  const registros = db.collection('registros').where('numeroLote', '==', lote);
+  registros.get().then((querySnapshot) => {
+    if (querySnapshot.docs.length > 0) {
+      console.log('Lote repetido!');
+      // Exibe um alerta para o usuário
+      
+      // Muda a cor da caixa de entrada de lote para vermelho
+      document.getElementById('numeroLote').style.border = '2px solid red';
+    } else {
+      console.log('Lote não existe!');
+      // Muda a cor da caixa de entrada de lote para verde
+      document.getElementById('numeroLote').style.border = '2px solid blue';
+    }
+  }).catch((error) => {
+    console.error("Erro ao verificar lote: ", error);
+    alert("Erro ao verificar lote: " + error.message);
+  });
+}
 
 
   function salvarLocalStorage() {
@@ -2588,6 +2586,12 @@ function updateAutocompleteOptions(inputId, value) {
   }
 
   // Adiciona ouvintes de eventos aos elementos do DOM
+
+  //ouvinte da caixa de lote repetido, para mudar a cor azul e vermelho
+  document.getElementById('numeroLote').addEventListener('input', function() {
+    verificarLote(this.value);
+});
+
   document.getElementById('calcular').addEventListener('click', calcularEtiquetas);
   document.getElementById('calcularToupu').addEventListener('click', calcularEtiquetasToupu);
   document.getElementById('searchInput').addEventListener('input', filtrarRegistros);
