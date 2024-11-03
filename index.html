@@ -1484,7 +1484,7 @@ registrarButton.addEventListener('click', () => {
   armazenarQuantidadePecas(codigoPeca, quantidadePecas);
 });
 
-// Função para verificar se o lote existe
+// Função para verificar se o lote existe modo normal
 function verificarLote(lote) {
   if (lote === '') {
     return;
@@ -1508,6 +1508,27 @@ function verificarLote(lote) {
   });
 }
 
+// Função para verificar se o lote existe modo toupu
+function verificarLoteToupu(lote) {
+    if (lote === '') {
+        return;
+    }
+    const registrosToupuRef = db.collection('registrosToupu').where('numeroLote', '==', lote);
+    registrosToupuRef.get().then((querySnapshot) => {
+        if (querySnapshot.docs.length > 0) {
+            console.log('Lote repetido no modo Toupu!');
+            // Muda a cor da caixa de entrada de lote para vermelho
+            document.getElementById('numeroLoteToupu').style.border = '2px solid red';
+        } else {
+            console.log('Lote não existe no modo Toupu!');
+            // Muda a cor da caixa de entrada de lote para verde
+            document.getElementById('numeroLoteToupu').style.border = '2px solid blue';
+        }
+    }).catch((error) => {
+        console.error("Erro ao verificar lote no modo Toupu: ", error);
+        alert("Erro ao verificar lote: " + error.message);
+    });
+}
 
   function salvarLocalStorage() {
     localStorage.setItem('registrosEtiquetas', JSON.stringify(registros));
@@ -1997,13 +2018,13 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
     document.getElementById('resultado').style.display = 'block';
     document.getElementById('resultadoToupu').style.display = 'none';
 
-    // Verificação de duplicidade
-const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
-if (registroExistente) {
-    alert('Registro já existe!');
-    return; // Não prossegue com a criação do novo registro
-}
-
+   
+// Verificação de duplicidade para registros normais
+// const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+// if (registroExistente) {
+  //   alert('Registro já existe!');
+ //    return; // Não prossegue com a criação do novo registro
+// }
 
     const novoRegistro = {
       id: nextId++,
@@ -2591,9 +2612,13 @@ document.getElementById('mostrarCalculos').addEventListener('change', function()
     document.getElementById('calculosDetalhados').style.display = mostrarCalculos ? 'block' : 'none'; // Atualiza a exibição
 });
 
-  //ouvinte da caixa de lote repetido, para mudar a cor azul e vermelho
+  //ouvinte da caixa de lote repetido, para mudar a cor azul e vermelho modo normal
   document.getElementById('numeroLote').addEventListener('input', function() {
     verificarLote(this.value);
+    });
+  //ouvinte da caixa de lote repetido, para mudar a cor azul e vermelho modo toupu
+    document.getElementById('numeroLoteToupu').addEventListener('input', function() {
+    verificarLoteToupu(this.value);
 });
 
   document.getElementById('calcular').addEventListener('click', calcularEtiquetas);
@@ -2738,8 +2763,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Recupera o estado do switch de Mostrar Cálculos do localStorage
     const mostrarCalculos = localStorage.getItem('mostrarCalculos') === 'true';
     document.getElementById('mostrarCalculos').checked = mostrarCalculos; // Define o estado do switch de Mostrar Cálculos
-    document.getElementById('calculosDetalhados').style.display = mostrarCalculos ? 'block' : 'none'; // Atualiza a exibição
-  
+      
   // Configura a exibição inicial com base no modo Toupu
   atualizarExibicaoToupu(isToupuMode);
 });
