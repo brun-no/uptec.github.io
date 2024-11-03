@@ -1164,15 +1164,15 @@
   // 1. Firebase Configuração e inicialização
   
   const firebaseConfig = {
-  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
-  authDomain: "osucessotriunfal.firebaseapp.com",
-  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
-  projectId: "osucessotriunfal",
-  storageBucket: "osucessotriunfal.firebasestorage.app",
-  messagingSenderId: "954572226460",
-  appId: "1:954572226460:web:12f970646aeadc1f08d259",
-  measurementId: "G-WGMQR3SFM5"
-};
+    apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+    authDomain: "etiquetasuptec.firebaseapp.com",
+    projectId: "etiquetasuptec",
+    storageBucket: "etiquetasuptec.appspot.com",
+    messagingSenderId: "1020897973081",
+    appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+    measurementId: "G-6TS0PYEMRV"
+  };
+
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
@@ -1417,25 +1417,19 @@ function salvarRegistroFirebase(registro) {
 }
 
  
-  function carregarRegistrosToupuFirebase() {
-  db.collection("registrosToupu").get().then((querySnapshot) => {
-    registrosToupu = []; // Limpa os registros antes de carregar novos
-    querySnapshot.forEach((doc) => {
-      let registro = doc.data();
-      registro.id = doc.id; // Assegura que o ID do Firebase é mantido
-      registrosToupu.push(registro); // Adiciona o registro à lista
+function carregarRegistrosToupuFirebase() {
+    db.collection("registrosToupu").orderBy("id", "desc").onSnapshot((querySnapshot) => {
+        registrosToupu = []; // Limpa os registros antes de carregar novos
+        querySnapshot.forEach((doc) => {
+            let registro = doc.data();
+            registro.id = doc.id; // Assegura que o ID do Firebase é mantido
+            registrosToupu.push(registro); // Adiciona o registro à lista
+        });
+
+        atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
+    }, (error) => {
+        console.error("Erro ao carregar registros Toupu: ", error);
     });
-
-    if (registrosToupu.length > 0) {
-      nextIdToupu = Math.max(...registrosToupu.map(r => parseInt(r.id.replace('T', ''), 10))) + 1;
-    } else {
-      nextIdToupu = 1;
-    }
-
-    atualizarTabelaToupu(); // Atualiza a tabela com os registros carregados
-  }).catch((error) => {
-    console.error("Erro ao carregar registros Toupu do Firebase: ", error);
-  });
 }
 
 // Função para carregar as quantidades de peças do Firebase
@@ -1550,26 +1544,19 @@ function verificarLoteToupu(lote) {
       nextIdToupu = Math.max(...registrosToupu.map(r => r.id)) + 1;
     }
   }
+ 
   function atualizarRegistroToupuFirebase(registro) {
-    if (!registro.id.startsWith('T')) {
-      alert("ID de registro inválido.");
-      return;
-    }
+    db.collection("registrosToupu").doc(registro.id).update({
+        etiquetasUsadas: registro.etiquetasUsadas
+    })
+    .then(() => {
+        console.log("Registro Toupu atualizado com sucesso:", registro.id);
+    })
+    .catch((error) => {
+        console.error("Erro ao atualizar registro Toupu:", error);
+    });
+}
 
-    db.collection("registrosT oupu").where("id", "==", registro.id).get()
-      .then((querySnapshot) => {
-        if (querySnapshot.empty) {
-          alert("Registro não encontrado.");
-          return;
-        }
-        querySnapshot.forEach((doc) => {
-          doc.ref.update(registro);
-        });
-      })
-      .catch((error) => {
-        console.error("Erro ao atualizar o registro:", error);
-      });
-  }
   function excluirRegistroToupuFirebase(id) {
     db.collection("registrosToupu").where("id", "==", id).get()
       .then((querySnapshot) => {
@@ -1910,8 +1897,8 @@ anteriorButton.addEventListener('click', () => {
     }
     
     // Salva as alterações
-    salvarLocalStorageToupu(); // Certifique-se de ter uma função para salvar dados Toupu
-    atualizarRegistroFirebaseToupu(registro); // Certifique-se de ter uma função para atualizar registro Firebase para Toupu
+    salvarLocalStorageToupu(); // função para salvar dados Toupu
+    atualizarRegistroToupuFirebase(registro); // função para atualizar registro Firebase para Toupu
   }
   function editarRegistro(id) {
     const index = registros.findIndex(r => r.id === id);
