@@ -2603,13 +2603,12 @@ inputFields.forEach(addInputEvent);
 
   // Adiciona ouvintes de eventos aos elementos do DOM
   
-  // Switch do Modo Toupu para manter ligado/desligado "ON e OFF"
+   // Switch do Modo Toupu para manter ligado/desligado "ON e OFF"
 document.getElementById('toggleToupu').addEventListener('change', function() {
     const isToupuMode = this.checked;
     localStorage.setItem('isToupuMode', isToupuMode); // Salva o estado no localStorage
     toggleToupuMode();
 });
-
 // Switch do Mostrar Cálculos para manter ligado/desligado "ON e OFF"
 document.getElementById('mostrarCalculos').addEventListener('change', function() {
     const mostrarCalculos = this.checked;
