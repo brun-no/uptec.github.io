@@ -2576,6 +2576,20 @@ inputFields.forEach(addInputEvent);
   }
 
   // Adiciona ouvintes de eventos aos elementos do DOM
+  
+  // Switch do Modo Toupu para manter ligado/desligado "ON e OFF"
+document.getElementById('toggleToupu').addEventListener('change', function() {
+    const isToupuMode = this.checked;
+    localStorage.setItem('isToupuMode', isToupuMode); // Salva o estado no localStorage
+    toggleToupuMode();
+});
+
+// Switch do Mostrar Cálculos para manter ligado/desligado "ON e OFF"
+document.getElementById('mostrarCalculos').addEventListener('change', function() {
+    const mostrarCalculos = this.checked;
+    localStorage.setItem('mostrarCalculos', mostrarCalculos); // Salva o estado no localStorage
+    document.getElementById('calculosDetalhados').style.display = mostrarCalculos ? 'block' : 'none'; // Atualiza a exibição
+});
 
   //ouvinte da caixa de lote repetido, para mudar a cor azul e vermelho
   document.getElementById('numeroLote').addEventListener('input', function() {
@@ -2714,6 +2728,17 @@ document.addEventListener('DOMContentLoaded', () => {
   atualizarTabela();
   setupAutocomplete();
   loadSuggestionsFromFirebase();
+
+  // Recupera o estado do switch do localStorage
+   // Recupera o estado do switch do Modo Toupu do localStorage
+   const isToupuMode = localStorage.getItem('isToupuMode') === 'true';
+    document.getElementById('toggleToupu').checked = isToupuMode; // Define o estado do switch do modo Toupu
+    atualizarExibicaoToupu(isToupuMode); // Atualiza a exibição com base no estado recuperado
+
+    // Recupera o estado do switch de Mostrar Cálculos do localStorage
+    const mostrarCalculos = localStorage.getItem('mostrarCalculos') === 'true';
+    document.getElementById('mostrarCalculos').checked = mostrarCalculos; // Define o estado do switch de Mostrar Cálculos
+    document.getElementById('calculosDetalhados').style.display = mostrarCalculos ? 'block' : 'none'; // Atualiza a exibição
   
   // Configura a exibição inicial com base no modo Toupu
   atualizarExibicaoToupu(isToupuMode);
