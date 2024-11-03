@@ -881,15 +881,9 @@
 </style>
 </head>
 <body>
-  <!-- Tela de login 
-  <div id="loginForm">
-    <h2></h2>
-    <input type="text" id="loginUsername" placeholder="Username">
-    <input type="password" id="loginPassword" placeholder="Password">
-    <button onclick="login()">Login</button>
-  </div>
-  <div class="container" id="appContainer" style="display:none;">
-  Fim da tela de login -->
+   <!-- adicionado -->
+  <div class="container" id="appContainer">
+     <!-- adicionado -->
   <h1 contenteditable="true">Registro de Etiquetas</h1>
 <!-- INICIO: Controle de pessoas online -->
 <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
@@ -1168,15 +1162,17 @@
 <script>
 
   // 1. Firebase Configuração e inicialização
+  
   const firebaseConfig = {
-    apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
-    authDomain: "etiquetasuptec.firebaseapp.com",
-    projectId: "etiquetasuptec",
-    storageBucket: "etiquetasuptec.appspot.com",
-    messagingSenderId: "1020897973081",
-    appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
-    measurementId: "G-6TS0PYEMRV"
-  };
+  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
+  authDomain: "osucessotriunfal.firebaseapp.com",
+  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
+  projectId: "osucessotriunfal",
+  storageBucket: "osucessotriunfal.firebasestorage.app",
+  messagingSenderId: "954572226460",
+  appId: "1:954572226460:web:12f970646aeadc1f08d259",
+  measurementId: "G-WGMQR3SFM5"
+};
 
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
@@ -1216,18 +1212,18 @@
 
 // Função para carregar as palavras da coleção 'words'
 function loadWordsFromFirebase() {
-    inputFields.forEach(field => {
-        db.collection('words').doc(field).get().then(doc => {
-            if (doc.exists) {
-                wordCache[field] = doc.data().words;
-                // Atualiza o datalist com as palavras carregadas
-                updateAutocompleteList(document.getElementById(field), wordCache[field]);
-            } else {
-                wordCache[field] = [];
-            }
-        });
+  inputFields.forEach(field => {
+    db.collection('words').doc(field).get().then(doc => {
+      if (doc.exists) {
+        wordCache[field] = doc.data().words;
+        updateAutocompleteList(document.getElementById(field), wordCache[field]);
+      } else {
+        wordCache[field] = [];
+      }
     });
+  });
 }
+
 
 // Função para carregar sugestões do localStorage
 function loadSuggestionsFromLocalStorage() {
@@ -2535,42 +2531,36 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
     });
   }
 
-  // Função para atualizar as opções de autocomplete
+// Função para atualizar sugestões de autocomplete
 function updateAutocompleteOptions(inputId, value) {
-    const datalist = document.getElementById(`${inputId}List`);
-    datalist.innerHTML = '';
-    
-    const options = new Set(
-        registros.map(r => r[inputId])
-            .filter(v => v && v.toLowerCase().includes(value.toLowerCase()))
-    );
-    
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        datalist.appendChild(optionElement);
-    });
+  const datalist = document.getElementById(`${inputId}List`);
+  datalist.innerHTML = '';
+  const options = [...new Set(registros.map(r => r[inputId]))]
+    .filter (v => v && v.toLowerCase().includes(value.toLowerCase()))
+    .slice(0, 15); // Limita a 6 sugestões
+
+  options.forEach(option => {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    datalist.appendChild(optionElement);
+  });
 }
+
+// Função para adicionar evento de input aos campos
+function addInputEvent(inputId) {
+  const input = document.getElementById(inputId);
+  input.addEventListener('input', () => {
+    saveData(inputId, input.value);
+    updateAutocompleteOptions(inputId, input.value);
+  });
+}
+
+// Adiciona eventos de input aos campos
+inputFields.forEach(addInputEvent);
 
 
   setupAutocomplete();
-  function login() {
-    const username = document.getElementById('loginUsername').value;
-    const password = document.getElementById('loginPassword').value;
-    
-    if (username === 'Qualidade' && password === 'Qualidade') {
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('appContainer').style.display = 'block';
-      carregarRegistrosFirebase();
-    } else {
-      alert('Usuário ou senha incorretos.');
-    }
-  }
 
-  window.onload = function() {
-    document.getElementById('loginForm').style.display = 'flex';
-    document.getElementById('appContainer').style.display = 'none';
-  }
 
 
   // Função para atualizar a exibição dos elementos com base no modo Toupu
