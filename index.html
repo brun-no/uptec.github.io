@@ -2150,6 +2150,13 @@ document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
     document.getElementById('resultadoToupu').style.display = 'block';
     document.getElementById('resultado').style.display = 'none';
 
+        // Verificação de duplicidade para registros Toupu
+        const registroExistenteToupu = registrosToupu.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+    if (registroExistenteToupu) {
+        alert('Registro já existe no modo Toupu!');
+        return; // Não prossegue com a criação do novo registro
+    }
+
 
     const novoRegistro = {
       id: `T${nextIdToupu++}`,
@@ -2607,17 +2614,17 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
 
 // Função para atualizar sugestões de autocomplete
 function updateAutocompleteOptions(inputId, value) {
-  const datalist = document.getElementById(`${inputId}List`);
-  datalist.innerHTML = '';
-  const options = [...new Set(registros.map(r => r[inputId]))]
-    .filter (v => v && v.toLowerCase().includes(value.toLowerCase()))
-    .slice(0, 15); // Limita a 6 sugestões
+    const datalist = document.getElementById(`${inputId}List`);
+    datalist.innerHTML = '';
+    const options = [...new Set(registros.map(r => r[inputId]))]
+        .filter(v => v && v.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 15); // Limita a 15 sugestões
 
-  options.forEach(option => {
-    const optionElement = document.createElement('option');
-    optionElement.value = option;
-    datalist.appendChild(optionElement);
-  });
+    options.forEach(option => {
+        const optionElement = document.createElement('option');
+        optionElement.value = option;
+        datalist.appendChild(optionElement);
+    });
 }
 
 // Função para adicionar evento de input aos campos
