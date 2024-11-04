@@ -1163,15 +1163,16 @@
 
   // 1. Firebase Configuração e inicialização
   
+ // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
-  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
-  authDomain: "osucessotriunfal.firebaseapp.com",
-  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
-  projectId: "osucessotriunfal",
-  storageBucket: "osucessotriunfal.firebasestorage.app",
-  messagingSenderId: "954572226460",
-  appId: "1:954572226460:web:12f970646aeadc1f08d259",
-  measurementId: "G-WGMQR3SFM5"
+  apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+  authDomain: "etiquetasuptec.firebaseapp.com",
+  databaseURL: "https://etiquetasuptec-default-rtdb.firebaseio.com",
+  projectId: "etiquetasuptec",
+  storageBucket: "etiquetasuptec.firebasestorage.app",
+  messagingSenderId: "1020897973081",
+  appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+  measurementId: "G-6TS0PYEMRV"
 };
 
   firebase.initializeApp(firebaseConfig);
@@ -1193,6 +1194,7 @@
   let registrosToupu = [];
   let nextIdToupu = 1;
   let registroParaExcluirToupu = null;
+  let isTyping = false; // Variável para controlar se o usuário está digitando
   
   const toupuCodes = {
   "2095270004-1": { pecasPorSaco: 100, sacosPorPalete: 43.2, totalPorPalete: 4320 },
@@ -1339,7 +1341,7 @@ function loadSuggestionsFromFirebase() {
     });
 }
 
-
+ // 4. Funcoes gerenciamento de dados
 // Função para salvar registro no Firebase
 function salvarRegistroFirebase(registro) {
     db.collection("registros").doc(String(registro.id)).set(registro)
@@ -1350,18 +1352,6 @@ function salvarRegistroFirebase(registro) {
         console.error("Erro ao salvar registro: ", error);
     });
 }
-
-
-  // 4. Funcoes gerenciamento de dados
-  function salvarRegistroFirebase(registro) {
-    db.collection("registros").doc(String(registro.id)).set(registro)
-      .then(() => {
-        console.log("Registro salvo com S: ", registro.id);
-      })
-      .catch((error) => {
-        console.error("Erro ao salvar registro: ", error);
-      });
-  }
 
   function salvarRegistroToupuFirebase(registro) {
   const registroId = registro.id || `T${nextIdToupu}`; 
@@ -1586,6 +1576,7 @@ function verificarLoteToupu(lote) {
 
   // 5. funçoes de updates
   function atualizarTabela() {
+    if (isTyping) return; // Não atualiza se o usuário estiver digitando
     const tbody = document.querySelector('#registrosTable tbody');
     tbody.innerHTML = '';
 
@@ -1618,9 +1609,12 @@ function verificarLoteToupu(lote) {
       tbody.appendChild(tr);
     });
 
+    adicionarEventosFoco();
     atualizarPaginacao();
   }
   function atualizarTabelaToupu() {
+    if (isTyping) return; // Não atualiza se o usuário estiver digitando
+
   const tbody = document.querySelector('#registrosToupuTable tbody');
   tbody.innerHTML = '';
 
@@ -1657,7 +1651,56 @@ function verificarLoteToupu(lote) {
     tbody.appendChild(tr);
   });
 
+  adicionarEventosFoco();
   atualizarPaginacaoToupu();
+  
+}
+
+//  função para manter o foco na caixa de entrada da coluna Etiquetas Usadas ao ser clicado
+  // Função para adicionar eventos de foco e digitação
+function adicionarEventosFoco() {
+    const etiquetasUsadasCells = document.querySelectorAll('#registrosTable tbody td[contenteditable="true"]');
+    const etiquetasUsadasToupuCells = document.querySelectorAll('#registrosToupuTable tbody td[contenteditable="true"]');
+
+    etiquetasUsadasCells.forEach(cell => {
+        cell.addEventListener('focus', () => {
+            isTyping = true; // O usuário começou a digitar
+        });
+
+        cell.addEventListener('blur', () => {
+            isTyping = false; // O usuário parou de digitar
+            // Atualiza a tabela após um pequeno atraso
+            setTimeout(() => {
+                atualizarTabela();
+            }, 100); // Atraso de 100 ms
+        });
+
+        cell.addEventListener('input', () => {
+            // Atualiza o valor no registro
+            const index = Array.from(cell.closest('tbody').children).indexOf(cell.closest('tr'));
+            atualizarEtiquetasUsadas(index, cell);
+        });
+    });
+
+    etiquetasUsadasToupuCells.forEach(cell => {
+        cell.addEventListener('focus', () => {
+            isTyping = true; // O usuário começou a digitar
+        });
+
+        cell.addEventListener('blur', () => {
+            isTyping = false; // O usuário parou de digitar
+            // Atualiza a tabela após um pequeno atraso
+            setTimeout(() => {
+                atualizarTabelaToupu();
+            }, 100); // Atraso de 100 ms
+        });
+
+        cell.addEventListener('input', () => {
+            // Atualiza o valor no registro
+            const index = Array.from(cell.closest('tbody').children).indexOf(cell.closest('tr'));
+            atualizarEtiquetasUsadasToupu(index, cell);
+        });
+    });
 }
 
   function atualizarPaginacao() {
