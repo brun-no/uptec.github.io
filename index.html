@@ -2067,13 +2067,14 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
     document.getElementById('resultado').style.display = 'block';
     document.getElementById('resultadoToupu').style.display = 'none';
 
-    // Verificação de duplicidade para registros normais
-   const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
-   if (registroExistente) {
-   alert('Registro já existe!');
-   return; // Não prossegue com a criação do novo registro
-   }
-
+  /*
+ // Verificação de duplicidade para registros normais
+ const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+ if (registroExistente) {
+     alert('Registro já existe!');
+     return; // Não prossegue com a criação do novo registro
+ }
+*/
     const novoRegistro = {
         id: nextId++,
         data: new Date().toLocaleString(),
@@ -2150,12 +2151,14 @@ document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
     document.getElementById('resultadoToupu').style.display = 'block';
     document.getElementById('resultado').style.display = 'none';
 
-        // Verificação de duplicidade para registros Toupu
-        const registroExistenteToupu = registrosToupu.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
-    if (registroExistenteToupu) {
-        alert('Registro já existe no modo Toupu!');
-        return; // Não prossegue com a criação do novo registro
-    }
+       /*
+ // Verificação de duplicidade para registros Toupu
+ const registroExistenteToupu = registrosToupu.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+ if (registroExistenteToupu) {
+     alert('Registro já existe no modo Toupu!');
+     return; // Não prossegue com a criação do novo registro
+ }
+*/
 
 
     const novoRegistro = {
