@@ -1163,16 +1163,17 @@
 
   // 1. Firebase Configuração e inicialização
   
- // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-  apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
-  authDomain: "etiquetasuptec.firebaseapp.com",
-  databaseURL: "https://etiquetasuptec-default-rtdb.firebaseio.com",
-  projectId: "etiquetasuptec",
-  storageBucket: "etiquetasuptec.firebasestorage.app",
-  messagingSenderId: "1020897973081",
-  appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
-  measurementId: "G-6TS0PYEMRV"
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
+  authDomain: "osucessotriunfal.firebaseapp.com",
+  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
+  projectId: "osucessotriunfal",
+  storageBucket: "osucessotriunfal.firebasestorage.app",
+  messagingSenderId: "954572226460",
+  appId: "1:954572226460:web:12f970646aeadc1f08d259",
+  measurementId: "G-WGMQR3SFM5"
 };
 
   firebase.initializeApp(firebaseConfig);
@@ -2041,6 +2042,7 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
 });
 
   // 7. funçoes de calcular
+  
   function calcularEtiquetas() {
     const codigoPeca = document.getElementById('codigoPeca').value;
     const numeroLote = document.getElementById('numeroLote').value;
@@ -2048,10 +2050,9 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
     const pecasPorCaixa = parseInt(document.getElementById('pecasPorCaixa').value);
     const observacoes = document.getElementById('observacoes').value;
 
-
     if (!totalPecas || !pecasPorCaixa) {
-      alert('Por favor, preencha os campos obrigatórios.');
-      return;
+        alert('Por favor, preencha os campos obrigatórios.');
+        return;
     }
 
     const etiquetasNecessarias = Math.ceil(totalPecas / pecasPorCaixa);
@@ -2066,33 +2067,31 @@ document.querySelector('#confirmarExclusaoToupuModal .close').addEventListener('
     document.getElementById('resultado').style.display = 'block';
     document.getElementById('resultadoToupu').style.display = 'none';
 
-   
-// Verificação de duplicidade para registros normais
-// const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
-// if (registroExistente) {
-  //   alert('Registro já existe!');
- //    return; // Não prossegue com a criação do novo registro
-// }
+    // Verificação de duplicidade para registros normais
+   const registroExistente = registros.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+   if (registroExistente) {
+   alert('Registro já existe!');
+   return; // Não prossegue com a criação do novo registro
+   }
 
     const novoRegistro = {
-      id: nextId++,
-      data: new Date().toLocaleString(),
-      codigoPeca,
-      numeroLote,
-      totalPecas,
-      pecasPorCaixa,
-      etiquetasNecessarias,
-      pecasExtras,
-      etiquetasUsadas: 0,
-      observacoes
+        id: nextId++,
+        data: new Date().toLocaleString(),
+        codigoPeca,
+        numeroLote,
+        totalPecas,
+        pecasPorCaixa,
+        etiquetasNecessarias,
+        pecasExtras,
+        etiquetasUsadas: 0,
+        observacoes
     };
 
     registros.unshift(novoRegistro);
     salvarRegistroFirebase(novoRegistro);
-    saveSuggestionToFirebase(codigoPeca, numeroLote); // Salva sugestões no Firebase
-    atualizarTabela();
+    
 
-    // Atualizar o localStorage com as palavras
+     // Atualizar o localStorage com as palavras
 updateLocalStorageWithWords();
 
 // Carregar sugestões do localStorage
@@ -2102,22 +2101,28 @@ loadSuggestionsFromLocalStorage();
 document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
 
 
+    // Aqui está o ponto importante
     const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
     if (mostrarCalculos) {
-      const calculosDetalhados = `
-        <p>Total de Peças: ${totalPecas}</p>
-        <p>Peças por Caixa: ${pecasPorCaixa}</p>
-        <p>Matemática:</p>
-        <p>${totalPecas} / ${pecasPorCaixa} = ${totalPecas / pecasPorCaixa}</p>
-        <p>${etiquetasCompletas} * ${pecasPorCaixa} = ${etiquetasCompletas * pecasPorCaixa}</p>
-        <p>${totalPecas} - ${etiquetasCompletas * pecasPorCaixa} = ${pecasExtras}</p>
-      `;
-      document.getElementById('calculosConteudo').innerHTML = calculosDetalhados;
-      document.getElementById('calculosDetalhados').style.display = 'block';
+        const calculosDetalhados = `
+            <p>Total de Peças: ${totalPecas}</p>
+            <p>Peças por Caixa: ${pecasPorCaixa}</p>
+            <p>Matemática:</p>
+            <p>${totalPecas} / ${pecasPorCaixa} = ${totalPecas / pecasPorCaixa}</p>
+            <p>${etiquetasCompletas} * ${pecasPorCaixa} = ${etiquetasCompletas * pecasPorCaixa}</p>
+            <p>${totalPecas} - ${etiquetasCompletas * pecasPorCaixa} = ${pecasExtras}</p>
+        `;
+        document.getElementById('calculosConteudo').innerHTML = calculosDetalhados;
+        document.getElementById('calculosDetalhados').style.display = 'block'; // Certifique-se de que isso está ativando a exibição
     } else {
-      document.getElementById('calculosDetalhados').style.display = 'none';
+        document.getElementById('calculosDetalhados').style.display = 'none'; // Caso contrário, esconda
     }
-  }
+
+
+    saveSuggestionToFirebase(codigoPeca, numeroLote); // Salva sugestões no Firebase
+    atualizarTabela();
+}
+
   function calcularEtiquetasToupu() {
     const codigoPeca = document.getElementById('codigoPecaToupu').value;
     const numeroLote = document.getElementById('numeroLoteToupu').value;
