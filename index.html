@@ -881,9 +881,18 @@
 </style>
 </head>
 <body>
-   <!-- adicionado -->
-  <div class="container" id="appContainer">
-     <!-- adicionado -->
+   <!-- Tela de login -->
+<div id="loginForm">
+  <h2>Qualidade Uptec</h2>
+  <input type="text" id="loginUsername" placeholder="Username" required>
+  <input type="password" id="loginPassword" placeholder="Password" required>
+  <button onclick="login()">Login</button>
+  <p id="loginError" style="color: red;"></p> <!-- Para exibir mensagens de erro -->
+</div>
+<div class="container" id="appContainer" style="display:none;">
+  <!-- Conteúdo da aplicação -->
+
+<!-- Fim da tela de login -->
   <h1 contenteditable="true">Registro de Etiquetas</h1>
 <!-- INICIO: Controle de pessoas online -->
 <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
@@ -1212,6 +1221,54 @@ const firebaseConfig = {
 };
 
   // 3. Funçoes utilitarias
+
+//COMEÇO LOGIN
+// Função para fazer login
+function login() {
+  const email = document.getElementById('loginUsername').value; // Use o campo de username como email
+  const password = document.getElementById('loginPassword').value;
+
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then((userCredential) => {
+      // Login bem-sucedido
+      const user = userCredential.user;
+      console.log("Login bem-sucedido:", user);
+      document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login
+      document.getElementById('appContainer').style.display = 'block'; // Mostra a aplicação
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      document.getElementById('loginError').textContent = errorMessage; // Exibe mensagem de erro
+      console.error("Erro ao fazer login:", errorMessage);
+    });
+}
+
+// Função para fazer logout
+function logout() {
+  firebase.auth().signOut().then(() => {
+    console.log("Logout bem-sucedido");
+    document.getElementById('loginForm').style.display = 'flex'; // Mostra o formulário de login
+    document.getElementById('appContainer').style.display = 'none'; // Esconde a aplicação
+  }).catch((error) => {
+    console.error("Erro ao fazer logout:", error);
+  });
+}
+
+// Escuta o estado de autenticação
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    // Usuário está logado
+    console.log("Usuário logado:", user);
+    document.getElementById('loginForm').style.display = 'none'; // Esconde o formulário de login
+    document.getElementById('appContainer').style.display = 'block'; // Mostra a aplicação
+  } else {
+    // Usuário não está logado
+    console.log("Usuário não logado");
+    document.getElementById('loginForm').style.display = 'flex'; // Mostra o formulário de login
+    document.getElementById('appContainer').style.display = 'none'; // Esconde a aplicação
+  }
+});
+//FINAL LOGIN
 
 // Função para carregar as palavras da coleção 'words'
 function loadWordsFromFirebase() {
@@ -2711,7 +2768,7 @@ document.getElementById('mostrarCalculos').addEventListener('change', function()
 
   document.addEventListener('DOMContentLoaded', toggleToupuMode);
 
-  // Exemplo de funcionalidade de contagem de usuários (adapte com Firebase)
+  //Função mostrar usuarios conectados em tempo real
   const connectedUsersRef = firebase.database().ref('connectedUsers');
         const connectedRef = firebase.database().ref('.info/connected');
 
