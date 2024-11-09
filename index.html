@@ -1041,9 +1041,9 @@
         </div>
 
         <div class="register-buttons">
-          <button id="calcularToupu" style="display: none;">Registrar</button>
           <button id="calcular">Registrar</button>
-          <!-- Resultados -->
+          <button id="calcularToupu" style="display: none;">Registrar</button>
+                    <!-- Resultados -->
           <span id="resultado" style="display: none;"></span>
           <span id="resultadoToupu" style="display: none;"></span>
         </div>
@@ -2872,6 +2872,67 @@ document.getElementById('mostrarCalculos').addEventListener('change', function()
       behavior: "smooth"
     });
   });
+
+  // Função para gerenciar a navegação entre os campos e enviar o formulário com a tecla enter
+function handleEnterKey(event, mode) {
+  // Verifica se a tecla pressionada é "Enter"
+  if (event.key === "Enter") {
+    event.preventDefault(); // Evita o comportamento padrão do Enter
+
+    if (mode === "normal") {
+      // Campos do modo normal
+      const fields = [
+        document.getElementById('codigoPeca'),
+        document.getElementById('numeroLote'),
+        document.getElementById('totalPecas'),
+        document.getElementById('pecasPorCaixa'),
+        document.getElementById('observacoes'),
+        document.getElementById('calcular') // O botão de registrar
+      ];
+
+      // Encontra o índice do campo que disparou o evento
+      const currentFieldIndex = fields.findIndex(field => field === document.activeElement);
+      
+      // Se o campo atual não for o último, move para o próximo
+      if (currentFieldIndex < fields.length - 1) {
+        fields[currentFieldIndex + 1].focus();
+      } else {
+        // Se for o último campo, clica no botão de registrar
+        document.getElementById('calcular').click();
+      }
+    } else if (mode === "toupu") {
+      // Campos do modo Toupu
+      const fieldsToupu = [
+        document.getElementById('codigoPecaToupu'),
+        document.getElementById('numeroLoteToupu'),
+        document.getElementById('totalPecasToupu'),
+        document.getElementById('observacoesToupu'),
+        document.getElementById('calcularToupu') // O botão de registrar
+      ];
+
+      // Encontra o índice do campo que disparou o evento
+      const currentFieldIndexToupu = fieldsToupu.findIndex(field => field === document.activeElement);
+      
+      // Se o campo atual não for o último, move para o próximo
+      if (currentFieldIndexToupu < fieldsToupu.length - 1) {
+        fieldsToupu[currentFieldIndexToupu + 1].focus();
+      } else {
+        // Se for o último campo, clica no botão de registrar
+        document.getElementById('calcularToupu').click();
+      }
+    }
+  }
+}
+
+// Adiciona ouvintes de eventos para os campos de entrada do modo normal
+document.querySelectorAll('.normal-inputs input').forEach(input => {
+  input.addEventListener('keydown', (event) => handleEnterKey(event, "normal"));
+});
+
+// Adiciona ouvintes de eventos para os campos de entrada do modo Toupu
+document.querySelectorAll('.toupu-inputs input, .toupu-inputs select').forEach(input => {
+  input.addEventListener('keydown', (event) => handleEnterKey(event, "toupu"));
+});
 
   function toggleToupuMode() {
   const isToupuMode = document.getElementById('toggleToupu').checked;
