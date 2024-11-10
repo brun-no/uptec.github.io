@@ -1207,14 +1207,14 @@
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDcO7xRFNA00cE8rAddqYk0sBQuTf9YEWs",
-  authDomain: "osucessotriunfal.firebaseapp.com",
-  databaseURL: "https://osucessotriunfal-default-rtdb.firebaseio.com",
-  projectId: "osucessotriunfal",
-  storageBucket: "osucessotriunfal.firebasestorage.app",
-  messagingSenderId: "954572226460",
-  appId: "1:954572226460:web:12f970646aeadc1f08d259",
-  measurementId: "G-WGMQR3SFM5"
+  apiKey: "AIzaSyC1TFyTLIdzULpZmHQGwvoG4v8IfoQnDSI",
+  authDomain: "etiquetasuptec.firebaseapp.com",
+  databaseURL: "https://etiquetasuptec-default-rtdb.firebaseio.com",
+  projectId: "etiquetasuptec",
+  storageBucket: "etiquetasuptec.firebasestorage.app",
+  messagingSenderId: "1020897973081",
+  appId: "1:1020897973081:web:3a3f6ff6397d7d688ab248",
+  measurementId: "G-6TS0PYEMRV"
 };
 
   firebase.initializeApp(firebaseConfig);
@@ -1340,19 +1340,80 @@ window.onclick = function(event) {
   });
 }
 
-// Função para carregar as palavras da coleção 'words'
+// Função para carregar palavras do Firebase e preencher o wordCache
 function loadWordsFromFirebase() {
-  inputFields.forEach(field => {
-    db.collection('words').doc(field).get().then(doc => {
-      if (doc.exists) {
-        wordCache[field] = doc.data().words;
-        updateAutocompleteList(document.getElementById(field), wordCache[field]);
-      } else {
-        wordCache[field] = [];
-      }
+    const fields = ['codigoPeca', 'numeroLote', 'observacoes'];
+    fields.forEach(field => {
+        db.collection('words').doc(field).get().then(doc => {
+            if (doc.exists) {
+                wordCache[field] = doc.data().words;
+            } else {
+                wordCache[field] = [];
+            }
+        });
     });
-  });
 }
+
+// Função para atualizar sugestões de autocomplete
+function updateAutocompleteOptions(inputId, value) {
+    const suggestionsContainer = document.getElementById(`${inputId}Suggestions`);
+    suggestionsContainer.innerHTML = ''; // Limpa as sugestões anteriores
+
+    // Obter sugestões a partir do wordCache
+    const options = wordCache[inputId]
+        .filter(v => v && v.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 15); // Limita a 15 sugestões
+
+    options.forEach(option => {
+        const optionElement = document.createElement('li');
+        optionElement.textContent = option;
+        optionElement.addEventListener('click', () => {
+            document.getElementById(inputId).value = option; // Define o valor do campo
+            suggestionsContainer.innerHTML = ''; // Limpa as sugestões
+        });
+        suggestionsContainer.appendChild(optionElement);
+    });
+}
+
+// Configurar autocomplete ao carregar a página
+function setupAutocomplete() {
+    const inputs = ['codigoPeca', 'numeroLote', 'observacoes'];
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        const suggestionsContainer = document.createElement('ul');
+        suggestionsContainer.id = `${inputId}Suggestions`;
+        suggestionsContainer.className = 'autocomplete-list'; // Classe para estilização
+        input.parentNode.appendChild(suggestionsContainer); // Adiciona a lista abaixo do input
+
+        input.addEventListener('input', () => {
+            updateAutocompleteOptions(inputId, input.value); // Atualiza as sugestões ao digitar
+        });
+    });
+}
+
+
+
+// Estilo para a lista de sugestões
+const style = document.createElement('style');
+style.innerHTML = `
+.autocomplete-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+}
+.autocomplete-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+.autocomplete-list li:hover {
+    background-color: #f1f1f1;
+}
+`;
+document.head.appendChild(style);
 
 
 // Função para carregar sugestões do localStorage
@@ -2742,35 +2803,7 @@ document.getElementById('cancelarExclusaoToupuBtn').addEventListener('click', fe
     });
   }
 
-// Função para atualizar sugestões de autocomplete
-function updateAutocompleteOptions(inputId, value) {
-    const datalist = document.getElementById(`${inputId}List`);
-    datalist.innerHTML = '';
-    const options = [...new Set(registros.map(r => r[inputId]))]
-        .filter(v => v && v.toLowerCase().includes(value.toLowerCase()))
-        .slice(0, 15); // Limita a 15 sugestões
 
-    options.forEach(option => {
-        const optionElement = document.createElement('option');
-        optionElement.value = option;
-        datalist.appendChild(optionElement);
-    });
-}
-
-// Função para adicionar evento de input aos campos
-function addInputEvent(inputId) {
-  const input = document.getElementById(inputId);
-  input.addEventListener('input', () => {
-    saveData(inputId, input.value);
-    updateAutocompleteOptions(inputId, input.value);
-  });
-}
-
-// Adiciona eventos de input aos campos
-inputFields.forEach(addInputEvent);
-
-
-  setupAutocomplete();
 
 
 
@@ -3003,7 +3036,8 @@ document.addEventListener('DOMContentLoaded', () => {
   atualizarTabela();
   setupAutocomplete();
   loadSuggestionsFromFirebase();
-
+ 
+    
   // Recupera o estado do switch do localStorage
    // Recupera o estado do switch do Modo Toupu do localStorage
    const isToupuMode = localStorage.getItem('isToupuMode') === 'true';
