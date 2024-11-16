@@ -966,57 +966,61 @@ textarea {
       background-color: #000000;
     }
 
-    /* INICIO CSS DARK MODE */
-    .checkbox {
-  appearance: none;
-  overflow: hidden;
-  min-width: 30px;
-  aspect-ratio: 1/1;
-  border-radius: 50%; /* Tornar a borda redonda */
-  border: 2px solid rgb(255, 212, 59); /* Cor inicial mais clara */
-  position: relative;
-  transition: all 0.2s ease-in-out;
-  width: 30px; /* Ajusta o tamanho do checkbox */
-  height: 30px; /* Ajusta o tamanho do checkbox */
-}
+/* -- INÍCIO CSS DARK MODE -- */
 
-.checkbox::before {
+.loader {
   position: absolute;
-  inset: 0;
-  content: "";
-  transition: all 0.2s ease-in-out;
-  background: rgb(255, 212, 59); /* Cor inicial do sol */
-  clip-path: circle(50%); /* Forma do sol */
-  box-shadow: 0 0 15px rgba(255, 212, 59, 0.8), 0 0 30px rgba(255, 212, 59, 0.5); /* Efeito de luz do sol */
+  top: 40px; /* Espaço do topo */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  background: none;
 }
 
-/* Quando o checkbox está marcado */
-.checkbox:checked {
-  border: 2px solid transparent; /* Remover a borda ao marcar */
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.37), 0 0 30px rgba(255, 255, 255, 0.363); /* Efeito de luz na lua */
+.sphere-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  perspective: 1000px; /* Perspectiva 3D */
 }
 
-.checkbox:checked::before {
-  background: rgba(200, 200, 200, 0.8); /* Cor da lua */
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.5); /* Efeito de luz suave da lua */
-  clip-path: circle(50%); /* Forma da lua */
+.sphere {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 204, 1) 0%, rgb(255, 204, 102) 100%);
+  box-shadow: 0 0 100px rgb(255, 204, 102), 0 0 150px rgb(255, 204, 102);
+  transform-style: preserve-3d;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Quando o checkbox não está marcado */
-.checkbox:not(:checked) + label {
-  box-shadow: 0 0 10px rgba(255, 212, 59, 0.5); /* Efeito apagado do sol */
+.sphere-container:hover .sphere {
+  transform: scale(1.05); /* Leve aumento no hover */
+  box-shadow: 0 0 50px rgba(255, 255, 255, 0.514), 0 0 150px rgba(255, 255, 255, 0.514);
 }
 
-.checkbox:not(:checked)::before {
-  background: rgb(255, 212, 59); /* Cor do sol */
-  clip-path: circle(50%); /* Forma do sol */
-  box-shadow: 0 0 15px rgba(255, 212, 59, 0.8), 0 0 30px rgba(255, 212, 59, 0.5); /* Efeito de luz do sol */
+.sphere-container:active .sphere {
+  transform: scale(0.95); /* Reduz ligeiramente quando clicado */
 }
 
+.sphere.active {
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(40, 40, 40, 1) 0%, rgba(15, 15, 15, 1) 100%);
+  box-shadow: 0 0 100px rgb(255, 255, 255), 0 0 100px rgb(255, 255, 255);
+  transform-style: preserve-3d;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* -- FIM CSS DARK MODE -- */
 
 
-
- /* FIM CSS DARK MODE */
+    
  
   </style>
   
@@ -1031,6 +1035,7 @@ textarea {
   <p id="loginError" style="color: red;"></p> <!-- Para exibir mensagens de erro -->
   </div>
 <!-- Fim da tela de login -->
+ 
 <div class="container" id="appContainer" style="display:none;">
   <!-- Conteúdo da aplicação -->
 
@@ -1044,8 +1049,17 @@ textarea {
 
 <!-- Modal confirmar saida-->
 <div id="logoutModal" class="modal">
+
+ <!-- INÍCIO BOTÃO DARK MODE -->
+ <div class="loader">
+ <div class="sphere-container" id="toggleTheme">
+  <div class="sphere"></div>
+</div>
+</div>
+<!-- FIM BOTÃO DARK MODE -->
+
   <div class="modal-content">
-        <span class="close" onclick="closeLogoutModal()">&times;</span>
+    <span class="close" onclick="closeLogoutModal()">&times;</span>
         <h2 style="margin: 0;">Atenção!</h2> 
     <p>Ao continuar você será desconectado. Para acessar novamente, insira seu e-mail e senha.</p>
     <p>Você deseja realmente sair?</p>  
@@ -1266,11 +1280,6 @@ textarea {
 
   <div id="acoesModal" class="modal">
     <div class="modal-content">
-        <!-- INICIO BOTÃO DARK MODE -->
-        <label class="container" id="toggleTheme">
-            <input type="checkbox" class="checkbox" checked>
-        </label>
-        <!-- FIM BOTÃO DARK MODE -->
         <span class="close">&times;</span>
         <h2>
                        Ações
@@ -3015,21 +3024,7 @@ document.getElementById('mostrarCalculos').addEventListener('change', function()
     });
   });
 
-    //ouvintes botão modo noturno/escuro
-document.getElementById('toggleTheme').addEventListener('click', () => {
-    document.body.classList.toggle('dark-theme');
-    // Salvar a preferência do usuário no localStorage
-    const isDarkTheme = document.body.classList.contains('dark-theme');
-    localStorage.setItem('isDarkTheme', isDarkTheme);
-});
 
-// Recuperar a preferência do usuário ao carregar a página para o modo noturno/escuro
-document.addEventListener('DOMContentLoaded', () => {
-    const isDarkTheme = localStorage.getItem('isDarkTheme') === 'true';
-    if (isDarkTheme) {
-        document.body.classList.add('dark-theme');
-    }
-});
 
   // Função para gerenciar a navegação entre os campos e enviar o formulário com a tecla enter
 function handleEnterKey(event, mode) {
@@ -3124,6 +3119,35 @@ document.querySelectorAll('.toupu-inputs input, .toupu-inputs select').forEach(i
       document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
     }
   });
+
+// -- INÍCIO JS DARK MODE --
+
+document.getElementById('toggleTheme').addEventListener('click', () => {
+    const sphere = document.querySelector('.sphere');
+    sphere.classList.toggle('active'); // Alterna entre sol e lua
+    
+    // Alterna o tema
+    document.body.classList.toggle('dark-theme');
+
+    // Salvar a preferência no localStorage
+    const isDarkTheme = document.body.classList.contains('dark-theme');
+    localStorage.setItem('isDarkTheme', isDarkTheme);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const isDarkTheme = localStorage.getItem('isDarkTheme') === 'true';
+    const sphere = document.querySelector('.sphere');
+    
+    if (isDarkTheme) {
+        document.body.classList.add('dark-theme');
+        sphere.classList.add('active'); // Lua (tema escuro)
+    } else {
+        sphere.classList.remove('active'); // Sol (tema claro)
+    }
+});
+
+// -- FIM JS DARK MODE --
+
 
 
   // Salvar registros no Firebase e atualizar a tabela quando o modo Toupu estiver desativado
