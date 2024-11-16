@@ -647,8 +647,9 @@ textarea {
   
     /* Estilos para o container */
     .container {
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 1200px; /* ou outro valor que faça sentido */
+      margin: 0 auto; /* Centraliza a container */
+      padding: 20px; /* Espaçamento interno */
     }
     
     h1 {
@@ -1019,6 +1020,21 @@ textarea {
 
 /* -- FIM CSS DARK MODE -- */
 
+/* Define os ícones para o modo escuro e claro */
+.edit-btn .icon, .delete-btn .icon {
+  fill: currentColor; /* Inherit button color */
+}
+/* Modo escuro (ícones brancos) */
+.dark-theme .edit-btn .icon,
+.dark-theme .delete-btn .icon {
+  color: white; /* Branco para ícones no modo escuro */
+}
+
+/* Modo claro (ícones pretos) */
+.edit-btn .icon,
+.delete-btn .icon {
+  color: black; /* Preto para ícones no modo claro */
+}
 
     
  
@@ -1039,7 +1055,8 @@ textarea {
 <div class="container" id="appContainer" style="display:none;">
   <!-- Conteúdo da aplicação -->
 
-  <h1 contenteditable="true">Registro de Etiquetas</h1>
+  <h6 contenteditable="true"></h6>
+
 <!-- INICIO: Controle de pessoas online -->
 <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
   <span class="counter" onclick="showLogoutModal()">
@@ -1908,9 +1925,20 @@ function verificarLoteToupu(lote) {
         <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${index + inicio}, this)">${registro.etiquetasUsadas}</td>
         <td>${registro.observacoes}</td>
         <td>
-          <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
-         <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
-        </td>
+        
+<button class="edit-btn" onclick="editarRegistro(${registro.id})">
+  <svg class="icon icon-edit" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+  </svg>
+</button>
+
+<button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">
+  <svg class="icon icon-delete" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+  </svg>
+</button>
+          
+</td>
       `;
       tbody.appendChild(tr);
     });
@@ -1951,7 +1979,12 @@ function verificarLoteToupu(lote) {
       <td contenteditable="true" oninput="atualizarEtiquetasUsadasToupu(${index}, this)">${registro.etiquetasUsadas}</td>
       <td>${registro.observacoes}</td>
       <td>
-  <button class="delete-btn" onclick="confirmarExclusaoRegistroToupu('${registro.id}')">🗑️</button>
+ 
+<button class="delete-btn" onclick="confirmarExclusaoRegistroToupu('${registro.id}')">
+  <svg class="icon icon-delete" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+  </svg>
+</button>
 </td>
     `;
     tbody.appendChild(tr);
@@ -2162,9 +2195,19 @@ anteriorButton.addEventListener('click', () => {
         <td contenteditable="true" oninput="atualizarEtiquetasUsadas(${registros.indexOf(registro)}, this)">${registro.etiquetasUsadas}</td>
         <td>${registro.observacoes}</td>
         <td>
-          <button class="edit-btn" onclick="editarRegistro(${registro.id})">✏️</button>
-           <button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">🗑️</button>
-        </td>
+       
+<button class="edit-btn" onclick="editarRegistro(${registro.id})">
+  <svg class="icon icon-edit" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+  </svg>
+</button>
+
+<button class="delete-btn" onclick="confirmarExclusaoRegistro(${registro.id})">
+  <svg class="icon icon-delete" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+  </svg>
+</button>
+</td>
       `;
       tbody.appendChild(tr);
     });
@@ -2204,8 +2247,13 @@ anteriorButton.addEventListener('click', () => {
         <td contenteditable="true" oninput="atualizarEtiquetasUsadasToupu(${index}, this)">${registro.etiquetasUsadas}</td>
         <td>${registro.observacoes}</td>
         <td>
-          <button class="delete-btn" onclick="excluirRegistroToupu(${registro.id})">🗑️</button>
-        </td>
+       
+<button class="delete-btn" onclick="excluirRegistroToupu(${registro.id})">
+  <svg class="icon icon-delete" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+  </svg>
+</button>
+</td>
       `;
       tbody.appendChild(tr);
     });
