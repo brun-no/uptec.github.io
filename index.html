@@ -30,7 +30,23 @@
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s; /* Transição suave para o modo noturno */
   }
+
+  .placeholder {
+  position: absolute;
+  top: 12px; /* Posição inicial do rótulo */
+  left: 15px; /* Posição inicial do rótulo */
+  font-size: 16px;
+  transition: 0.2s ease all;
+  pointer-events: none; /* Impede que o rótulo capture eventos de clique */
+}
   
+.input:focus + .placeholder,
+.input:not(:placeholder-shown) + .placeholder {
+  top: -20px; /* Move o rótulo para cima */
+  left: 10px; /* Ajusta a posição horizontal */
+  font-size: 12px; /* Diminui o tamanho da fonte */
+  color: blueviolet; /* Altera a cor do rótulo quando focado */
+}
 /* MODO NOTURNO */
  
 /* Estilos no modo noturno */
@@ -700,6 +716,8 @@ textarea {
     .input-field {
       flex: 1;
       min-width: 200px;
+      position: relative;
+      margin-bottom: 20px; /* Espaçamento entre os campos */
     }
     
     input[type="text"],
@@ -1020,6 +1038,7 @@ textarea {
 
 /* -- FIM CSS DARK MODE -- */
 
+/* -- INICIO CSS ICONES -- */
 /* Define os ícones para o modo escuro e claro */
 .edit-btn .icon, .delete-btn .icon {
   fill: currentColor; /* Inherit button color */
@@ -1035,16 +1054,14 @@ textarea {
 .delete-btn .icon {
   color: black; /* Preto para ícones no modo claro */
 }
-
-    
- 
+/* -- FIM CSS ICONES -- */
   </style>
   
 </head>
 <body>
      <!-- Tela de login -->
 <div id="loginForm">
-  <h2>Qualidade Uptec</h2>
+  <h2>QUALIDADE UPTEC</h2>
   <input type="text" id="loginUsername" placeholder="Username" required >
   <input type="password" id="loginPassword" placeholder="Password" required autocomplete="off">
   <button onclick="login()">Login</button>
@@ -1055,14 +1072,17 @@ textarea {
 <div class="container" id="appContainer" style="display:none;">
   <!-- Conteúdo da aplicação -->
 
-  <h6 contenteditable="true"></h6>
+  <div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
+    <span class="counter" onclick="showLogoutModal()">
+      <span id="connectedUsersCount">0</span> ONLINE
+    </span>
+  </div>
 
-<!-- INICIO: Controle de pessoas online -->
-<div class="counter-container" id="counter" style="position: fixed; top: 0; left: 50%; transform: translateX(-50%); z-index: 9999;">
-  <span class="counter" onclick="showLogoutModal()">
-    <span id="connectedUsersCount">0</span> ONLINE
-  </span>
+<!-- Titulo Editável salvo localmente -->
+<div class="counter-container" id="counter" style="position: absolute; top: 5px; left: 10px; width: auto; display: flex; align-items: center; justify-content: space-between; padding: 0 10px;">
+  <h3 id="editableTitle" contenteditable="true" style="margin: 0; padding: 0;">Registro de Etiquetas</h3>
 </div>
+
 
 <!-- Modal confirmar saida-->
 <div id="logoutModal" class="modal">
@@ -1109,59 +1129,68 @@ textarea {
 
  
   <!-- Container da página -->
-  <div class="form-container">
-    <!-- Grupo de inputs para registros normais -->
-      <div class="input-group normal-inputs">
-        <div class="input-field">
-          <input type="text" id="codigoPeca" list="codigoPecaList" placeholder="Código da Peça" autocomplete="on">
-          <datalist id="codigoPecaList"></datalist>
-        </div>
-        <div class="input-field">
-          <input type="text" id="numeroLote" list="numeroLoteList" placeholder="Número do Lote" autocomplete="on">
-          <datalist id="numeroLoteList"></datalist>
-        </div>
-        <div class="input-field">
-          <input type="number" id="totalPecas" placeholder="Total de Peças" required autocomplete="on">
-        </div>
-        <div class="input-field">
-          <input type="number" id="pecasPorCaixa" placeholder="Peças por Caixa" required autocomplete="on">
-        </div>
-        <div class="input-field">
-          <input type="text" id="observacoes" list="observacoesList" placeholder="Observações" autocomplete="on">
-          <datalist id="observacoesList"></datalist>
-        </div>
-      </div>
-
-    <!-- Grupo de inputs para registros Toupu -->
-    <div class="input-group toupu-inputs" style="display: none;">
-      <div class="input-field">
-        <select id="codigoPecaToupu">
-          <option value="">Selecione o código Toupu</option>
-          <option value="2095270004-1">2095270004-1</option>
-          <option value="2095270003-1">2095270003-1</option>
-          <option value="20028524-1">20028524-1</option>
-          <option value="10018462-1">10018462-1</option>
-          <option value="2095490002-1">2095490002-1</option>
-          <option value="2095080003-1">2095080003-1</option>
-          <option value="2095160004-1">2095160004-1</option>
-          <option value="10018996-1">10018996-1</option>
-          <option value="2095430002-1">2095430002-1</option>
-          <option value="2095080004-1">2095080004-1</option>
-          <option value="2095160007-1">2095160007-1</option>
-        </select>
-      </div>
-      <div class="input-field">
- <input type="text" id="numeroLoteToupu" list="numeroLoteList" placeholder="Número do Lote" autocomplete="on">
-        <datalist id="numeroLoteList"></datalist>
-      </div>
-      <div class="input-field">
-        <input type="number" id="totalPecasToupu" placeholder="Total de Peças" required autocomplete="on">
-      </div>
-      <div class="input-field">
-        <input type="text" id="observacoesToupu" list="observacoesList" placeholder="Observações" autocomplete="on">
-        <datalist id="observacoesList"></datalist>
-      </div>
+<div class="form-container">
+  <!-- Grupo de inputs para registros normais -->
+  <div class="input-group normal-inputs">
+    <div class="input-field">
+      <input type="text" id="codigoPeca" list="codigoPecaList" class="input" placeholder=" " autocomplete="on" required>
+      <label for="codigoPeca" class="placeholder">Código da Peça</label>
+      <datalist id="codigoPecaList"></datalist>
     </div>
+    <div class="input-field">
+      <input type="text" id="numeroLote" list="numeroLoteList" class="input" placeholder=" " autocomplete="on" required>
+      <label for="numeroLote" class="placeholder">Número do Lote</label>
+      <datalist id="numeroLoteList"></datalist>
+    </div>
+    <div class="input-field">
+      <input type="number" id="totalPecas" class="input" placeholder=" " required autocomplete="on">
+      <label for="totalPecas" class="placeholder">Total de Peças</label>
+    </div>
+    <div class="input-field">
+      <input type="number" id="pecasPorCaixa" class="input" placeholder=" " required autocomplete="on">
+      <label for="pecasPorCaixa" class="placeholder">Peças por Caixa</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="observacoes" list="observacoesList" class="input" placeholder=" " autocomplete="on">
+      <label for="observacoes" class="placeholder">Observações</label>
+      <datalist id="observacoesList"></datalist>
+    </div>
+  </div>
+
+  <!-- Grupo de inputs para registros Toupu -->
+  <div class="input-group toupu-inputs" style="display: none;">
+    <div class="input-field">
+      <select id="codigoPecaToupu" class="input">
+        <option value="">Selecione o código Toupu</option>
+        <option value="2095270004-1">2095270004-1</option>
+        <option value="2095270003-1">2095270003-1</option>
+        <option value="20028524-1">20028524-1</option>
+        <option value="10018462-1">10018462-1</option>
+        <option value="2095490002-1">2095490002-1</option>
+        <option value="2095080003-1">2095080003-1</option>
+        <option value="2095160004-1">2095160004-1</option>
+        <option value="10018996-1">10018996-1</option>
+        <option value="2095430002-1">2095430002-1</option>
+        <option value="2095080004-1">2095080004-1</option>
+        <option value="2095160007-1">2095160007-1</option>
+      </select>
+      <label for="codigoPecaToupu" class="placeholder">Código Toupu</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="numeroLoteToupu" list="numeroLoteList" class="input" placeholder=" " autocomplete="on" required>
+      <label for="numeroLoteToupu" class="placeholder">Número do Lote</label>
+      <datalist id="numeroLoteList"></datalist>
+    </div>
+    <div class="input-field">
+      <input type="number" id="totalPecasToupu" class="input" placeholder=" " required autocomplete="on">
+      <label for="totalPecasToupu" class="placeholder">Total de Peças</label>
+    </div>
+    <div class="input-field">
+      <input type="text" id="observacoesToupu" list="observacoesList" class="input" placeholder=" " autocomplete="on">
+      <label for="observacoesToupu" class="placeholder">Observações</label>
+      <datalist id="observacoesList"></datalist>
+    </div>
+  </div>
 
     <!-- Cálculos detalhados -->
     <div id="calculosDetalhados" style="display: none;">
@@ -1411,6 +1440,23 @@ const firebaseConfig = {
 };
 
   // 3. Funçoes utilitarias
+   
+
+  // INICIO Salvar titulo editavel da pagina localmente
+  const editableTitle = document.getElementById('editableTitle');
+
+  // Função para carregar e salvar o valor
+if (editableTitle) {
+  // Carregar o valor salvo no localStorage
+  const savedTitle = localStorage.getItem('editableTitle');
+  if (savedTitle) editableTitle.textContent = savedTitle;
+
+  // Salvar o valor ao perder o foco
+  editableTitle.addEventListener('blur', () => {
+    localStorage.setItem('editableTitle', editableTitle.textContent);
+  });
+}
+// FIM Salvar titulo editavel da pagina localmente
 
 //COMEÇO LOGIN
 // Função para fazer login
@@ -3125,6 +3171,34 @@ function handleEnterKey(event, mode) {
   }
 }
 
+// -- INÍCIO JS DARK MODE --
+
+document.getElementById('toggleTheme').addEventListener('click', () => {
+    const sphere = document.querySelector('.sphere');
+    sphere.classList.toggle('active'); // Alterna entre sol e lua
+    
+    // Alterna o tema
+    document.body.classList.toggle('dark-theme');
+
+    // Salvar a preferência no localStorage
+    const isDarkTheme = document.body.classList.contains('dark-theme');
+    localStorage.setItem('isDarkTheme', isDarkTheme);
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const isDarkTheme = localStorage.getItem('isDarkTheme') === 'true';
+    const sphere = document.querySelector('.sphere');
+    
+    if (isDarkTheme) {
+        document.body.classList.add('dark-theme');
+        sphere.classList.add('active'); // Lua (tema escuro)
+    } else {
+        sphere.classList.remove('active'); // Sol (tema claro)
+    }
+});
+
+// -- FIM JS DARK MODE --
+
 // Adiciona ouvintes de eventos para os campos de entrada do modo normal
 document.querySelectorAll('.normal-inputs input').forEach(input => {
   input.addEventListener('keydown', (event) => handleEnterKey(event, "normal"));
@@ -3167,35 +3241,6 @@ document.querySelectorAll('.toupu-inputs input, .toupu-inputs select').forEach(i
       document.getElementById('calculosDetalhados').style.display = this.checked ? 'block' : 'none';
     }
   });
-
-// -- INÍCIO JS DARK MODE --
-
-document.getElementById('toggleTheme').addEventListener('click', () => {
-    const sphere = document.querySelector('.sphere');
-    sphere.classList.toggle('active'); // Alterna entre sol e lua
-    
-    // Alterna o tema
-    document.body.classList.toggle('dark-theme');
-
-    // Salvar a preferência no localStorage
-    const isDarkTheme = document.body.classList.contains('dark-theme');
-    localStorage.setItem('isDarkTheme', isDarkTheme);
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-    const isDarkTheme = localStorage.getItem('isDarkTheme') === 'true';
-    const sphere = document.querySelector('.sphere');
-    
-    if (isDarkTheme) {
-        document.body.classList.add('dark-theme');
-        sphere.classList.add('active'); // Lua (tema escuro)
-    } else {
-        sphere.classList.remove('active'); // Sol (tema claro)
-    }
-});
-
-// -- FIM JS DARK MODE --
-
 
 
   // Salvar registros no Firebase e atualizar a tabela quando o modo Toupu estiver desativado
