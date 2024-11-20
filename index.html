@@ -306,15 +306,14 @@ textarea {
       background-color: rgba(0, 0, 0, 0.4); /* Fundo escuro com transparência */
     }
   
-    .modal-content { 
-      background-color: var(--bg-color); /* Fundo do modal usando a variável definida */
+    .modal-content {
+      background-color: var(--bg-color); /* Fundo do modal */
       margin: 15% auto; /* Centraliza o modal com margem superior */
       padding: 20px; /* Espaçamento interno */
       border-radius: 20px; /* Bordas arredondadas */
       box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); /* Sombra do modal */
-      width: auto; /* Remove a largura fixa */
       max-width: 500px; /* Largura máxima do modal */
-      text-align: center; /* Centraliza o texto */      
+      text-align: left; /* Alinha o texto à esquerda */
     }
   
     .modal-content p {
@@ -464,14 +463,13 @@ textarea {
     }
   
     .modal-content {
-      background-color: var(-- bg-color);
-      margin: 15% auto;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
-      width: 80%;
-      max-width: 500px;
-      position: relative;
+      background-color: var(--bg-color); /* Fundo do modal */
+      margin: 15% auto; /* Centraliza o modal com margem superior */
+      padding: 20px; /* Espaçamento interno */
+      border-radius: 20px; /* Bordas arredondadas */
+      box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light); /* Sombra do modal */
+      max-width: 500px; /* Largura máxima do modal */
+      text-align: center; /* Centraliza o texto */
     }
   
     .modal-content h2 {
@@ -681,13 +679,7 @@ textarea {
       opacity: 1;
     }
     
-    .form-container {      
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 
-        8px 8px 16px var(--shadow-dark), 
-        -8px -8px 16px var(--shadow-light);
-    }
+  
 
     .toupu-container {
       margin-top: 20px;
@@ -695,13 +687,22 @@ textarea {
     }
     
     .input-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 20px;
-      position: relative;
-      width: 100%;
-      transition: opacity 0.3s ease-in-out;      
+      display: flex; /* Alinha os campos em linha */
+      flex-wrap: wrap; /* Permite que os campos se movam para a próxima linha se não houver espaço */
+      gap: 15px; /* Espaçamento entre os campos */
+    }
+
+    .input-group label {
+      flex: 1 1 150px; /* Faz com que cada rótulo ocupe uma largura mínima de 150px */
+      margin-bottom: 5px; /* Espaçamento abaixo do rótulo */
+    }
+
+    .input-group input {
+      flex: 1; /* Faz com que os campos de entrada ocupem o espaço disponível */
+      min-width: 200px; /* Largura mínima dos campos de entrada */
+      padding: 8px; /* Espaçamento interno dos campos de entrada */
+      border: 1px solid #ccc; /* Borda dos campos de entrada */
+      border-radius: 5px; /* Bordas arredondadas para os campos de entrada */
     }
     
     .normal-inputs, .toupu-inputs {
@@ -1054,6 +1055,7 @@ textarea {
 .delete-btn .icon {
   color: black; /* Preto para ícones no modo claro */
 }
+
 /* -- FIM CSS ICONES -- */
   </style>
   
@@ -1303,23 +1305,26 @@ textarea {
     </div>
   </div>
 
+  
   <div id="editModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
       <h2>Editar Registro</h2>
       <input type="hidden" id="editIndex">
-      <label for="editCodigoPeca">Código da Peça:</label>
-      <input type="text" id="editCodigoPeca" placeholder="Código da Peça">
-      <label for="editNumeroLote">Número do Lote:</label>
-      <input type="text" id="editNumeroLote" placeholder="Número do Lote">
-      <label for="editEtiquetasNecessarias">Etiquetas Necessárias:</label>
-      <input type="number" id="editEtiquetasNecessarias" placeholder="Etiquetas Necessárias" required min="0">
-      <label for="editPecasExtras">Peças Extras:</label>
-      <input type="number" id="editPecasExtras" placeholder="Peças Extras" required min="0">
-      <label for="editObservacoes">Observações:</label>
-      <input type="text" id="editObservacoes" placeholder="Observações">
-      <p id="editTotalPecas">Total de Peças: 0</p>
+      <div class="input-group"> 
+        <label for="editCodigoPeca">Código da Peça:</label>
+        <input type="text" id="editCodigoPeca" placeholder="Código da Peça">
+        <label for="editNumeroLote">Número do Lote:</label>
+        <input type="text" id="editNumeroLote" placeholder="Número do Lote">
+        <label for="editEtiquetasNecessarias">Etiquetas Necessárias:</label>
+        <input type="number" id="editEtiquetasNecessarias" placeholder="Etiquetas Necessárias" required min="0">
+        <label for="editPecasExtras">Peças Extras:</label>
+        <input type="number" id="editPecasExtras" placeholder="Peças Extras" required min="0">
+        <label for="editObservacoes">Observações:</label>
+        <input type="text" id="editObservacoes" placeholder="Observações">
+      </div>
       <p id="editEtiquetasNecessariasCalc"></p>
+      <p id="editTotalPecas">Total de Peças: 0</p>
       <button id="salvarEdicao">Salvar</button>
     </div>
   </div>
@@ -2523,57 +2528,64 @@ document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
     atualizarTabela();
 }
 
-  function calcularEtiquetasToupu() {
+function calcularEtiquetasToupu() {
     const codigoPeca = document.getElementById('codigoPecaToupu').value;
     const numeroLote = document.getElementById('numeroLoteToupu').value;
     const totalPecas = parseInt(document.getElementById('totalPecasToupu').value);
     const observacoes = document.getElementById('observacoesToupu').value;
 
     if (!codigoPeca || !totalPecas) {
-      alert('Por favor, preencha os campos obrigatórios.');
-      return;
+        alert('Por favor, preencha os campos obrigatórios.');
+        return;
     }
 
     const toupuData = toupuCodes[codigoPeca];
     if (!toupuData) {
-      alert('Código Toupu inválido.');
-      return;
+        alert('Código Toupu inválido.');
+        return;
     }
 
-    const totalPaletes = Math.ceil(totalPecas / toupuData.totalPorPalete);
-    const sacosCompletos = Math.floor(totalPecas / toupuData.pecasPorSaco);
-    const pecasExtras = totalPecas % toupuData.pecasPorSaco;
-    const etiquetasNecessarias = sacosCompletos + (pecasExtras > 0 ? 1 : 0);
+    // Calcular total de paletes completos
+    const totalPaletes = Math.floor(totalPecas / toupuData.totalPorPalete);
+    const pecasNaoEnviaveis = totalPecas % toupuData.totalPorPalete; // Peças que não podem formar um palete
 
-    const resultado = `Total de paletes: ${totalPaletes}, Etiquetas necessárias: ${etiquetasNecessarias}${pecasExtras > 0 ? ` (${sacosCompletos} completas + 1 extra com ${pecasExtras} peças)` : ''}`;
+    // Calcular sacos completos
+    const sacosCompletos = Math.floor(totalPecas / toupuData.pecasPorSaco);
+    const pecasRestantes = totalPecas % toupuData.pecasPorSaco; // Peças que não formam um saco completo
+
+    // Etiquetas necessárias são baseadas nos sacos completos
+    const etiquetasNecessarias = sacosCompletos + (pecasRestantes > 0 ? 1 : 0); // Adiciona 1 se houver peças restantes
+
+    // Montar o resultado
+    const resultado = `Total de paletes: ${totalPaletes}${pecasNaoEnviaveis > 0 ? ` + ${pecasNaoEnviaveis} Peças no Palete incompleto!` : ''}, Etiquetas necessárias: ${etiquetasNecessarias}${pecasRestantes > 0 ? ` (${sacosCompletos} completas + 1 extra com ${pecasRestantes} peças)` : ''}`;
+
     document.getElementById('resultadoToupu').textContent = resultado;
     document.getElementById('resultadoToupu').style.display = 'block';
     document.getElementById('resultado').style.display = 'none';
 
-       /*
- // Verificação de duplicidade para registros Toupu
- const registroExistenteToupu = registrosToupu.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
- if (registroExistenteToupu) {
-     alert('Registro já existe no modo Toupu!');
-     return; // Não prossegue com a criação do novo registro
- }
-*/
-
+    /*
+    // Verificação de duplicidade para registros Toupu
+    const registroExistenteToupu = registrosToupu.find(r => r.codigoPeca === codigoPeca && r.numeroLote === numeroLote);
+    if (registroExistenteToupu) {
+        alert('Registro já existe no modo Toupu!');
+        return; // Não prossegue com a criação do novo registro
+    }
+    */
 
     const novoRegistro = {
-      id: `T${nextIdToupu++}`,
-      data: new Date().toLocaleString(),
-      codigoPeca,
-      numeroLote,
-      pecasPorSaco: toupuData.pecasPorSaco,
-      sacosPorPalete: toupuData.sacosPorPalete,
-      totalPaletes,
-      etiquetasNecessarias,
-      etiquetasCompletas: sacosCompletos,
-      pecasExtras,
-      etiquetasUsadas: 0,
-      totalPecas,
-      observacoes
+        id: `T${nextIdToupu++}`,
+        data: new Date().toLocaleString(),
+        codigoPeca,
+        numeroLote,
+        pecasPorSaco: toupuData.pecasPorSaco,
+        sacosPorPalete: toupuData.sacosPorPalete,
+        totalPaletes,
+        etiquetasNecessarias,
+        etiquetasCompletas: sacosCompletos,
+        pecasExtras: pecasRestantes,
+        etiquetasUsadas: 0,
+        totalPecas,
+        observacoes
     };
 
     registrosToupu.unshift(novoRegistro);
@@ -2582,21 +2594,20 @@ document.addEventListener('DOMContentLoaded', loadSuggestionsFromLocalStorage);
 
     const mostrarCalculos = document.getElementById('mostrarCalculos').checked;
     if (mostrarCalculos) {
-      const calculosToupuDetalhados = `
-        <p>Total de Peças: ${totalPecas}</p>
-        <p>Peças por Saco: ${toupuData.pecasPorSaco}</p>
-        <p>Matemática:</p>
-        <p>${totalPecas} / ${toupuData.pecasPorSaco} = ${totalPecas / toupuData.pecasPorSaco}</p>
-        <p>${sacosCompletos} * ${toupuData.pecasPorSaco} = ${sacosCompletos * toupuData.pecasPorSaco}</p>
-        <p>${totalPecas} - ${sacosCompletos * toupuData.pecasPorSaco} = ${pecasExtras}</p>
-      `;
-      document.getElementById('calculosToupuConteudo').innerHTML = calculosToupuDetalhados;
-      document.getElementById('calculosToupuDetalhados').style.display = 'block';
-      
+        const calculosToupuDetalhados = `
+            <p>Total de Peças: ${totalPecas}</p>
+            <p>Peças por Saco: ${toupuData.pecasPorSaco}</p>
+            <p>Matemática:</p>
+            <p>${totalPecas} / ${toupuData.pecasPorSaco} = ${totalPecas / toupuData.pecasPorSaco}</p>
+            <p>${sacosCompletos} * ${toupuData.pecasPorSaco} = ${sacosCompletos * toupuData.pecasPorSaco}</p>
+            <p>${totalPecas} - ${sacosCompletos * toupuData.pecasPorSaco} = ${pecasRestantes}</p>
+        `;
+        document.getElementById('calculosToupuConteudo').innerHTML = calculosToupuDetalhados;
+        document.getElementById('calculosToupuDetalhados').style.display = 'block';
     } else {
-      document.getElementById('calculosToupuDetalhados').style.display = 'none';
+        document.getElementById('calculosToupuDetalhados').style.display = 'none';
     }
-  }
+}
 
   // 8. funçoes exportar dados
   function salvarPDF() {
